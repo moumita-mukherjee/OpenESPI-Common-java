@@ -1,0 +1,303 @@
+/*
+ * Copyright 2013, 2014 EnergyOS.org
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
+package org.energyos.espi.common.service.impl;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
+
+import org.energyos.espi.common.domain.Subscription;
+import org.energyos.espi.common.domain.UsagePoint;
+import org.energyos.espi.common.domain.User;
+import org.energyos.espi.common.models.atom.EntryType;
+import org.energyos.espi.common.repositories.SubscriptionRepository;
+import org.energyos.espi.common.repositories.UsagePointRepository;
+import org.energyos.espi.common.service.ApplicationInformationService;
+import org.energyos.espi.common.service.ImportService;
+import org.energyos.espi.common.service.ResourceService;
+import org.energyos.espi.common.service.SubscriptionService;
+import org.energyos.espi.common.utils.EntryTypeIterator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class SubscriptionServiceImpl implements SubscriptionService {
+	@Autowired
+	private SubscriptionRepository subscriptionRepository;
+
+	@Autowired
+	private UsagePointRepository usagePointRepository;
+
+	@Autowired
+	private ApplicationInformationService applicationInformationService;
+
+	@Autowired
+	private ResourceService resourceService;
+
+	@Autowired
+	private ImportService importService;
+
+	@Override
+	@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
+			javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
+	public Subscription createSubscription(OAuth2Authentication authentication, Long usagePointId) {
+		Subscription subscription = new Subscription();
+		subscription.setUUID(UUID.randomUUID());
+		subscription.setApplicationInformation(applicationInformationService.findByClientId(authentication
+				.getOAuth2Request().getClientId()));
+		// DJ
+		// subscription.setRetailCustomer((RetailCustomer)authentication.getPrincipal());
+
+		subscription.setRetailCustomer(((User) authentication.getPrincipal()).getRetailCustomer());
+		subscription.setUsagePoints(new ArrayList<UsagePoint>());
+
+		if (subscription.getRetailCustomer() != null) {
+			System.err.println("subscription getRetailCustomer " + subscription.getRetailCustomer().getFirstName());
+			System.err.println("subscription getRetailCustomer " + subscription.getRetailCustomer().getId());
+		}
+
+		// set up the subscription's usagePoints list. Keep in mind that right
+		// now this is ALL usage points belonging to the RetailCustomer.
+		// TODO - scope this to only a selected (proper) subset of the
+		// usagePoints as passed
+		// through from the UX or a restful call.
+		List<Long> upIds = resourceService
+				.findAllIdsByXPath(subscription.getRetailCustomer().getId(), UsagePoint.class);
+		Iterator<Long> it = upIds.iterator();
+		while (it.hasNext()) {
+			Long upid = it.next();
+			if (usagePointId == null || usagePointId == 0 || usagePointId.longValue() == upid.longValue()) {
+				UsagePoint usagePoint = resourceService.findById(upid, UsagePoint.class);
+				subscription.getUsagePoints().add(usagePoint);
+			}
+		}
+
+		subscription.setLastUpdate(new GregorianCalendar());
+		subscriptionRepository.persist(subscription);
+
+		return subscription;
+	}
+
+	@Override
+	public List<Subscription> findAll() {
+		return subscriptionRepository.findAll();
+	}
+
+	@Override
+	public void persist(Subscription subscription) {
+		subscriptionRepository.persist(subscription);
+	}
+
+	@Override
+	public Subscription findByUUID(UUID uuid) {
+		return subscriptionRepository.findByUUID(uuid);
+	}
+
+	@Override
+	public Subscription findByHashedId(String hashedId) {
+		return subscriptionRepository.findByHashedId(hashedId);
+	}
+
+	@Override
+	public EntryTypeIterator findEntriesByHashedId(String hashedId) {
+		Subscription subscription = subscriptionRepository.findByHashedId(hashedId);
+		List<Long> subscriptionIds = new ArrayList<Long>();
+		subscriptionIds.add(subscription.getId());
+		return new EntryTypeIterator(resourceService, subscriptionIds, Subscription.class);
+	}
+
+	public void setRepository(SubscriptionRepository subscriptionRepository) {
+		this.subscriptionRepository = subscriptionRepository;
+	}
+
+	@Override
+	public EntryTypeIterator find(String subscriptionHashedId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Subscription findById(String subscriptionId) {
+		return subscriptionRepository.findByHashedId(subscriptionId);
+
+	}
+
+	@Override
+	public EntryType findEntryType(Long retailCustomerId, Long subscriptionId) {
+		EntryType result = null;
+		try {
+			List<Long> allIds = new ArrayList<Long>();
+			allIds.add(subscriptionId);
+			result = (new EntryTypeIterator(resourceService, allIds, Subscription.class)).nextEntry(Subscription.class);
+		} catch (Exception e) {
+			// TODO need a log file entry as we are going to return a null if
+			// it's not found
+			result = null;
+		}
+		return result;
+	}
+
+	@Override
+	public EntryTypeIterator findEntryTypeIterator(Long subscriptionId) {
+		EntryTypeIterator result = null;
+		try {
+
+			result = (new EntryTypeIterator(resourceService, findUsagePointIds(subscriptionId), Subscription.class));
+			result.setSubscriptionId(subscriptionId);
+			
+		} catch (Exception e) {
+			// TODO need a log file entry as we are going to return a null if
+			// it's not found
+			result = null;
+		}
+		return result;	
+	}
+
+	@Override
+	public List<EntryTypeIterator> findEntryTypeIterator(List<Long> subscriptions) {
+		List<EntryTypeIterator> result = new ArrayList<EntryTypeIterator> ();
+		try {
+			for (Long subscriptionId : subscriptions) {
+				
+				EntryTypeIterator eti = new EntryTypeIterator(resourceService, findUsagePointIds(subscriptionId), Subscription.class);
+				eti.setSubscriptionId(subscriptionId);
+			    result.add(eti);
+			}
+			
+		} catch (Exception e) {
+			// TODO need a log file entry as we are going to return a null if
+			// it's not found
+			result = null;
+		}
+		return result;	
+	}
+
+	@Override
+	public void delete(Subscription subscription) {
+		subscriptionRepository.deleteById(subscription.getId());
+	}
+
+	@Override
+	public void merge(Subscription subscription) {
+		subscriptionRepository.merge(subscription);
+	}
+
+	@Override
+	public Subscription importResource(InputStream stream) {
+		try {
+			importService.importData(stream, null);
+			EntryType entry = importService.getEntries().get(0);
+			Subscription subscription = entry.getContent().getSubscription();
+			return subscription;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public Subscription findById(Long subscriptionId) {
+		return subscriptionRepository.findById(subscriptionId);
+	}
+
+	@Override
+	public Subscription findById(Long retailCustomerId, Long subscriptionId) {
+		return subscriptionRepository.findById(subscriptionId);
+	}
+
+	@Override
+	public List<Long> findUsagePointIds(Long subscriptionId) {
+
+		List<Long> result = new ArrayList<Long>();
+		Subscription subscription = findById(subscriptionId);
+		for (UsagePoint up : subscription.getUsagePoints()) {
+			result.add(up.getId());
+		}
+
+		return result;
+	}
+
+	@Override
+	public Subscription findByAuthorizationId(Long id) {
+		return subscriptionRepository.findByAuthorizationId(id);
+	}
+
+	@Override
+	@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
+			javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
+	public Subscription addUsagePoint(Subscription subscription, UsagePoint usagePoint) {
+
+		subscription.getUsagePoints().add(usagePoint);
+		return subscription;
+
+	}
+
+	@Override
+	public List<Long> findByBulkId(Long bulkId) {
+		// TODO :pending implementation of the bulk_id relationship in the
+		// domain object
+		List<Long> result = new ArrayList<Long>();
+		// for now treat this like a subscriptionId and just return it
+		result.add(bulkId);
+		return result;
+
+	}
+
+	public void setSubscriptionRepository(SubscriptionRepository subscriptionRepository) {
+		this.subscriptionRepository = subscriptionRepository;
+	}
+
+	public SubscriptionRepository getSubscriptionRepository() {
+		return this.subscriptionRepository;
+	}
+
+	public void setUsagePointRepository(UsagePointRepository usagePointRepository) {
+		this.usagePointRepository = usagePointRepository;
+	}
+
+	public UsagePointRepository getUsagePointRepository() {
+		return this.usagePointRepository;
+	}
+
+	public void setApplicationInformationService(ApplicationInformationService applicationInformationService) {
+		this.applicationInformationService = applicationInformationService;
+	}
+
+	public ApplicationInformationService getApplicationInformationService() {
+		return this.applicationInformationService;
+	}
+
+	public void setResourceService(ResourceService resourceService) {
+		this.resourceService = resourceService;
+	}
+
+	public ResourceService getResourceService() {
+		return this.resourceService;
+	}
+
+	public void setImportService(ImportService importService) {
+		this.importService = importService;
+	}
+
+	public ImportService getImportService() {
+		return this.importService;
+	}
+}
