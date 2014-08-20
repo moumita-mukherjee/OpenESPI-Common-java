@@ -22,6 +22,10 @@ public class Routes {
     public static final String LOGIN = "/login";
     public static final String ROOT = "/";
 
+    public static final String DATA_CUSTODIAN_MANAGE = "/management";
+    
+	public static final String THIRD_PARTY_MANAGE = "/management";
+	
     public static final String THIRD_PARTY_REGISTRATION_EDIT="/thirdparty/registrationedit"; 
     
     public static final String THIRD_PARTY_REGISTRATION="/thirdparty/registration"; 
@@ -99,7 +103,7 @@ public class Routes {
     public static final String SUBSCRIPTION_COLLECTION = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Subscription";
     public static final String SUBSCRIPTION_MEMBER = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Subscription/{subscriptionHashedId}";
 
-    public static final String EXT_METER_READING_MEMBER = "/lh/1_1/resource/MeterReading/{uuid}";
+    public static final String EXT_METER_READING_MEMBER = "/espi/1_1/resource/MeterReading/uuid/{uuid}";
     
     // patterns for RESTful root access to Resources
     public static final String ROOT_USAGE_POINT_COLLECTION = "/espi/1_1/resource/UsagePoint";

@@ -145,16 +145,19 @@ public class IntervalBlockServiceImpl implements IntervalBlockService {
 	}
 
 	@Override
-	public IntervalBlock importResource(InputStream stream) {
-		try {
+	public IntervalBlock importResource(InputStream stream) throws Exception{		
 			importService.importData(stream, null);
-			EntryType entry = importService.getEntries().get(0);
-			List<IntervalBlock> intervalBlocks = entry.getContent().getIntervalBlocks();
-			return intervalBlocks.get(0);
-		} catch (Exception e) {
-			e.printStackTrace(System.err);
-			return null;
-		}
+			List<EntryType> entries=importService.getEntries();
+			if(entries!=null && entries.size()>0 ) {			
+				EntryType entry = entries.get(0);
+				List<IntervalBlock> intervalBlocks = entry.getContent().getIntervalBlocks();
+				if(intervalBlocks==null ||intervalBlocks.isEmpty()) {
+					System.err.println("IntervalBlocks is empty");
+				}else {
+					return intervalBlocks.get(0);
+				}
+			}		
+		return null;
 	}
 
 	@Override

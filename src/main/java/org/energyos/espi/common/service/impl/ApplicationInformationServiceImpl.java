@@ -52,11 +52,11 @@ public class ApplicationInformationServiceImpl implements ApplicationInformation
     private ImportService importService;
             
     @Override
-    public String getDataCustodianResourceEndpoint() {
+    public String getDataCustodianResourceEndpoint() {    	
     	if (this.applicationInformation == null) {
     		// default it to the seed value
     		this.setApplicationInformation(this.findById(1L));
-    	}
+    	}    	
     	return applicationInformation.getDataCustodianResourceEndpoint();
     	// return "http://localhost:8080/DataCustodian/espi/1_1/resource";
     }    

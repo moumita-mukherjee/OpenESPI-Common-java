@@ -85,7 +85,7 @@ public interface ExportService {
     //  - XPath form
 	public void exportMeterReading(Long subscriptionId, Long retailCustomerId, Long usagePointId, Long meterReadingId,
 				       OutputStream stream, ExportFilter exportFilter) throws IOException;
-	
+
 	public void exportMeterReadings(Long subscriptionId, Long retailCustomerId, Long usagePointId,
 			OutputStream stream, ExportFilter exportFilter) throws IOException;
 
@@ -108,7 +108,7 @@ public interface ExportService {
     // ROOT forms
     // -- TODO: original Pivotal version - used for pub/sub activity b/c of the String/Hashed implication 
     public void exportSubscription(String subscriptionHashedId, OutputStream stream, ExportFilter exportResourceFilter) throws IOException;
-	
+
     public void exportSubscription(Long subscriptionId, OutputStream stream, ExportFilter exportResourceFilter) throws IOException;
 
     public void exportSubscriptions(OutputStream stream, ExportFilter exportResourceFilter) throws IOException;
@@ -125,7 +125,7 @@ public interface ExportService {
 	public void exportTimeConfiguration(Long timeConfigurationId, OutputStream stream, ExportFilter exportFilter) throws IOException;
 
 	public void exportTimeConfigurations(OutputStream stream, ExportFilter exportFilter) throws IOException;
-	
+
 	// UsagePoints
 	// - ROOT form
 	void exportUsagePoint_Root(Long subscriptionId, Long usagePointId, OutputStream stream, ExportFilter exportResourceFilter) throws IOException;
@@ -151,6 +151,6 @@ public interface ExportService {
 	public void exportBatchBulk(long bulkId, OutputStream outputStream, ExportFilter exportFilter) throws IOException;
 
 	public void exportBatchSubscription(long subscriptionId, OutputStream outputStream, ExportFilter exportFilter) throws IOException;
-	
+
 
 }

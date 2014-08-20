@@ -104,7 +104,7 @@ public class ImportServiceImpl implements ImportService {
 	@Override
 	public List<EntryType> getEntries() {
 		List<EntryType> result = entries;
-		entries = null;
+		//DJ entries = null;
 		return result;
 	}
 

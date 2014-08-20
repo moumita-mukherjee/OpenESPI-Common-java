@@ -91,32 +91,26 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 				IdentifiedObject existingResource = null;
 
 				if (resource instanceof IntervalBlock) {
-					
-					System.err.println("entry  ..." + resource.getUUID());
+
+					System.err.println(resource.getSelfLink().getHref()+ " interval block uuid  ..." + resource.getUUID());
 
 					existingResource = intervalBlockService.findByUUID(resource.getUUID());
-					
-					IntervalBlock ib =(IntervalBlock)existingResource;
 
-					System.err.println("entry existingResource.getId() ..." + existingResource.getId());
-					System.err.println("entry existingResource.meter reading id ..." + ib.getMeterReadingId());
-					
-					
+					IntervalBlock ib = (IntervalBlock) existingResource;
+
+					System.err.println("block existingResource.getId() ..." + existingResource.getId());
+					System.err.println("block existingResource.meter reading id ..." + ib.getMeterReadingId());
+
 					ib.setMeterReading(meterReadingService.findById(ib.getMeterReadingId()));
-					
-					
-					
-					System.err.println("entry existingResource.meter reading id ..." + ib.getMeterReading());
-					
-					
-					
+
 
 					// merge the new into the old and throw the new away
 					//
 					existingResource.merge(resource);
 
 					existingResource = intervalBlockService.merge((IntervalBlock) existingResource);
-					if(ib.getMeterReading()!=null) {
+
+					if (ib.getMeterReading() != null) {
 						meterReadingService.persist(ib.getMeterReading());
 					}
 
@@ -194,7 +188,7 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 					String link = tokens[0];
 					try {
 						UUID uuid = UUIDUtil.uuid(link);
-						System.err.println("uuid ->" + uuid);
+						System.err.println(link+ " meter reading uuid ->" + uuid);
 						MeterReading meterReading = meterReadingService.findByUUID(uuid);
 
 						if (meterReading != null) {
@@ -206,9 +200,9 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 							ib.setMeterRedingDate();
 						}
 					} catch (EmptyResultDataAccessException ignore) {
-						System.err.println("Exception *** " + ignore.getMessage());
+						System.out.println("Exception *** " + ignore.getMessage());
 					} catch (NoResultException ignore) {
-						System.err.println("Exception *** " + ignore.getMessage());
+						System.out.println("Exception *** " + ignore.getMessage());
 					} catch (Exception ignore) {
 						System.err.println("Exception *** " + ignore.getMessage());
 					}
@@ -300,7 +294,7 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 					resource);
 			for (IdentifiedObject parent : parents) {
 				// add the parent to the transaction
-				System.err.println(resource+ " Link up "+parent);
+				System.err.println(resource + " Link up " + parent);
 				resourceService.merge(parent);
 				// add the resource to the parent collection
 				resource.setUpResource(parent);
@@ -316,8 +310,6 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 			List<IdentifiedObject> parents = resourceService.findByAllParentsHref(resource.getSelfLink().getHref(),
 					resource);
 			for (IdentifiedObject parent : parents) {
-				System.err.println(resource+ " linkUpMember "+parent);
-				
 				// put the existing resource in the transaction
 				resourceService.merge(parent);
 
@@ -349,7 +341,6 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 
 		for (IdentifiedObject relatedResource : relatedResources) {
 			// Put the relatedResource in the Transaction
-			System.err.println(resource +" linkUpMember "+relatedResource);
 			resourceService.merge(relatedResource);
 
 			if (resource instanceof UsagePoint) {

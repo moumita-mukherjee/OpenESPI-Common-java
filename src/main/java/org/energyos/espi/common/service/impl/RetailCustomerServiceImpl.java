@@ -122,13 +122,13 @@ public class RetailCustomerServiceImpl implements RetailCustomerService {
 	}
 
 	@Override
+	@Transactional
 	public RetailCustomer importResource(InputStream stream) {
 		RetailCustomer retailCustomer = null;
 		try {
 			importService.importData(stream, null);
 			// TODO - Make RetailCustomer inherit from IdentifiedObject and add
 			// RetailCustomer to the entrytype structure
-
 			EntryType entry = importService.getEntries().get(0);
 			if (entry != null) {
 				retailCustomer = entry.getContent().getRetailCustomer();

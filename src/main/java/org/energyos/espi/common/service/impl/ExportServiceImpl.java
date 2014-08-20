@@ -30,6 +30,7 @@ import org.energyos.espi.common.domain.ApplicationInformation;
 import org.energyos.espi.common.domain.Authorization;
 import org.energyos.espi.common.domain.ElectricPowerQualitySummary;
 import org.energyos.espi.common.domain.ElectricPowerUsageSummary;
+import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.IntervalBlock;
 import org.energyos.espi.common.domain.MeterReading;
 import org.energyos.espi.common.domain.ReadingType;
@@ -61,6 +62,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -103,7 +105,9 @@ public class ExportServiceImpl implements ExportService {
 	private TimeConfigurationService timeConfigurationService;
 
 	@Autowired
-	@Qualifier("fragmentMarshaller")
+	//@Qualifier("fragmentMarshaller")
+	@Qualifier("atomMarshaller")
+	
 	private Jaxb2Marshaller fragmentMarshaller;
 
 	// setup the services
@@ -214,8 +218,7 @@ public class ExportServiceImpl implements ExportService {
 		this.fragmentMarshaller = fragmentMarshaller;
 	}
 
-	// TODO Convert this block of functions to a Template system
-	//
+
 
 	// ApplicationInformation
 
@@ -239,6 +242,7 @@ public class ExportServiceImpl implements ExportService {
 
 	// - ROOT form
 	@Override
+	@Transactional(readOnly=true)
 	public void exportAuthorization(Long authorizationId, OutputStream stream, ExportFilter exportFilter)
 			throws IOException {
 		String hrefFragment = "/Authorization/" + authorizationId;
@@ -476,6 +480,7 @@ public class ExportServiceImpl implements ExportService {
 
 	// ROOT form
 	@Override
+	@Transactional(propagation=Propagation.SUPPORTS)
 	public void exportRetailCustomer(Long subscriptionId, Long retailCustomerId, OutputStream stream,
 			ExportFilter exportFilter) throws IOException {
 		String hrefFragment = "/RetailCustomer/" + retailCustomerId;
@@ -550,6 +555,7 @@ public class ExportServiceImpl implements ExportService {
 	//
 	// ROOT form
 	@Override
+	@Transactional(propagation=Propagation.SUPPORTS)
 	public void exportUsagePoint_Root(Long subscriptionId, Long usagePointId, OutputStream stream,
 			ExportFilter exportFilter) throws IOException {
 		String hrefFragment = "/Subscription/" + subscriptionId + "/UsagePoint/" + usagePointId;
@@ -596,6 +602,7 @@ public class ExportServiceImpl implements ExportService {
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public void exportBatchSubscription(long subscriptionId, OutputStream stream, ExportFilter exportFilter)
 			throws IOException {
 		String hrefFragment = "/Batch/Subscription/" + subscriptionId;
@@ -635,6 +642,7 @@ public class ExportServiceImpl implements ExportService {
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public void exportMeterReadingFull(Long subscriptionId, Long meterReadingId, Long usagePointId,
 			Long retailCustomerId, ServletOutputStream outputStream, ExportFilter exportFilter) throws IOException {
 		// TODO right now subscriptionId is 1- ...
@@ -666,7 +674,7 @@ public class ExportServiceImpl implements ExportService {
 		String uuid = UUID.randomUUID().toString();
 
 		stream.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".getBytes());
-		stream.write("<?xml-stylesheet type=\"text/xsl\" href=\"/GreenButtonDataStyleSheet.xslt\"?>".getBytes());
+		stream.write("<?xml-stylesheet type=\"text/xsl\" href=\"GreenButtonDataStyleSheet.xslt\"?>\n".getBytes());
 		stream.write("<feed xmlns=\"http://www.w3.org/2005/Atom\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
 				.getBytes());
 		stream.write("<id>urn:uuid:".getBytes());
@@ -854,13 +862,17 @@ public class ExportServiceImpl implements ExportService {
 		exportEntry(0L, entry, stream, exportFilter, hrefFragment);
 	}
 
+	
 	private void exportEntry(Long subscriptionId, EntryType entry, OutputStream stream, ExportFilter exportFilter,
 			String hrefFragment) throws IOException {
 
+		
 		AtomMarshallerListener uriListener = new AtomMarshallerListener(
 				applicationInformationService.getDataCustodianResourceEndpoint() + hrefFragment);
+		if(entry.getContent()!=null) {
 		uriListener.setRelList(entry.getContent().buildRelHref(subscriptionId,
 				applicationInformationService.getDataCustodianResourceEndpoint() + hrefFragment));
+		}
 		uriListener.setSubscriptionId(subscriptionId);
 
 		fragmentMarshaller.setMarshallerListener(uriListener);
@@ -942,7 +954,7 @@ public class ExportServiceImpl implements ExportService {
 			throws IOException {
 		exportEntryFull(0L, entry, stream, exportFilter, hrefFragment);
 	}
-
+	
 	private void exportEntryFullChild(Long subscriptionId, EntryType entry, OutputStream stream, ExportFilter exportFilter,
 			String hrefFragment) throws IOException {
 		buildHeader(stream, hrefFragment);
@@ -962,8 +974,11 @@ public class ExportServiceImpl implements ExportService {
 	private void exportEntryFull(Long subscriptionId, EntryType entry, OutputStream stream, ExportFilter exportFilter,
 			String hrefFragment) throws IOException {
 
+
 		// setup a listener so that the adapters may later be fed the fragment;
 		//
+
+
 		AtomMarshallerListener uriListener = new AtomMarshallerListener(
 				applicationInformationService.getDataCustodianResourceEndpoint() + hrefFragment);
 
@@ -981,6 +996,7 @@ public class ExportServiceImpl implements ExportService {
 		} catch (Exception e) {
 			throw (e);
 		}
+
 	}
 
 	@SuppressWarnings("unchecked")

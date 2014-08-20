@@ -61,5 +61,7 @@ public interface AuthorizationService {
 	Authorization findByUUID(UUID uuid);
 
 	public Authorization findByRefreshToken(String refreshToken);
+	
+	public List<Long> findAllIdsByBulkId(String thirdParty, Long bulkId);
 
 }

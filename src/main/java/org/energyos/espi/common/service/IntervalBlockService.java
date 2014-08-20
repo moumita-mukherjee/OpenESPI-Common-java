@@ -65,7 +65,7 @@ public interface IntervalBlockService {
 	public void add(IntervalBlock intervalBlock);
 
 	// import-exportResource services
-	public IntervalBlock importResource(InputStream stream);
+	public IntervalBlock importResource(InputStream stream) throws Exception;
 
 	IntervalBlock findById(long intervalBlockId);
 

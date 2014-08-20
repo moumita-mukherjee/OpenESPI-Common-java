@@ -1,15 +1,23 @@
 package org.energyos.espi.common.utils;
 
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
 import java.util.UUID;
 
-public class UUIDUtil {
+import org.springframework.security.crypto.codec.Base64;
 
-	public static String maskcustomer(String text) {
-		return mask(text, 10);
+public class UUIDUtil {
+	public static long mask(String text) {
+		byte[] encodedvalue = Base64.encode(text.getBytes());
+		long value = 0;
+		for (int i = 0; i < encodedvalue.length; i++) {
+			value += ((long) encodedvalue[i] & 0xffL) << (8 * i);
+		}
+		return value;
 	}
 
 	public static String mask(String text, int length) {
@@ -24,8 +32,82 @@ public class UUIDUtil {
 		}
 	}
 
+	public static void main2(String[] args) throws Exception {
+
+		PrintWriter writer = new PrintWriter("data.txt", "UTF-8");
+		long mask = 787812651212312l;
+		long data = 1000l;
+		System.out.println(data);
+		long x = data ^ mask;
+		System.out.println(x);
+		System.out.println(x ^ mask);
+		// for (int i = 0; i < Integer.MAX_VALUE; i++) {
+		// System.out.println(i + " --->" + mask(String.valueOf(i)));
+		// writer.println(mask(String.valueOf(i)));
+		// }
+		writer.close();
+
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		byte[] thedigest = md.digest(String.valueOf(data).getBytes());
+
+		System.out.println(maskCCNumber(String.valueOf(data)));
+	
+
+	}
+
+	public static String maskCCNumber(String ccnum) {
+		long starttime = System.currentTimeMillis();
+		int total = ccnum.length();
+		int startlen = 4, endlen = 4;
+		int masklen = total - (startlen + endlen);
+		StringBuffer maskedbuf = new StringBuffer(ccnum.substring(0, startlen));
+		for (int i = 0; i < masklen; i++) {
+			maskedbuf.append('X');
+		}
+		maskedbuf.append(ccnum.substring(startlen + masklen, total));
+		String masked = maskedbuf.toString();
+		long endtime = System.currentTimeMillis();
+		System.out.println("maskCCNumber:=" + masked + " of :" + masked.length() + " size");
+		System.out.println("using StringBuffer=" + (endtime - starttime) + " millis");
+		return masked;
+	}
+
+	private static String md5(String s) {
+		try {
+			MessageDigest m = MessageDigest.getInstance("MD5");
+			m.update(s.getBytes(), 0, s.length());
+			BigInteger i = new BigInteger(1, m.digest());
+			System.out.println(i);
+			System.out.println(i.longValue());
+			return String.format("%1$032x", i);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public static void main(String[] args) {
-		System.out.println(" UUID " + uuid("greenbutton.londonhydro.com", "/espi/1_1/resource/RetailCustomer/1000016554/UsagePoint/BL001EC01088F5/MeterReading/31"));		
+		String[] masterlist = { "/espi/1_1/resource/LocalTimeParameters/EST", "/espi/1_1/resource/ReadingType/1",
+				"/espi/1_1/resource/ReadingType/11", "/espi/1_1/resource/ReadingType/12",
+				"/espi/1_1/resource/ReadingType/13", "/espi/1_1/resource/ReadingType/14",
+				"/espi/1_1/resource/ReadingType/15", "/espi/1_1/resource/ReadingType/16",
+				"/espi/1_1/resource/ReadingType/21", "/espi/1_1/resource/ReadingType/22",
+				"/espi/1_1/resource/ReadingType/31", "/espi/1_1/resource/DataCustodian/ApplicationInformation/1",
+				"/espi/1_1/resource/DataCustodian/ApplicationInformation/101",
+				"/espi/1_1/resource/DataCustodian/ApplicationInformation/102",
+				"/espi/1_1/resource/DataCustodian/ApplicationInformation/103",
+				"/espi/1_1/resource/DataCustodian/ApplicationInformation/104",
+				"/espi/1_1/resource/DataCustodian/ApplicationInformation/105","/espi/1_1/resource/DataCustodian/ApplicationInformation/106" };
+
+		for (int i = 0; i < masterlist.length; i++) {
+
+			System.out.println(masterlist[i] + " UUID " + uuid("greenbutton.londonhydro.com", masterlist[i]));
+
+		}
+		System.out.println(" UUID "
+				+ uuid("greenbutton.londonhydro.com",
+						"/espi/1_1/resource/RetailCustomer/1000016554/UsagePoint/EN001BC500B0010197/MeterReading/31"));
+		
 	}
 
 	// UUID 2dd40c93-bbf1-4c4d-8e0e-9c68a0591639

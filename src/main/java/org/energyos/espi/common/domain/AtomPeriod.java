@@ -30,20 +30,20 @@ public class AtomPeriod {
 	private static Date mindate=new Date(2000-1900,0,1);
 	public AtomPeriod() {
 		super();
-		updatedMin = mindate;
+		updatedMin = new Date(mindate.getTime());
 		//updatedMin.set(2000, 0, 1);
 		updatedMax = new Date();
 
-		publishedMin = mindate;
+		publishedMin = new Date(mindate.getTime());
 		//publishedMin.set(2000, 0, 1);
 		publishedMax = new Date();
 	}
 
 	public boolean isFilterOnPublished() {
-		return mindate.compareTo(publishedMin)!=0;
+		return publishedMin.after(mindate);
 	}
 	public boolean isFilterOnUpdated() {
-		return mindate.compareTo(publishedMin)!=0;
+		return updatedMin.after(mindate);
 	}
 	public boolean isFilterOnUsage() {
 		return usageMin>0;
@@ -113,6 +113,9 @@ public class AtomPeriod {
 		sb.append(" published-max "+publishedMax.getTime() );
 		sb.append(" usage-min "+usageMin);
 		sb.append(" usage-max "+usageMax);
+		sb.append(" isFilterOnPublished "+isFilterOnPublished());
+		sb.append(" isFilterOnUpdated "+isFilterOnUpdated());
+		sb.append(" isFilterOnUsage "+isFilterOnUsage());
 		return sb.toString();
 	}
 

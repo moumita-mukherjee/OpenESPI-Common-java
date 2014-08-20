@@ -56,12 +56,16 @@ public class EntryBuilder {
         buildLinks(resource);
     }
 
-    private void buildLinks(IdentifiedObject resource) {
-        entry.getLinks().add(resource.getUpLink());
-        entry.getLinks().add(resource.getSelfLink());
+    private void buildLinks(IdentifiedObject resource) {    	
+    	if(resource.getUpLink()!=null) {
+        entry.getLinks().add(new LinkType(resource.getUpLink().getRel(),resource.getUpLink().getHref()));
+    	}
+    	if(resource.getSelfLink()!=null) {
+        entry.getLinks().add(new LinkType(resource.getSelfLink().getRel(),resource.getSelfLink().getHref()));
+    	}
 
         for (LinkType link : resource.getRelatedLinks()) {
-            entry.getLinks().add(link);
+            entry.getLinks().add(new LinkType(link.getRel(),link.getHref()));
         }
     }
 }

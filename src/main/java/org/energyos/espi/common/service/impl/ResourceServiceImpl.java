@@ -250,6 +250,7 @@ public class ResourceServiceImpl implements ResourceService {
 			temp.add(id1);
 			result = (new EntryTypeIterator(this, temp, clazz)).nextEntry(clazz);
 		} catch (Exception e) {
+			e.printStackTrace(System.err);
 			result = null;
 		}
 		return result;

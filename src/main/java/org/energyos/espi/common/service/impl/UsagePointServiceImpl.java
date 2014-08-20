@@ -188,6 +188,7 @@ public class UsagePointServiceImpl implements UsagePointService {
 	}
 
 	@Override
+	@Transactional
 	public UsagePoint importResource(InputStream stream) {
 
 		UsagePoint usagePoint = null;

@@ -46,6 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.energyos.espi.common.models.atom.LinkType;
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  * This is a root class to provide common naming attributes for all classes
@@ -97,6 +98,8 @@ public class IdentifiedObject extends Resource implements Linkable, Serializable
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//@GeneratedValue(strategy = GenerationType.AUTO, generator = "id_gen")
+	//@GenericGenerator(name = "id_gen", strategy="org.energyos.espi.common.utils.IdGenerator")
 	@XmlTransient
 	protected Long id;
 

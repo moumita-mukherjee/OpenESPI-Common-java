@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.NoResultException;
+
 import org.energyos.espi.common.domain.Authorization;
 import org.energyos.espi.common.domain.Subscription;
 import org.energyos.espi.common.domain.UsagePoint;
@@ -36,52 +38,51 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
-    @Autowired
-    private AuthorizationRepository authorizationRepository;
+	@Autowired
+	private AuthorizationRepository authorizationRepository;
 
-    @Autowired
-    private UsagePointRepository usagePointRepository;
+	@Autowired
+	private UsagePointRepository usagePointRepository;
 
 	@Autowired
 	private ResourceService resourceService;
-	
+
 	@Autowired
 	private ImportService importService;
-	
-    @Override
-    public List<Authorization> findAllByRetailCustomerId(Long retailCustomerId) {
-        return authorizationRepository.findAllByRetailCustomerId(retailCustomerId);
-    }
 
-    @Override
-    public List<Authorization> findAllActiveByRetailCustomerId(Long retailCustomerId) {
-        return authorizationRepository.findAllActiveByRetailCustomerId(retailCustomerId);
-    }
+	@Override
+	public List<Authorization> findAllByRetailCustomerId(Long retailCustomerId) {
+		return authorizationRepository.findAllByRetailCustomerId(retailCustomerId);
+	}
 
-    
-    @Override
-    public Authorization findByUUID(UUID uuid) {
-        return authorizationRepository.findByUUID(uuid);
-    }
-    
-    @Override
-    public Authorization createAuthorization(Subscription subscription, String accessToken) {
-        Authorization authorization = new Authorization();
-        authorization.setUUID(UUID.randomUUID());
-        authorizationRepository.persist(authorization);
+	@Override
+	public List<Authorization> findAllActiveByRetailCustomerId(Long retailCustomerId) {
+		return authorizationRepository.findAllActiveByRetailCustomerId(retailCustomerId);
+	}
 
-        return authorization;
-    }
+	@Override
+	public Authorization findByUUID(UUID uuid) {
+		return authorizationRepository.findByUUID(uuid);
+	}
 
-    @Override
-    public Authorization findByState(String state) {
-        return authorizationRepository.findByState(state);
-    }
-    
-    @Override
-    public Authorization findByScope(String scope, Long retailCustomerId) {
-    	return authorizationRepository.findByScope(scope, retailCustomerId);
-    }
+	@Override
+	public Authorization createAuthorization(Subscription subscription, String accessToken) {
+		Authorization authorization = new Authorization();
+		authorization.setUUID(UUID.randomUUID());
+		authorizationRepository.persist(authorization);
+
+		return authorization;
+	}
+
+	@Override
+	public Authorization findByState(String state) {
+		return authorizationRepository.findByState(state);
+	}
+
+	@Override
+	public Authorization findByScope(String scope, Long retailCustomerId) {
+		return authorizationRepository.findByScope(scope, retailCustomerId);
+	}
 
 	@Override
 	public List<Authorization> findAll() {
@@ -94,12 +95,13 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-    @Override
-    public Authorization findByURI(String uri) {
-        UsagePoint usagePoint = usagePointRepository.findByURI(uri);
-        return usagePoint.getSubscription().getAuthorization();
-    }
-    
+
+	@Override
+	public Authorization findByURI(String uri) {
+		UsagePoint usagePoint = usagePointRepository.findByURI(uri);
+		return usagePoint.getSubscription().getAuthorization();
+	}
+
 	@Override
 	public String feedFor(List<Authorization> authorizations) {
 		// TODO Auto-generated method stub
@@ -107,15 +109,15 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	}
 
 	// persistence management services
-    @Override
-    public void persist(Authorization authorization) {
-    	authorizationRepository.persist(authorization);
-    }
+	@Override
+	public void persist(Authorization authorization) {
+		authorizationRepository.persist(authorization);
+	}
 
-    @Override
-    public void merge(Authorization authorization) {
-    	authorizationRepository.merge(authorization);
-    }
+	@Override
+	public void merge(Authorization authorization) {
+		authorizationRepository.merge(authorization);
+	}
 
 	// accessor services
 
@@ -128,7 +130,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	public EntryType findEntryType(Long retailCustomerId, Long authorizationId) {
 		EntryType result = null;
 		try {
-			// TODO - this is sub-optimal (but defers the need to understand creation of an EntryType
+			// TODO - this is sub-optimal (but defers the need to understand
+			// creation of an EntryType
 			List<Long> temp = new ArrayList<Long>();
 			Authorization authorization = authorizationRepository.findById(authorizationId);
 			temp.add(authorization.getId());
@@ -145,7 +148,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	public EntryTypeIterator findEntryTypeIterator(Long retailCustomerId) {
 		EntryTypeIterator result = null;
 		try {
-			// TODO - this is sub-optimal (but defers the need to understan creation of an EntryType
+			// TODO - this is sub-optimal (but defers the need to understan
+			// creation of an EntryType
 			List<Long> temp = new ArrayList<Long>();
 			temp = authorizationRepository.findAllIds(retailCustomerId);
 			result = (new EntryTypeIterator(resourceService, temp, Authorization.class));
@@ -161,7 +165,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	public EntryType findRoot(Long authorizationId) {
 		EntryType result = null;
 		try {
-			// TODO - this is sub-optimal (but defers the need to understan creation of an EntryType
+			// TODO - this is sub-optimal (but defers the need to understan
+			// creation of an EntryType
 			List<Long> temp = new ArrayList<Long>();
 			Authorization authorization = authorizationRepository.findById(authorizationId);
 			temp.add(authorization.getId());
@@ -178,7 +183,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	public EntryTypeIterator findEntryTypeIterator() {
 		EntryTypeIterator result = null;
 		try {
-			// TODO - this is sub-optimal (but defers the need to understan creation of an EntryType
+			// TODO - this is sub-optimal (but defers the need to understan
+			// creation of an EntryType
 			List<Long> temp = new ArrayList<Long>();
 			temp = authorizationRepository.findAllIds();
 			result = (new EntryTypeIterator(resourceService, temp, Authorization.class));
@@ -193,12 +199,12 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	@Override
 	public void add(Authorization authorization) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void delete(Authorization authorization) {
-	      authorizationRepository.deleteById(authorization.getId());
+		authorizationRepository.deleteById(authorization.getId());
 	}
 
 	// import-exportResource services
@@ -220,42 +226,49 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	}
 
 	@Override
-	public Authorization findByAccessToken(String accessToken) {
+	public Authorization findByAccessToken(String accessToken) {		
 		return authorizationRepository.findByAccessToken(accessToken);
-
 	}
 
 	@Override
 	public Authorization findByRefreshToken(String refreshToken) {
 		return authorizationRepository.findByRefreshToken(refreshToken);
 	}
-	
-    public void setAuthorizationRepository(AuthorizationRepository authorizationRepository) {
-        this.authorizationRepository = authorizationRepository;
-   }
 
-   public AuthorizationRepository getAuthorizationRepository () {
-        return this.authorizationRepository;
-   }
-   public void setUsagePointRepository(UsagePointRepository usagePointRepository) {
-        this.usagePointRepository = usagePointRepository;
-   }
+	@Override
+	public List<Long> findAllIdsByBulkId(String thirdParty, Long bulkId) {
+		return authorizationRepository.findAllIdsByBulkId(thirdParty, bulkId);
+	}
 
-   public UsagePointRepository getUsagePointRepository () {
-        return this.usagePointRepository;
-   }
-   public void setResourceService(ResourceService resourceService) {
-        this.resourceService = resourceService;
-   }
+	public void setAuthorizationRepository(AuthorizationRepository authorizationRepository) {
+		this.authorizationRepository = authorizationRepository;
+	}
 
-   public ResourceService getResourceService () {
-        return this.resourceService;
-   }
-   public void setImportService(ImportService importService) {
-        this.importService = importService;
-   }
+	public AuthorizationRepository getAuthorizationRepository() {
+		return this.authorizationRepository;
+	}
 
-   public ImportService getImportService () {
-        return this.importService;
-   }
+	public void setUsagePointRepository(UsagePointRepository usagePointRepository) {
+		this.usagePointRepository = usagePointRepository;
+	}
+
+	public UsagePointRepository getUsagePointRepository() {
+		return this.usagePointRepository;
+	}
+
+	public void setResourceService(ResourceService resourceService) {
+		this.resourceService = resourceService;
+	}
+
+	public ResourceService getResourceService() {
+		return this.resourceService;
+	}
+
+	public void setImportService(ImportService importService) {
+		this.importService = importService;
+	}
+
+	public ImportService getImportService() {
+		return this.importService;
+	}
 }

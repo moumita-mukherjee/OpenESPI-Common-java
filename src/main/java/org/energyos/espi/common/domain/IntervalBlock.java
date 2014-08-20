@@ -220,14 +220,13 @@ public class IntervalBlock extends IdentifiedObject {
 	public void merge(IdentifiedObject resource) {
 		super.merge(resource);
 
-		// this.intervalReadings = ((IntervalBlock) resource).intervalReadings;
-		merge(this.intervalReadings, ((IntervalBlock) resource).intervalReadings);
-		// this.interval = ((IntervalBlock) resource).interval;
-		// recalculate the interval start & duration
+		merge(this.intervalReadings, ((IntervalBlock) resource).intervalReadings);		
 		long duration = intervalReadings.get(intervalReadings.size() - 1).getTimePeriod().getStart()
 				- intervalReadings.get(0).getTimePeriod().getStart()
 				+ intervalReadings.get(intervalReadings.size() - 1).getTimePeriod().getDuration();
 		this.interval = new DateTimeInterval(duration, intervalReadings.get(0).getTimePeriod().getStart());
+		
+		System.err.println("block duration "+duration);
 
 		Iterator<IntervalReading> readings = this.intervalReadings.iterator();
 
@@ -254,10 +253,8 @@ public class IntervalBlock extends IdentifiedObject {
 				this.meterReading
 						.setIntervalReadingTill(new Date((interval.getStart() + interval.getDuration()) * 1000));
 			}
-			System.err.println(this.meterReading.getIntervalReadingFrom() + " new reading time "
+			System.err.println(" New meter reading period: from: "+this.meterReading.getIntervalReadingFrom() + " to: "
 					+ this.meterReading.getIntervalReadingTill());
-		} else {
-			System.err.println(" meter reading null " + getUUID());
 		}
 	}
 
