@@ -35,6 +35,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -96,7 +97,7 @@ public class Subscription
     protected RetailCustomer retailCustomer;
 
     @XmlTransient
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private Authorization authorization;
 
     @OneToOne
@@ -193,5 +194,12 @@ public class Subscription
 
     public boolean equals (Subscription s) {
     	return (this.getId() == s.getId());
+    }
+    
+    @PreRemove
+    public void preRemove() {
+    	System.err.println("preRemove preRemove preRemove Subscription");
+    	//setRetailCustomer(null);
+    	//setApplicationInformation(null);
     }
 }

@@ -21,6 +21,8 @@ public interface AuthorizationService {
 	
 	public Authorization findByScope(String scope, Long retailCustomerId);
 	
+	Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope );
+	
 	public Authorization findByAccessToken(String accessToken);
 
 	public List<Authorization> findAll();

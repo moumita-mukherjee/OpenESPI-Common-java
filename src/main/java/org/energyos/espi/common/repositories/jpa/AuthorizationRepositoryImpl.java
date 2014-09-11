@@ -48,9 +48,20 @@ public class AuthorizationRepositoryImpl implements AuthorizationRepository {
 
 	@Override
 	public Authorization findByScope(String scope, Long retailCustomerId) {
-		return (Authorization) em.createNamedQuery(Authorization.QUERY_FIND_BY_SCOPE).setParameter("scope", scope)
-				.setParameter("retailCustomerId", retailCustomerId).getSingleResult();
+		if(retailCustomerId==null) {
+				return (Authorization) em.createNamedQuery(Authorization.QUERY_FIND_BY_SCOPE2).setParameter("scope", scope).getSingleResult();			
+		}else {
+			return (Authorization) em.createNamedQuery(Authorization.QUERY_FIND_BY_SCOPE).setParameter("scope", scope)
+					.setParameter("retailCustomerId", retailCustomerId).getSingleResult();
+		}
 	}
+	
+	@Override
+	public Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope ) {		
+			return (Authorization) em.createNamedQuery(Authorization.QUERY_FIND_BY_SCOPE3).setParameter("scope", scope)
+					.setParameter("retailCustomerId", retailCustomerId).setParameter("applicationInformationId", applicationInformationId).getSingleResult();		
+	}
+
 
 	@Override
 	@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
@@ -88,6 +99,13 @@ public class AuthorizationRepositoryImpl implements AuthorizationRepository {
 			javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
 	public void deleteById(Long id) {
 		em.remove(findById(id));
+	}
+	
+	@Override
+	@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
+			javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
+	public void delete(Authorization authorization) {
+		em.remove(authorization);
 	}
 
 	@Override

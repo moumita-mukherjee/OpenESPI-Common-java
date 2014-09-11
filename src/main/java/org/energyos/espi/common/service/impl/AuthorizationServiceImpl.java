@@ -35,6 +35,7 @@ import org.energyos.espi.common.service.ResourceService;
 import org.energyos.espi.common.utils.EntryTypeIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
@@ -82,6 +83,11 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	@Override
 	public Authorization findByScope(String scope, Long retailCustomerId) {
 		return authorizationRepository.findByScope(scope, retailCustomerId);
+	}
+	
+	@Override
+	public Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope) {
+		return authorizationRepository.findByScope(retailCustomerId, applicationInformationId,scope);
 	}
 
 	@Override
@@ -202,9 +208,12 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
 	}
 
-	@Override
+	@Override	
+	@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
+			javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
 	public void delete(Authorization authorization) {
-		authorizationRepository.deleteById(authorization.getId());
+		//authorizationRepository.deleteById(authorization.getId());
+		authorizationRepository.delete(authorizationRepository.findById(authorization.getId()));
 	}
 
 	// import-exportResource services

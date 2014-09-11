@@ -58,14 +58,19 @@ import org.energyos.espi.common.models.atom.adapters.UsagePointAdapter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-
 /**
- * Logical point on a network at which consumption or production is either physically measured (e.g., metered) or estimated (e.g., unmetered street lights).
+ * Logical point on a network at which consumption or production is either
+ * physically measured (e.g., metered) or estimated (e.g., unmetered street
+ * lights).
  * <p/>
- * <p>Java class for UsagePoint complex type.
+ * <p>
+ * Java class for UsagePoint complex type.
  * <p/>
- * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * The following schema fragment specifies the expected content contained within
+ * this class.
  * <p/>
+ * 
  * <pre>
  * &lt;complexType name="UsagePoint">
  *   &lt;complexContent>
@@ -80,77 +85,57 @@ import org.hibernate.annotations.LazyCollectionOption;
  * &lt;/complexType>
  * </pre>
  */
-@XmlRootElement(name="UsagePoint")
+@XmlRootElement(name = "UsagePoint")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "UsagePoint", propOrder = {
-        "roleFlags",
-        "serviceCategory",
-        "status",
-        "serviceDeliveryPoint"
-})
+@XmlType(name = "UsagePoint", propOrder = { "roleFlags", "serviceCategory", "status", "serviceDeliveryPoint" })
 @Entity
-@Table(name = "usage_points", uniqueConstraints = {@UniqueConstraint(columnNames={"uuid"})})
+@Table(name = "usage_points", uniqueConstraints = { @UniqueConstraint(columnNames = { "uuid" }) })
 @NamedQueries(value = {
-        @NamedQuery(name = UsagePoint.QUERY_FIND_ALL_BY_RETAIL_CUSTOMER_ID,
-                query = "SELECT point FROM UsagePoint point WHERE point.retailCustomer.id = :retailCustomerId"),
-        @NamedQuery(name = UsagePoint.QUERY_FIND_BY_UUID,
-                query = "SELECT point FROM UsagePoint point WHERE point.uuid = :uuid"),
-        @NamedQuery(name = UsagePoint.QUERY_FIND_BY_ID,
-                query = "SELECT point FROM UsagePoint point WHERE point.id = :id"),
-        @NamedQuery(name = UsagePoint.QUERY_FIND_ALL_UPDATED_FOR,
-                query = "SELECT point FROM UsagePoint point WHERE point.updated > :lastUpdate"),
-        @NamedQuery(name = UsagePoint.QUERY_FIND_BY_RELATED_HREF,
-                query = "SELECT point FROM UsagePoint point join point.relatedLinks link WHERE link.href = :href"),
-        @NamedQuery(name = UsagePoint.QUERY_FIND_ALL_RELATED,
-                query = "SELECT timeConfiguration FROM TimeConfiguration timeConfiguration WHERE timeConfiguration.selfLink.href in (:relatedLinkHrefs)"),
-        @NamedQuery(name = UsagePoint.QUERY_FIND_BY_URI,
-                query = "SELECT point FROM UsagePoint point WHERE point.uri = :uri"),
-        @NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS_FOR_RETAIL_CUSTOMER,
-                query = "SELECT point.id from UsagePoint point where point.retailCustomer.id = :retailCustomerId"),
-        @NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS, query = "SELECT point.id from UsagePoint point"),
-        @NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS_BY_XPATH_1, query = "SELECT DISTINCT u.id FROM UsagePoint u WHERE u.retailCustomer.id = :o1Id"),
-        @NamedQuery(name = UsagePoint.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT u.id FROM UsagePoint u WHERE u.retailCustomer.id = :o1Id AND u.id = :o2Id")
+		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_BY_RETAIL_CUSTOMER_ID, query = "SELECT point FROM UsagePoint point WHERE point.retailCustomer.id = :retailCustomerId"),
+		@NamedQuery(name = UsagePoint.QUERY_FIND_BY_UUID, query = "SELECT point FROM UsagePoint point WHERE point.uuid = :uuid"),
+		@NamedQuery(name = UsagePoint.QUERY_FIND_BY_ID, query = "SELECT point FROM UsagePoint point WHERE point.id = :id"),
+		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_UPDATED_FOR, query = "SELECT point FROM UsagePoint point WHERE point.updated > :lastUpdate"),
+		@NamedQuery(name = UsagePoint.QUERY_FIND_BY_RELATED_HREF, query = "SELECT point FROM UsagePoint point join point.relatedLinks link WHERE link.href = :href"),
+		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_RELATED, query = "SELECT timeConfiguration FROM TimeConfiguration timeConfiguration WHERE timeConfiguration.selfLink.href in (:relatedLinkHrefs)"),
+		@NamedQuery(name = UsagePoint.QUERY_FIND_BY_URI, query = "SELECT point FROM UsagePoint point WHERE point.uri = :uri"),
+		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS_FOR_RETAIL_CUSTOMER, query = "SELECT point.id from UsagePoint point where point.retailCustomer.id = :retailCustomerId"),
+		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS, query = "SELECT point.id from UsagePoint point"),
+		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS_BY_XPATH_1, query = "SELECT DISTINCT u.id FROM UsagePoint u WHERE u.retailCustomer.id = :o1Id"),
+		@NamedQuery(name = UsagePoint.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT u.id FROM UsagePoint u WHERE u.retailCustomer.id = :o1Id AND u.id = :o2Id")
 
 })
-
 @XmlJavaTypeAdapter(UsagePointAdapter.class)
-public class UsagePoint
-        extends IdentifiedObject
-{
-    public static final String QUERY_FIND_ALL_BY_RETAIL_CUSTOMER_ID = "UsagePoint.findUsagePointsByRetailCustomer";
-    public static final String QUERY_FIND_BY_UUID = "UsagePoint.findByUUID";
-    public static final String QUERY_FIND_BY_ID = "UsagePoint.findById";
-    public static final String QUERY_FIND_ALL_UPDATED_FOR = "UsagePoint.findAllUpdatedFor";
-    public static final String QUERY_FIND_BY_RELATED_HREF = "UsagePoint.findByAllParentsHref";
-    public static final String QUERY_FIND_ALL_RELATED = "UsagePoint.findAllRelated";
-    public static final String QUERY_FIND_BY_URI = "UsagePoint.findByURI";
-    public static final String QUERY_FIND_ALL_IDS_FOR_RETAIL_CUSTOMER = "UsagePoint.findAllIdsForRetailCustomer";
-    public static final String QUERY_FIND_ALL_IDS = "UsagePoint.findAllIds";
-    public static final String QUERY_FIND_ALL_IDS_BY_XPATH_1 = "UsagePoint.findAllIdsByXpath1";
-    public static final String QUERY_FIND_ID_BY_XPATH = "UsagePoint.findIdByXpath";
+public class UsagePoint extends IdentifiedObject {
+	public static final String QUERY_FIND_ALL_BY_RETAIL_CUSTOMER_ID = "UsagePoint.findUsagePointsByRetailCustomer";
+	public static final String QUERY_FIND_BY_UUID = "UsagePoint.findByUUID";
+	public static final String QUERY_FIND_BY_ID = "UsagePoint.findById";
+	public static final String QUERY_FIND_ALL_UPDATED_FOR = "UsagePoint.findAllUpdatedFor";
+	public static final String QUERY_FIND_BY_RELATED_HREF = "UsagePoint.findByAllParentsHref";
+	public static final String QUERY_FIND_ALL_RELATED = "UsagePoint.findAllRelated";
+	public static final String QUERY_FIND_BY_URI = "UsagePoint.findByURI";
+	public static final String QUERY_FIND_ALL_IDS_FOR_RETAIL_CUSTOMER = "UsagePoint.findAllIdsForRetailCustomer";
+	public static final String QUERY_FIND_ALL_IDS = "UsagePoint.findAllIds";
+	public static final String QUERY_FIND_ALL_IDS_BY_XPATH_1 = "UsagePoint.findAllIdsByXpath1";
+	public static final String QUERY_FIND_ID_BY_XPATH = "UsagePoint.findIdByXpath";
 
-    
-    @XmlElement(type = String.class)
-    @XmlJavaTypeAdapter(HexBinaryAdapter.class)
-    protected byte[] roleFlags;
+	@XmlElement(type = String.class)
+	@XmlJavaTypeAdapter(HexBinaryAdapter.class)
+	protected byte[] roleFlags;
 
-    @XmlElement(name = "ServiceCategory")
-    @NotNull
-    //@ManyToOne (cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-    protected ServiceCategory serviceCategory;
+	@XmlElement(name = "ServiceCategory")
+	@NotNull
+	// @ManyToOne (cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+	protected ServiceCategory serviceCategory;
 
-    @XmlElement(name = "ServiceDeliveryPoint")
-    @OneToOne(cascade = {CascadeType.ALL})
-    protected ServiceDeliveryPoint serviceDeliveryPoint;
-    
-    
-    @XmlTransient    
-    @Transient
- 
-    protected UsagePointDetail usagePointDetail;
-    
+	@XmlElement(name = "ServiceDeliveryPoint")
+	@OneToOne(cascade = { CascadeType.ALL })
+	protected ServiceDeliveryPoint serviceDeliveryPoint;
 
-    public UsagePointDetail getUsagePointDetail() {
+	@XmlTransient
+	@Transient
+	protected UsagePointDetail usagePointDetail;
+
+	public UsagePointDetail getUsagePointDetail() {
 		return usagePointDetail;
 	}
 
@@ -160,254 +145,244 @@ public class UsagePoint
 
 	protected Short status;
 
-    @XmlTransient
-    @OneToMany(mappedBy = "usagePoint", cascade = {CascadeType.ALL}, orphanRemoval=true)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OrderBy ("readingType.id asc")
-    private List<MeterReading> meterReadings = new ArrayList<>();
+	@XmlTransient
+	@OneToMany(mappedBy = "usagePoint", cascade = { CascadeType.ALL }, orphanRemoval = true)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@OrderBy("readingType.id asc")
+	private List<MeterReading> meterReadings = new ArrayList<>();
 
-    @XmlTransient
-    @OneToMany(mappedBy = "usagePoint", cascade = {CascadeType.ALL}, orphanRemoval=true)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<ElectricPowerUsageSummary> electricPowerUsageSummaries = new ArrayList<>();
+	@XmlTransient
+	@OneToMany(mappedBy = "usagePoint", cascade = { CascadeType.ALL }, orphanRemoval = true)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<ElectricPowerUsageSummary> electricPowerUsageSummaries = new ArrayList<>();
 
-    @XmlTransient
-    @OneToMany(mappedBy = "usagePoint", cascade = {CascadeType.ALL}, orphanRemoval=true)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<ElectricPowerQualitySummary> electricPowerQualitySummaries = new ArrayList<>();
+	@XmlTransient
+	@OneToMany(mappedBy = "usagePoint", cascade = { CascadeType.ALL }, orphanRemoval = true)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<ElectricPowerQualitySummary> electricPowerQualitySummaries = new ArrayList<>();
 
-    @XmlTransient
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    //@JoinColumn(name = "local_time_parameters_id")
-    private TimeConfiguration localTimeParameters;
+	@XmlTransient
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	// @JoinColumn(name = "local_time_parameters_id")
+	private TimeConfiguration localTimeParameters;
 
-    @XmlTransient
-    @ManyToMany(mappedBy = "usagePoints")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private Set<Subscription> subscriptions = new HashSet<>();
+	@XmlTransient
+	@ManyToMany(mappedBy = "usagePoints")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private Set<Subscription> subscriptions = new HashSet<>();
 
-    @XmlTransient
-    @ElementCollection
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @CollectionTable(name="usage_point_related_links", joinColumns=@JoinColumn(name="usage_point_id"))
-    private List<LinkType> relatedLinks = new ArrayList<>();
+	@XmlTransient
+	@ElementCollection
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@CollectionTable(name = "usage_point_related_links", joinColumns = @JoinColumn(name = "usage_point_id"))
+	private List<LinkType> relatedLinks = new ArrayList<>();
 
-    @XmlTransient
-    private String uri;
+	@XmlTransient
+	private String uri;
 
-    @XmlTransient
-    @OneToOne
-    private Subscription subscription;
+	@XmlTransient
+	// @OneToOne
+	@Transient
+	private Subscription subscription;
 
-    public void addMeterReading(MeterReading meterReading)
-    {
-        meterReading.setUsagePoint(this);
-        meterReadings.add(meterReading);
-    }
+	public void addMeterReading(MeterReading meterReading) {
+		meterReading.setUsagePoint(this);
+		meterReadings.add(meterReading);
+	}
 
-    public void removeMeterReading(MeterReading meterReading)
-    {
-        meterReading.setUsagePoint(null);
-        meterReadings.remove(meterReading);
-    }
-    
-    @XmlTransient
-    @ManyToOne
-    @JoinColumn(name="retail_customer_id")
-    protected RetailCustomer retailCustomer;
+	public void removeMeterReading(MeterReading meterReading) {
+		meterReading.setUsagePoint(null);
+		meterReadings.remove(meterReading);
+	}
 
-    public String getSelfHref() {
-        return getUpHref() + "/" + getHashedId();
-    }
+	@XmlTransient
+	@ManyToOne
+	@JoinColumn(name = "retail_customer_id")
+	protected RetailCustomer retailCustomer;
 
-    public String getUpHref() {
-        if (getRetailCustomer() != null) {
-            return "RetailCustomer/" + getRetailCustomer().getHashedId() + "/UsagePoint";
-        }
-        return null;
-    }
+	public String getSelfHref() {
+		return getUpHref() + "/" + getHashedId();
+	}
 
-    /**
-     * Gets the value of the roleFlags property.
-     *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
-     */
-    public byte[] getRoleFlags() {
-        return roleFlags;
-    }
+	public String getUpHref() {
+		if (getRetailCustomer() != null) {
+			return "RetailCustomer/" + getRetailCustomer().getHashedId() + "/UsagePoint";
+		}
+		return null;
+	}
 
-    /**
-     * Sets the value of the roleFlags property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
-     */
-    public void setRoleFlags(byte[] value) {
-        this.roleFlags = value;
-    }
+	/**
+	 * Gets the value of the roleFlags property.
+	 * 
+	 * @return possible object is {@link String }
+	 * 
+	 */
+	public byte[] getRoleFlags() {
+		return roleFlags;
+	}
 
-    /**
-     * Gets the value of the serviceCategory property.
-     *
-     * @return
-     *     possible object is
-     *     {@link ServiceCategory }
-     *
-     */
-    public ServiceCategory getServiceCategory() {
-        return serviceCategory;
-    }
+	/**
+	 * Sets the value of the roleFlags property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link String }
+	 * 
+	 */
+	public void setRoleFlags(byte[] value) {
+		this.roleFlags = value;
+	}
 
-    /**
-     * Sets the value of the serviceCategory property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link ServiceCategory }
-     *
-     */
-    public void setServiceCategory(ServiceCategory value) {
-        this.serviceCategory = value;
-    }
+	/**
+	 * Gets the value of the serviceCategory property.
+	 * 
+	 * @return possible object is {@link ServiceCategory }
+	 * 
+	 */
+	public ServiceCategory getServiceCategory() {
+		return serviceCategory;
+	}
 
-    /**
-     * Gets the value of the status property.
-     *
-     * @return
-     *     possible object is
-     *     {@link Short }
-     *
-     */
-    public Short getStatus() {
-        return status;
-    }
+	/**
+	 * Sets the value of the serviceCategory property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link ServiceCategory }
+	 * 
+	 */
+	public void setServiceCategory(ServiceCategory value) {
+		this.serviceCategory = value;
+	}
 
-    /**
-     * Sets the value of the status property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Short }
-     *
-     */
-    public void setStatus(Short value) {
-        this.status = value;
-    }
+	/**
+	 * Gets the value of the status property.
+	 * 
+	 * @return possible object is {@link Short }
+	 * 
+	 */
+	public Short getStatus() {
+		return status;
+	}
 
-    public List<MeterReading> getMeterReadings() {
-        return meterReadings;
-    }
+	/**
+	 * Sets the value of the status property.
+	 * 
+	 * @param value
+	 *            allowed object is {@link Short }
+	 * 
+	 */
+	public void setStatus(Short value) {
+		this.status = value;
+	}
 
-    public void setMeterReadings(List<MeterReading> meterReadings) {
-        this.meterReadings = meterReadings;
-    }
+	public List<MeterReading> getMeterReadings() {
+		return meterReadings;
+	}
 
-    public RetailCustomer getRetailCustomer() {
-        return retailCustomer;
-    }
+	public void setMeterReadings(List<MeterReading> meterReadings) {
+		this.meterReadings = meterReadings;
+	}
 
-    public void setRetailCustomer(RetailCustomer retailCustomer) {
-        this.retailCustomer = retailCustomer;
-    }
+	public RetailCustomer getRetailCustomer() {
+		return retailCustomer;
+	}
 
-    public List<ElectricPowerUsageSummary> getElectricPowerUsageSummaries() {
-        return electricPowerUsageSummaries;
-    }
+	public void setRetailCustomer(RetailCustomer retailCustomer) {
+		this.retailCustomer = retailCustomer;
+	}
 
-    public void addElectricPowerUsageSummary(ElectricPowerUsageSummary electricPowerUsageSummary) {
-        //electricPowerUsageSummary.setUsagePoint(this);
-        electricPowerUsageSummaries.add(electricPowerUsageSummary);
-    }
+	public List<ElectricPowerUsageSummary> getElectricPowerUsageSummaries() {
+		return electricPowerUsageSummaries;
+	}
 
-    public void removeElectricPowerUsageSummary(ElectricPowerUsageSummary electricPowerUsageSummary) {
-    	//electricPowerUsageSummary.setUsagePoint(null);
-    	electricPowerUsageSummaries.remove(electricPowerUsageSummary);
-    }
-    
-    public List<ElectricPowerQualitySummary> getElectricPowerQualitySummaries() {
-        return electricPowerQualitySummaries;
-    }
+	public void addElectricPowerUsageSummary(ElectricPowerUsageSummary electricPowerUsageSummary) {
+		// electricPowerUsageSummary.setUsagePoint(this);
+		electricPowerUsageSummaries.add(electricPowerUsageSummary);
+	}
 
-    public void removeElectricPowerQualitySummary(ElectricPowerQualitySummary electricPowerQualitySummary) {
-    	//electricPowerQualitySummary.setUsagePoint(null);
-    	electricPowerQualitySummaries.remove(electricPowerQualitySummary);
-    }
-    
-    public void setElectricPowerQualitySummaries(List<ElectricPowerQualitySummary> electricPowerQualitySummaries) {
-        this.electricPowerQualitySummaries = electricPowerQualitySummaries;
-    }
+	public void removeElectricPowerUsageSummary(ElectricPowerUsageSummary electricPowerUsageSummary) {
+		// electricPowerUsageSummary.setUsagePoint(null);
+		electricPowerUsageSummaries.remove(electricPowerUsageSummary);
+	}
 
-    public void addElectricPowerQualitySummary(ElectricPowerQualitySummary electricPowerQualitySummary) {
-        //electricPowerQualitySummary.setUsagePoint(this);
-        electricPowerQualitySummaries.add(electricPowerQualitySummary);
-    }
+	public List<ElectricPowerQualitySummary> getElectricPowerQualitySummaries() {
+		return electricPowerQualitySummaries;
+	}
 
-    public TimeConfiguration getLocalTimeParameters() {
-        return localTimeParameters;
-    }
+	public void removeElectricPowerQualitySummary(ElectricPowerQualitySummary electricPowerQualitySummary) {
+		// electricPowerQualitySummary.setUsagePoint(null);
+		electricPowerQualitySummaries.remove(electricPowerQualitySummary);
+	}
 
-    public void setLocalTimeParameters(TimeConfiguration localTimeParameters) {
-        this.localTimeParameters = localTimeParameters;
-    }
+	public void setElectricPowerQualitySummaries(List<ElectricPowerQualitySummary> electricPowerQualitySummaries) {
+		this.electricPowerQualitySummaries = electricPowerQualitySummaries;
+	}
 
-    public ServiceDeliveryPoint getServiceDeliveryPoint() {
-        return serviceDeliveryPoint;
-    }
+	public void addElectricPowerQualitySummary(ElectricPowerQualitySummary electricPowerQualitySummary) {
+		// electricPowerQualitySummary.setUsagePoint(this);
+		electricPowerQualitySummaries.add(electricPowerQualitySummary);
+	}
 
-    public void setServiceDeliveryPoint(ServiceDeliveryPoint serviceDeliveryPoint) {
-        this.serviceDeliveryPoint = serviceDeliveryPoint;
-    }
+	public TimeConfiguration getLocalTimeParameters() {
+		return localTimeParameters;
+	}
 
-    public Set<Subscription> getSubscriptions() {
-        return subscriptions;
-    }
+	public void setLocalTimeParameters(TimeConfiguration localTimeParameters) {
+		this.localTimeParameters = localTimeParameters;
+	}
 
-    public void setSubscriptions(Set<Subscription> subscriptions) {
-        this.subscriptions = subscriptions;
-    }
+	public ServiceDeliveryPoint getServiceDeliveryPoint() {
+		return serviceDeliveryPoint;
+	}
 
-    public void addSubscription(Subscription subscription){
-    	this.subscriptions.add(subscription);
-    }
-    
-    public void removeSubscription(Subscription subscription) {
-    	this.subscriptions.remove(subscription);
-    	subscription.removeUsagePoint(this);
-    }
-    
-    public void setRelatedLinks(List<LinkType> relatedLinks) {
-        this.relatedLinks = relatedLinks;
-    }
+	public void setServiceDeliveryPoint(ServiceDeliveryPoint serviceDeliveryPoint) {
+		this.serviceDeliveryPoint = serviceDeliveryPoint;
+	}
 
-    public List<LinkType> getRelatedLinks() {
-        return relatedLinks;
-    }
+	public Set<Subscription> getSubscriptions() {
+		return subscriptions;
+	}
 
-    @Override
-    public void setUpResource(IdentifiedObject resource) {
-    }
+	public void setSubscriptions(Set<Subscription> subscriptions) {
+		this.subscriptions = subscriptions;
+	}
 
-    @Override
-    public String getParentQuery() {
-        return QUERY_FIND_BY_RELATED_HREF;
-    }
+	public void addSubscription(Subscription subscription) {
+		this.subscriptions.add(subscription);
+	}
 
-    @Override
-    public String getAllRelatedQuery() {
-        return QUERY_FIND_ALL_RELATED;
-    }
+	public void removeSubscription(Subscription subscription) {
+		this.subscriptions.remove(subscription);
+		subscription.removeUsagePoint(this);
+	}
 
-    @Override
-    public void merge(IdentifiedObject resource) {
-    	super.merge(resource);
-        this.setRelatedLinks(resource.getRelatedLinks());
-        this.setServiceCategory(((UsagePoint)resource).getServiceCategory());
-    }
+	public void setRelatedLinks(List<LinkType> relatedLinks) {
+		this.relatedLinks = relatedLinks;
+	}
+
+	public List<LinkType> getRelatedLinks() {
+		return relatedLinks;
+	}
+
+	@Override
+	public void setUpResource(IdentifiedObject resource) {
+	}
+
+	@Override
+	public String getParentQuery() {
+		return QUERY_FIND_BY_RELATED_HREF;
+	}
+
+	@Override
+	public String getAllRelatedQuery() {
+		return QUERY_FIND_ALL_RELATED;
+	}
+
+	@Override
+	public void merge(IdentifiedObject resource) {
+		super.merge(resource);
+		this.setRelatedLinks(resource.getRelatedLinks());
+		this.setServiceCategory(((UsagePoint) resource).getServiceCategory());
+	}
 
 	@Override
 	public void unlink() {
@@ -422,24 +397,86 @@ public class UsagePoint
 		getSubscriptions().clear();
 
 	}
-    
-    public String getURI() {
-        return uri;
-    }
 
-    public void setURI(String URI) {
-        this.uri = URI;
-    }
+	public String getURI() {
+		return uri;
+	}
 
-    public Subscription getSubscription() {
-        return subscription;
-    }
+	public void setURI(String URI) {
+		this.uri = URI;
+	}
 
-    public void setSubscription(Subscription subscription) {
-        this.subscription = subscription;
-    }
-    public boolean equals (UsagePoint up) {
-    	return (this.getId().equals(up.getId()));
-    }
-	
+	public Subscription getSubscription() {
+		return subscription;
+	}
+
+	public void setSubscription(Subscription subscription) {
+		this.subscription = subscription;
+	}
+
+	public boolean equals(UsagePoint up) {
+		return (this.getId().equals(up.getId()));
+	}
+
+	public String [] filterCompatibleWithScope(String[] scopes) {
+		List<String> compatibleScope = new ArrayList<String>(4);
+		for (int i = 0; i < scopes.length; i++) {
+			boolean seviceCategortFlag = false;
+			boolean intervalDurationFlag = false;
+			if (ServiceCategory.ELECTRICITY_SERVICE.equals(getServiceCategory().getKind())) {
+				if (scopes[i].contains("FB=4") || scopes[i].contains("FB=5")) {
+					seviceCategortFlag = true;
+				}
+			} else if (ServiceCategory.WATER_SERVICE.equals(getServiceCategory().getKind())) {
+				if (scopes[i].contains("FB=11")) {
+					seviceCategortFlag = true;
+				}
+			}
+			
+			if (!getMeterReadings().isEmpty()
+					&& scopes[i].contains("IntervalDuration="
+							+ getMeterReadings().get(0).getReadingType().getIntervalLength())) {
+				intervalDurationFlag = true;
+			}
+			
+			System.err.println(scopes[i] + "  " + seviceCategortFlag + "  " + intervalDurationFlag);
+			
+			if (seviceCategortFlag && intervalDurationFlag) {
+				compatibleScope.add(scopes[i]);
+			}
+		}		
+		if (compatibleScope.isEmpty()) return new String[] {};
+		
+		return compatibleScope.toArray(new String[compatibleScope.size()]);
+
+	}
+	public boolean isCompatibleWithScope(String[] scopes) {
+
+		for (int i = 0; i < scopes.length; i++) {
+			boolean seviceCategortFlag = false;
+			boolean intervalDurationFlag = false;
+			if (ServiceCategory.ELECTRICITY_SERVICE.equals(getServiceCategory().getKind())) {
+				if (scopes[i].contains("FB=4") || scopes[i].contains("FB=5")) {
+					seviceCategortFlag = true;
+				}
+			} else if (ServiceCategory.WATER_SERVICE.equals(getServiceCategory().getKind())) {
+				if (scopes[i].contains("FB=11")) {
+					seviceCategortFlag = true;
+				}
+			}
+			
+			if (!getMeterReadings().isEmpty()
+					&& scopes[i].contains("IntervalDuration="
+							+ getMeterReadings().get(0).getReadingType().getIntervalLength())) {
+				intervalDurationFlag = true;
+			}
+			
+			System.err.println(scopes[i] + "  " + seviceCategortFlag + "  " + intervalDurationFlag);
+			
+			if (seviceCategortFlag && intervalDurationFlag) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

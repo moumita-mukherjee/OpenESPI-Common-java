@@ -35,6 +35,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -131,6 +132,10 @@ import org.energyos.espi.common.models.atom.adapters.AuthorizationAdapter;
                 query = "SELECT authorization FROM Authorization authorization WHERE authorization.retailCustomer.id = :retailCustomerId AND authorization.status = '1' AND authorization.resourceURI IS NOT NULL"),                
         @NamedQuery(name = Authorization.QUERY_FIND_BY_SCOPE,
         		query = "SELECT authorization FROM Authorization authorization WHERE authorization.scope = :scope AND authorization.retailCustomer.id = :retailCustomerId"),
+        @NamedQuery(name = Authorization.QUERY_FIND_BY_SCOPE2,
+        		query = "SELECT authorization FROM Authorization authorization WHERE authorization.scope = :scope"),
+        @NamedQuery(name = Authorization.QUERY_FIND_BY_SCOPE3,
+        		query = "SELECT authorization FROM Authorization authorization WHERE authorization.scope = :scope AND authorization.retailCustomer.id = :retailCustomerId and authorization.applicationInformation.id = :applicationInformationId"),        		
         @NamedQuery(name = Authorization.QUERY_FIND_BY_STATE,
 		    	query = "SELECT authorization FROM Authorization authorization WHERE authorization.state = :state"),
 		@NamedQuery(name = Authorization.QUERY_FIND_BY_UUID, 
@@ -153,6 +158,8 @@ public class Authorization
     public static final String QUERY_FIND_BY_RETAIL_CUSTOMER_ID = "Authorization.findAllByRetailCustomerId";    
     public static final String QUERY_FIND_ACTIVE_BY_RETAIL_CUSTOMER_ID = "Authorization.findAllActiveByRetailCustomerId";
 	public static final String QUERY_FIND_BY_SCOPE = "Authorization.findByScope";
+	public static final String QUERY_FIND_BY_SCOPE2 = "Authorization.findByScope2";
+	public static final String QUERY_FIND_BY_SCOPE3 = "Authorization.findByScope3";
     public static final String QUERY_FIND_BY_STATE = "Authorization.findByState";	
 	public final static String QUERY_FIND_BY_UUID = "Authorization.findByUUID";
 	public final static String QUERY_FIND_BY_ACCESS_TOKEN = "Authorization.findByAccessToken";
@@ -196,7 +203,7 @@ public class Authorization
     @XmlTransient
     protected RetailCustomer retailCustomer;
 
-    @OneToOne (cascade = CascadeType.DETACH) @JoinColumn(name = "subscription_id")
+    @OneToOne (cascade = CascadeType.REMOVE) @JoinColumn(name = "subscription_id")
     @XmlTransient
     protected Subscription subscription;
     
@@ -755,6 +762,12 @@ public class Authorization
   	  this.subscriptionURI = ((Authorization)resource).getSubscriptionURI();
   	  this.thirdParty = ((Authorization)resource).getThirdParty();
   	  this.tokenType = ((Authorization)resource).getTokenType();
+    }
+    @PreRemove
+    public void preRemove() {
+    	System.err.println("preRemove preRemove preRemove Authorization");
+    	setRetailCustomer(null);
+    	setApplicationInformation(null);
     }
     
 }

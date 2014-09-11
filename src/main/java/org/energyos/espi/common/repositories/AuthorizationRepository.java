@@ -32,6 +32,8 @@ public interface AuthorizationRepository {
     Authorization findByState(String state);
     
     Authorization findByScope(String scope, Long retailCustomerId);
+    
+    Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope );
 
     void merge(Authorization authorization);
 
@@ -44,6 +46,8 @@ public interface AuthorizationRepository {
     List<Long> findAllIds();
     
     void deleteById(Long id);
+    
+    void delete(Authorization authorization);
 
     void createOrReplaceByUUID(Authorization authorization);
     

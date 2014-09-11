@@ -119,25 +119,17 @@ import org.hibernate.validator.constraints.NotEmpty;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ApplicationInformation", propOrder = {
-		"dataCustodianApplicationStatus", "dataCustodianDefaultBatchResource",
-		"dataCustodianDefaultSubscriptionResource",
-		"thirdPartyApplicationDescription", "thirdPartyApplicationStatus",
-		"thirdPartyApplicationType", "thirdPartyApplicationUse",
-		"thirdPartyPhone", "authorizationServerUri", "thirdPartyNotifyUri",
-		"authorizationServerAuthorizationEndpoint",
-		"authorizationServerRegistrationEndpoint",
-		"authorizationServerTokenEndpoint", "dataCustodianBulkRequestURI",
-		"dataCustodianThirdPartySelectionScreenURI",
-		"dataCustodianResourceEndpoint",
-		"thirdPartyDataCustodianSelectionScreenURI",
-		"thirdPartyLoginScreenURI", "thirdPartyScopeSelectionScreenURI",
-		"thirdPartyUserPortalScreenURI", "clientSecret", "logoUri",
-		"clientName", "clientUri", "redirectUri", "clientId", "tosUri",
-		"policyUri", "softwareId", "softwareVersion", "clientIdIssuedAt",
-		"clientSecretExpiresAt", "contacts", "tokenEndpointAuthMethod",
-		"scope", "grantTypes", "responseTypes", "registrationClientUri",
-		"registrationAccessToken", "dataCustodianId",
+@XmlType(name = "ApplicationInformation", propOrder = { "dataCustodianApplicationStatus",
+		"dataCustodianDefaultBatchResource", "dataCustodianDefaultSubscriptionResource",
+		"thirdPartyApplicationDescription", "thirdPartyApplicationStatus", "thirdPartyApplicationType",
+		"thirdPartyApplicationUse", "thirdPartyPhone", "authorizationServerUri", "thirdPartyNotifyUri",
+		"authorizationServerAuthorizationEndpoint", "authorizationServerRegistrationEndpoint",
+		"authorizationServerTokenEndpoint", "dataCustodianBulkRequestURI", "dataCustodianThirdPartySelectionScreenURI",
+		"dataCustodianResourceEndpoint", "thirdPartyDataCustodianSelectionScreenURI", "thirdPartyLoginScreenURI",
+		"thirdPartyScopeSelectionScreenURI", "thirdPartyUserPortalScreenURI", "clientSecret", "logoUri", "clientName",
+		"clientUri", "redirectUri", "clientId", "tosUri", "policyUri", "softwareId", "softwareVersion",
+		"clientIdIssuedAt", "clientSecretExpiresAt", "contacts", "tokenEndpointAuthMethod", "scope", "grantTypes",
+		"responseTypes", "registrationClientUri", "registrationAccessToken", "dataCustodianId",
 		"thirdPartyApplicationName" })
 @Entity
 @Table(name = "application_information")
@@ -151,7 +143,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 		@NamedQuery(name = ApplicationInformation.QUERY_FIND_ALL_TP, query = "SELECT info FROM ApplicationInformation info where info.id > 1 and info.clientId  is not null "),
 		@NamedQuery(name = ApplicationInformation.QUERY_FIND_ALL_IDS, query = "SELECT applicationInformation.id FROM ApplicationInformation applicationInformation"),
 		@NamedQuery(name = ApplicationInformation.QUERY_FIND_BY_KIND, query = "SELECT info FROM ApplicationInformation info WHERE info.kind = :kind")
-
 
 })
 public class ApplicationInformation extends IdentifiedObject {
@@ -173,9 +164,9 @@ public class ApplicationInformation extends IdentifiedObject {
 	}
 
 	@XmlTransient
-    /*@XmlElement(name = "kind")*/
-    @Column( name = "kind")
-    protected String kind;
+	/* @XmlElement(name = "kind") */
+	@Column(name = "kind")
+	protected String kind;
 	protected String dataCustodianApplicationStatus;
 	@XmlSchemaType(name = "anyURI")
 	protected String dataCustodianDefaultBatchResource;
@@ -293,13 +284,14 @@ public class ApplicationInformation extends IdentifiedObject {
 	// private Integer accessTokenValiditySeconds;
 	// TODO implement ApplicationInformation.authorities
 	// private Collection<GrantedAuthority> authorities;
-    public String getKind() {
-        return kind;
-    }
+	public String getKind() {
+		return kind;
+	}
 
-    public void setKind(String kind) {
-    	this.kind = kind;
-    }
+	public void setKind(String kind) {
+		this.kind = kind;
+	}
+
 	// @Override
 	public String getClientId() {
 		return clientId;
@@ -352,9 +344,15 @@ public class ApplicationInformation extends IdentifiedObject {
 	}
 
 	public String[] getScopeArray() {
-		if (scope == null)
-			return new String[] {};
-		return scope.toArray(new String[scope.size()]);
+		if (scope == null) return new String[] {};
+		// return scope.toArray(new String[scope.size()]);
+
+		String[] sb = new String[scope.size()];
+		int i = 0;
+		for (ApplicationInformationScope sc : scope) {
+			sb[i++] = sc.getScope();
+		}
+		return sb;
 	}
 
 	// @Override
@@ -1254,8 +1252,7 @@ public class ApplicationInformation extends IdentifiedObject {
 		return registrationAccessToken;
 	}
 
-	private void setRegistrationAccessToken(
-			java.lang.Object registrationAccessToken) {
+	private void setRegistrationAccessToken(java.lang.Object registrationAccessToken) {
 		this.registrationAccessToken = registrationAccessToken.toString();
 	}
 
@@ -1311,88 +1308,65 @@ public class ApplicationInformation extends IdentifiedObject {
 	@Override
 	public void merge(IdentifiedObject resource) {
 		super.merge(resource);
-		this.setDataCustodianId(((ApplicationInformation) resource)
-				.getDataCustodianId());
+		this.setDataCustodianId(((ApplicationInformation) resource).getDataCustodianId());
 		this.setClientId(((ApplicationInformation) resource).getClientId());
 		// this.setResourceIds(((ApplicationInformation)resource).getResourceIds());
-		this.setClientSecret(((ApplicationInformation) resource)
-				.getClientSecret());
+		this.setClientSecret(((ApplicationInformation) resource).getClientSecret());
 		this.setScope(((ApplicationInformation) resource).getScope());
 		// this.setAuthorizedGrantTypes(((ApplicationInformation)resource).getAuthorizedGrantTypes());
 		this.setGrantTypes(((ApplicationInformation) resource).getGrantTypes());
 		// this.setRegisteredRedirectUri(((ApplicationInformation)resource).getRegisteredRedirectUri());
-		this.setRedirectUri(((ApplicationInformation) resource)
-				.getRedirectUri());
+		this.setRedirectUri(((ApplicationInformation) resource).getRedirectUri());
 		// this.setAuthorities(((ApplicationInformation)resource).getAuthorities());
 		// this.setAccessTokenValiditySeconds(((ApplicationInformation)resource).getAccessTokenValiditySeconds());
 		// this.setRefreshTokenValiditySeconds(((ApplicationInformation)resource).getRefreshTokenValiditySeconds());
 		// this.setAdditionalInformation(((ApplicationInformation)resource).getAdditionalInformation());
-		this.setDataCustodianApplicationStatus(((ApplicationInformation) resource)
-				.getDataCustodianApplicationStatus());
+		this.setDataCustodianApplicationStatus(((ApplicationInformation) resource).getDataCustodianApplicationStatus());
 		this.setDataCustodianDefaultBatchResource(((ApplicationInformation) resource)
 				.getDataCustodianDefaultBatchResource());
 		this.setDataCustodianDefaultSubscriptionResource(((ApplicationInformation) resource)
 				.getDataCustodianDefaultSubscriptionResource());
 		this.setThirdPartyApplicationDescription(((ApplicationInformation) resource)
 				.getThirdPartyApplicationDescription());
-		this.setThirdPartyApplicationStatus(((ApplicationInformation) resource)
-				.getThirdPartyApplicationStatus());
-		this.setThirdPartyApplicationType(((ApplicationInformation) resource)
-				.getThirdPartyApplicationType());
-		this.setThirdPartyApplicationUse(((ApplicationInformation) resource)
-				.getThirdPartyApplicationUse());
-		this.setThirdPartyPhone(((ApplicationInformation) resource)
-				.getThirdPartyPhone());
-		this.setAuthorizationServerUri(((ApplicationInformation) resource)
-				.getAuthorizationServerUri());
-		this.setThirdPartyNotifyUri(((ApplicationInformation) resource)
-				.getThirdPartyNotifyUri());
+		this.setThirdPartyApplicationStatus(((ApplicationInformation) resource).getThirdPartyApplicationStatus());
+		this.setThirdPartyApplicationType(((ApplicationInformation) resource).getThirdPartyApplicationType());
+		this.setThirdPartyApplicationUse(((ApplicationInformation) resource).getThirdPartyApplicationUse());
+		this.setThirdPartyPhone(((ApplicationInformation) resource).getThirdPartyPhone());
+		this.setAuthorizationServerUri(((ApplicationInformation) resource).getAuthorizationServerUri());
+		this.setThirdPartyNotifyUri(((ApplicationInformation) resource).getThirdPartyNotifyUri());
 		this.setAuthorizationServerAuthorizationEndpoint(((ApplicationInformation) resource)
 				.getAuthorizationServerAuthorizationEndpoint());
 		this.setAuthorizationServerRegistrationEndpoint(((ApplicationInformation) resource)
 				.getAuthorizationServerRegistrationEndpoint());
 		this.setAuthorizationServerTokenEndpoint(((ApplicationInformation) resource)
 				.getAuthorizationServerTokenEndpoint());
-		this.setDataCustodianBulkRequestURI(((ApplicationInformation) resource)
-				.getDataCustodianBulkRequestURI());
+		this.setDataCustodianBulkRequestURI(((ApplicationInformation) resource).getDataCustodianBulkRequestURI());
 		this.setDataCustodianThirdPartySelectionScreenURI(((ApplicationInformation) resource)
 				.getDataCustodianThirdPartySelectionScreenURI());
-		this.setDataCustodianResourceEndpoint(((ApplicationInformation) resource)
-				.getDataCustodianResourceEndpoint());
+		this.setDataCustodianResourceEndpoint(((ApplicationInformation) resource).getDataCustodianResourceEndpoint());
 		this.setThirdPartyDataCustodianSelectionScreenURI(((ApplicationInformation) resource)
 				.getThirdPartyDataCustodianSelectionScreenURI());
-		this.setThirdPartyLoginScreenURI(((ApplicationInformation) resource)
-				.getThirdPartyLoginScreenURI());
+		this.setThirdPartyLoginScreenURI(((ApplicationInformation) resource).getThirdPartyLoginScreenURI());
 		this.setThirdPartyScopeSelectionScreenURI(((ApplicationInformation) resource)
 				.getThirdPartyScopeSelectionScreenURI());
-		this.setThirdPartyUserPortalScreenURI(((ApplicationInformation) resource)
-				.getThirdPartyUserPortalScreenURI());
+		this.setThirdPartyUserPortalScreenURI(((ApplicationInformation) resource).getThirdPartyUserPortalScreenURI());
 		this.setLogoUri(((ApplicationInformation) resource).getLogoUri());
 		this.setClientName(((ApplicationInformation) resource).getClientName());
 		this.setClientUri(((ApplicationInformation) resource).getClientUri());
-		this.setRedirectUri(((ApplicationInformation) resource)
-				.getRedirectUri());
+		this.setRedirectUri(((ApplicationInformation) resource).getRedirectUri());
 		this.setTosUri(((ApplicationInformation) resource).getTosUri());
 		this.setPolicyUri(((ApplicationInformation) resource).getPolicyUri());
 		this.setSoftwareId(((ApplicationInformation) resource).getSoftwareId());
-		this.setSoftwareVersion(((ApplicationInformation) resource)
-				.getSoftwareVersion());
-		this.setClientIdIssuedAt(((ApplicationInformation) resource)
-				.getClientIdIssuedAt());
-		this.setClientSecretExpiresAt(((ApplicationInformation) resource)
-				.getClientSecretExpiresAt());
+		this.setSoftwareVersion(((ApplicationInformation) resource).getSoftwareVersion());
+		this.setClientIdIssuedAt(((ApplicationInformation) resource).getClientIdIssuedAt());
+		this.setClientSecretExpiresAt(((ApplicationInformation) resource).getClientSecretExpiresAt());
 		this.setContacts(((ApplicationInformation) resource).getContacts());
-		this.setTokenEndpointAuthMethod(((ApplicationInformation) resource)
-				.getTokenEndpointAuthMethod());
+		this.setTokenEndpointAuthMethod(((ApplicationInformation) resource).getTokenEndpointAuthMethod());
 		this.setGrantTypes(((ApplicationInformation) resource).getGrantTypes());
-		this.setResponseTypes(((ApplicationInformation) resource)
-				.getResponseTypes());
-		this.setRegistrationClientUri(((ApplicationInformation) resource)
-				.getRegistrationClientUri());
-		this.setRegistrationAccessToken(((ApplicationInformation) resource)
-				.getRegistrationAccessToken());
-		this.setThirdPartyApplicationName(((ApplicationInformation) resource)
-				.getThirdPartyApplicationName());
+		this.setResponseTypes(((ApplicationInformation) resource).getResponseTypes());
+		this.setRegistrationClientUri(((ApplicationInformation) resource).getRegistrationClientUri());
+		this.setRegistrationAccessToken(((ApplicationInformation) resource).getRegistrationAccessToken());
+		this.setThirdPartyApplicationName(((ApplicationInformation) resource).getThirdPartyApplicationName());
 	}
 
 	@Column(nullable = false, columnDefinition = "TINYINT(1)")
@@ -1415,8 +1389,7 @@ public class ApplicationInformation extends IdentifiedObject {
 		StringBuilder sb = new StringBuilder();
 		int i = 0;
 		for (ApplicationInformationScope ais : scope) {
-			if (i > 0)
-				sb.append(",");
+			if (i > 0) sb.append(",");
 			sb.append(ais.getScope());
 			i++;
 		}

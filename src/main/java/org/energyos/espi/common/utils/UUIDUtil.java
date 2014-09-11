@@ -8,6 +8,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
 import java.util.UUID;
 
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
+
 import org.springframework.security.crypto.codec.Base64;
 
 public class UUIDUtil {
@@ -87,6 +89,9 @@ public class UUIDUtil {
 	}
 
 	public static void main(String[] args) {
+		HexBinaryAdapter ha= new HexBinaryAdapter();
+		byte [] data=ha.unmarshal("B40E2000");
+		System.out.println( " "+data[0]+ " "+data[1] + " "+data[2]+ " "+data[3] + " "+data.length);
 		String[] masterlist = { "/espi/1_1/resource/LocalTimeParameters/EST", "/espi/1_1/resource/ReadingType/1",
 				"/espi/1_1/resource/ReadingType/11", "/espi/1_1/resource/ReadingType/12",
 				"/espi/1_1/resource/ReadingType/13", "/espi/1_1/resource/ReadingType/14",
@@ -99,14 +104,14 @@ public class UUIDUtil {
 				"/espi/1_1/resource/DataCustodian/ApplicationInformation/104",
 				"/espi/1_1/resource/DataCustodian/ApplicationInformation/105","/espi/1_1/resource/DataCustodian/ApplicationInformation/106" };
 
-		for (int i = 0; i < masterlist.length; i++) {
+		for (int i = 0; i < 0; i++) {
 
 			System.out.println(masterlist[i] + " UUID " + uuid("greenbutton.londonhydro.com", masterlist[i]));
 
 		}
 		System.out.println(" UUID "
 				+ uuid("greenbutton.londonhydro.com",
-						"/espi/1_1/resource/RetailCustomer/1000016554/UsagePoint/EN001BC500B0010197/MeterReading/31"));
+						"/espi/1_1/resource/RetailCustomer/0000366183/UsagePoint/000007383764:D299829-01/MeterReading/11"));
 		
 	}
 
