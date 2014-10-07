@@ -27,7 +27,7 @@ public class ExportFilter {
 		this.filterPeriod = filterPeriod;
 	}
 
-	public ExportFilter(Map<String, String> params) {
+	public ExportFilter(Map<String, String> params) throws Exception{
 		this.params = params;
 		// update the filter period
 		filterPeriod = new AtomPeriod();
@@ -44,25 +44,17 @@ public class ExportFilter {
 			filterPeriod.getUpdatedMax().setTime(toTime("updated-max"));
 		}
 		if (hasParam("usage-min")) {
-			try {
-				filterPeriod.setUsageMin(Long.parseLong(params.get("usage-min")));
-			} catch (Exception ignore) {
-
-			}
+			filterPeriod.setUsageMin(Long.parseLong(params.get("usage-min").trim()));
 		}
 		if (hasParam("usage-max")) {
-			try {
-				filterPeriod.setUsageMax(Long.parseLong(params.get("usage-max")));
-			} catch (Exception ignore) {
-
-			}
+			filterPeriod.setUsageMax(Long.parseLong(params.get("usage-max").trim()));
 		}
 	}
 
-	public boolean matches(EntryType entry) {
+	public boolean matches(EntryType entry) throws Exception {
 		if (hasParam("max-results")) {
 			if (!(params.get("max-results").equals("All"))) {
-				if (emittedCounter >= Integer.valueOf(params.get("max-results"))) {
+				if (emittedCounter >= Integer.valueOf(params.get("max-results").trim())) {
 					return false;
 				}
 			}
@@ -99,7 +91,7 @@ public class ExportFilter {
 		}
 
 		if (hasParam("start-index")) {
-			if (++matchedCounter < Integer.valueOf(params.get("start-index"))) {
+			if (++matchedCounter < Integer.valueOf(params.get("start-index").trim())) {
 				return false;
 
 			}
@@ -107,7 +99,7 @@ public class ExportFilter {
 
 		if (hasParam("depth")) {
 			if (!(params.get("depth").equals("All"))) {
-				if (emittedCounter > Integer.valueOf(params.get("depth"))) {
+				if (emittedCounter > Integer.valueOf(params.get("depth").trim())) {
 					return false;
 				}
 			}
@@ -120,13 +112,13 @@ public class ExportFilter {
 				IntervalBlock block = blocks.get(0);
 				if (hasParam("reading-type")) {
 					if (block.getMeterReading() == null
-							|| !params.get("reading-type").equals(block.getMeterReading().getReadingType().getUom())) {
+							|| !params.get("reading-type").trim().equals(block.getMeterReading().getReadingType().getUom())) {
 						return false;
 					}
 				}
 				if (hasParam("direction")) {
 					if (block.getMeterReading() == null
-							|| !params.get("direction").equals(
+							|| !params.get("direction").trim().equals(
 									block.getMeterReading().getReadingType().getFlowDirection())) {
 						return false;
 					}
@@ -136,12 +128,12 @@ public class ExportFilter {
 			if (entry.getContent().getResource() instanceof MeterReading) {
 				MeterReading mr = (MeterReading) entry.getContent().getResource();
 				if (hasParam("reading-type")) {
-					if (!params.get("reading-type").equals(mr.getReadingType().getUom())) {
+					if (!params.get("reading-type").trim().equals(mr.getReadingType().getUom())) {
 						return false;
 					}
 				}
 				if (hasParam("direction")) {
-					if (!params.get("direction").equals(mr.getReadingType().getFlowDirection())) {
+					if (!params.get("direction").trim().equals(mr.getReadingType().getFlowDirection())) {
 						return false;
 					}
 				}
@@ -149,12 +141,12 @@ public class ExportFilter {
 			if (entry.getContent().getResource() instanceof ReadingType) {
 				ReadingType rt = (ReadingType) entry.getContent().getResource();
 				if (hasParam("reading-type")) {
-					if (!params.get("reading-type").equals(rt.getUom())) {
+					if (!params.get("reading-type").trim().equals(rt.getUom())) {
 						return false;
 					}
 				}
 				if (hasParam("direction")) {
-					if (!params.get("direction").equals(rt.getFlowDirection())) {
+					if (!params.get("direction").trim().equals(rt.getFlowDirection())) {
 						return false;
 					}
 				}
@@ -171,17 +163,15 @@ public class ExportFilter {
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
-	private long toTime(String key) {
+	private long toTime(String key) throws Exception {
 		String param = params.get(key);
 		// return XMLGregorianCalendarImpl.parse(param).toGregorianCalendar()
 		// .getTimeInMillis();
 		sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 		Date date = null;
-		try {
-			date = sdf.parse(param);
-		} catch (Exception ignore) {
-			date = new Date();
-		}
+		
+		date = sdf.parse(param.trim());
+		
 		return date.getTime();
 	}
 

@@ -99,8 +99,8 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 					IntervalBlock ib = (IntervalBlock) existingResource;
 
 					System.err.println("block existingResource.getId() ..." + existingResource.getId());
-					System.err.println("block existingResource.meter reading id ..." + ib.getMeterReadingId());
-
+					System.err.println("block existingResource.meter reading id ..." + ib.getMeterReadingId());					
+										
 					ib.setMeterReading(meterReadingService.findById(ib.getMeterReadingId()));
 
 
@@ -112,7 +112,7 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 
 					if (ib.getMeterReading() != null) {
 						meterReadingService.persist(ib.getMeterReading());
-					}
+					}					
 
 				} else {
 					existingResource = resourceService.findByUUID(resource.getUUID(), resource.getClass());

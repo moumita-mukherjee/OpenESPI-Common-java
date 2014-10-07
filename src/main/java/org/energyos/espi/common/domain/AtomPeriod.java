@@ -107,10 +107,10 @@ public class AtomPeriod {
 	}
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append(" updated-min "+updatedMin.getTime() );
-		sb.append(" updated-max "+updatedMax.getTime() );
-		sb.append(" published-min "+publishedMin.getTime() );
-		sb.append(" published-max "+publishedMax.getTime() );
+		sb.append(" updated-min "+updatedMin.getTime() + " "+updatedMin );
+		sb.append(" updated-max "+updatedMax.getTime() + " "+updatedMax );
+		sb.append(" published-min "+publishedMin.getTime() + " "+publishedMin );
+		sb.append(" published-max "+publishedMax.getTime() + " "+publishedMax );
 		sb.append(" usage-min "+usageMin);
 		sb.append(" usage-max "+usageMax);
 		sb.append(" isFilterOnPublished "+isFilterOnPublished());
