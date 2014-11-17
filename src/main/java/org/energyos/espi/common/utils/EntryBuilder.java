@@ -15,6 +15,8 @@
  */
 package org.energyos.espi.common.utils;
 
+import java.util.Hashtable;
+
 import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.models.atom.ContentType;
 import org.energyos.espi.common.models.atom.EntryType;
@@ -22,9 +24,10 @@ import org.energyos.espi.common.models.atom.LinkType;
 
 public class EntryBuilder {
 
+	private Hashtable<IdentifiedObject,EntryType> map= new Hashtable<IdentifiedObject,EntryType>();
     private EntryType entry;
 
-    public EntryType build(IdentifiedObject reource) {
+    private EntryType build(IdentifiedObject reource) {
         entry = new EntryType();              
     	buildMetadata(reource);
     	buildContent(reource);
@@ -33,8 +36,11 @@ public class EntryBuilder {
     }
 
     public EntryType buildEntry(IdentifiedObject resource) {
+    	if(map.containsKey(resource)) {
+    		return map.get(resource);
+    	}
         entry = new EntryType();
-
+        map.put(resource, entry);
         buildMetadata(resource);
         buildContent(resource);
 

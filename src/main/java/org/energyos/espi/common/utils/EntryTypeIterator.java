@@ -78,7 +78,7 @@ public class EntryTypeIterator {
 
 			updateChildIds(resource.getId());
 		}
-		return builder.build(resource);
+		return builder.buildEntry(resource);
 	}
 
 	// For the RESTful interfaces, we don't want to build the whole child

@@ -10,6 +10,8 @@ import org.energyos.espi.common.domain.AtomPeriod;
 import org.energyos.espi.common.domain.IntervalBlock;
 import org.energyos.espi.common.domain.MeterReading;
 import org.energyos.espi.common.domain.ReadingType;
+import org.energyos.espi.common.domain.TimeConfiguration;
+import org.energyos.espi.common.domain.UsagePoint;
 import org.energyos.espi.common.models.atom.DateTimeType;
 import org.energyos.espi.common.models.atom.EntryType;
 
@@ -18,6 +20,15 @@ public class ExportFilter {
 	private Map<String, String> params;
 	private int matchedCounter = 0, emittedCounter = 0;
 	private AtomPeriod filterPeriod = new AtomPeriod();
+	private boolean subscriptionReq=false;
+
+	public boolean isSubscriptionReq() {
+		return subscriptionReq;
+	}
+
+	public void setSubscriptionReq(boolean subscriptionReq) {
+		this.subscriptionReq = subscriptionReq;
+	}
 
 	public AtomPeriod getFilterPeriod() {
 		return filterPeriod;
@@ -49,9 +60,34 @@ public class ExportFilter {
 		if (hasParam("usage-max")) {
 			filterPeriod.setUsageMax(Long.parseLong(params.get("usage-max").trim()));
 		}
+		if (hasParam("subscription")) {
+			setSubscriptionReq("true".equalsIgnoreCase(params.get("subscription").trim()));
+		}
 	}
 
 	public boolean matches(EntryType entry) throws Exception {
+		System.err.println(entry.isVisited() + " ---- "+entry + "  --- "+entry.getContent().getResource());
+		if(entry.isVisited()) {
+			return false;
+		}
+		entry.setVisited(true);
+		
+		if(subscriptionReq) {
+			//for synchronous data transfer request send master relational data irrespective of any filter parameter
+			//only interval block will be based on the time parameter
+			if (entry.getContent().getResource() instanceof ReadingType) {
+				return true;
+			}
+			if (entry.getContent().getResource() instanceof TimeConfiguration) {
+				return true;
+			}
+			if (entry.getContent().getResource() instanceof MeterReading) {
+				return true;
+			}
+			if (entry.getContent().getResource() instanceof UsagePoint) {
+				return true;
+			}
+		}
 		if (hasParam("max-results")) {
 			if (!(params.get("max-results").equals("All"))) {
 				if (emittedCounter >= Integer.valueOf(params.get("max-results").trim())) {
