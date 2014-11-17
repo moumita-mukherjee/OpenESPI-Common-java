@@ -70,6 +70,10 @@ public class User implements UserDetails, Principal {
 	@Column(name = "username")
 	@Size(min = 4, max = 30)
 	protected String username;
+	
+	@Column(name = "username",insertable=false, updatable=false)
+	@Size(min = 4, max = 30)
+	protected String rawusername;
 
 	@Column(name = "first_name")
 	@NotEmpty
@@ -139,6 +143,10 @@ public class User implements UserDetails, Principal {
 	public String getUsername() {
 		return username;
 	}
+	public String getRawusername() {
+		return rawusername;
+	}
+
 
 	@Override
 	public boolean isAccountNonExpired() {
@@ -162,6 +170,9 @@ public class User implements UserDetails, Principal {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	public void setRawusername(String rawusername) {
+		this.rawusername = rawusername;
 	}
 
 	public String getLastName() {
@@ -252,5 +263,6 @@ public class User implements UserDetails, Principal {
 		this.password = resource.password;
 		this.role = resource.role;
 		this.username = resource.username;
+		this.rawusername = resource.rawusername;
 	}
 }
