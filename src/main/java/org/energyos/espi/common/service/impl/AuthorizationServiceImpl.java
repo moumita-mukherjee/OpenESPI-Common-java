@@ -56,10 +56,10 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		return authorizationRepository.findAllByRetailCustomerId(retailCustomerId);
 	}
 
-	@Override
-	public List<Authorization> findAllActiveByRetailCustomerId(Long retailCustomerId) {
-		return authorizationRepository.findAllActiveByRetailCustomerId(retailCustomerId);
-	}
+    @Override
+    public List<Long> findAllIdsByApplicationInformationId(Long applicationInformationId) {	
+    	return authorizationRepository.findAllIdsByApplicationInformationId(applicationInformationId);
+    }
 
 	@Override
 	public Authorization findByUUID(UUID uuid) {
@@ -75,20 +75,15 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		return authorization;
 	}
 
-	@Override
-	public Authorization findByState(String state) {
-		return authorizationRepository.findByState(state);
-	}
-
-	@Override
-	public Authorization findByScope(String scope, Long retailCustomerId) {
-		return authorizationRepository.findByScope(scope, retailCustomerId);
-	}
-	
-	@Override
-	public Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope) {
-		return authorizationRepository.findByScope(retailCustomerId, applicationInformationId,scope);
-	}
+    @Override
+    public Authorization findByState(String state) {
+        return authorizationRepository.findByState(state);
+    }
+    
+    @Override
+    public Authorization findByScope(String scope, Long retailCustomerId) {
+    	return authorizationRepository.findByScope(scope, retailCustomerId);
+    }
 
 	@Override
 	public List<Authorization> findAll() {
@@ -101,12 +96,11 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public Authorization findByURI(String uri) {
-		UsagePoint usagePoint = usagePointRepository.findByURI(uri);
-		return usagePoint.getSubscription().getAuthorization();
-	}
+    @Override
+    public Authorization findByURI(String uri) {
+        UsagePoint usagePoint = usagePointRepository.findByURI(uri);
+        return usagePoint.getSubscription().getAuthorization();
+    }
 
 	@Override
 	public String feedFor(List<Authorization> authorizations) {
@@ -237,6 +231,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	@Override
 	public Authorization findByAccessToken(String accessToken) {		
 		return authorizationRepository.findByAccessToken(accessToken);
+
 	}
 
 	@Override
@@ -253,31 +248,42 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		this.authorizationRepository = authorizationRepository;
 	}
 
-	public AuthorizationRepository getAuthorizationRepository() {
-		return this.authorizationRepository;
-	}
+   public AuthorizationRepository getAuthorizationRepository () {
+        return this.authorizationRepository;
+   }
+   public void setUsagePointRepository(UsagePointRepository usagePointRepository) {
+        this.usagePointRepository = usagePointRepository;
+   }
 
-	public void setUsagePointRepository(UsagePointRepository usagePointRepository) {
-		this.usagePointRepository = usagePointRepository;
-	}
+   public UsagePointRepository getUsagePointRepository () {
+        return this.usagePointRepository;
+   }
+   public void setResourceService(ResourceService resourceService) {
+        this.resourceService = resourceService;
+   }
 
-	public UsagePointRepository getUsagePointRepository() {
-		return this.usagePointRepository;
-	}
+   public ResourceService getResourceService () {
+        return this.resourceService;
+   }
+   public void setImportService(ImportService importService) {
+        this.importService = importService;
+   }
 
-	public void setResourceService(ResourceService resourceService) {
-		this.resourceService = resourceService;
+   public ImportService getImportService () {
+        return this.importService;
+   }
+   /* LH customization starts here */
+   public Authorization findByApplicationInformationId(Long applicationInformationId,String scope) {
+	   return authorizationRepository.findByApplicationInformationId(applicationInformationId,scope);
+   }
+   	@Override
+	public List<Authorization> findAllActiveByRetailCustomerId(Long retailCustomerId) {
+		return authorizationRepository.findAllActiveByRetailCustomerId(retailCustomerId);
 	}
-
-	public ResourceService getResourceService() {
-		return this.resourceService;
+	
+	@Override
+	public Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope) {
+		return authorizationRepository.findByScope(retailCustomerId, applicationInformationId,scope);
 	}
-
-	public void setImportService(ImportService importService) {
-		this.importService = importService;
-	}
-
-	public ImportService getImportService() {
-		return this.importService;
-	}
+   
 }

@@ -24,8 +24,11 @@ import org.energyos.espi.common.domain.IntervalBlock;
 import org.energyos.espi.common.domain.MeterReading;
 
 /**
- * Created with IntelliJ IDEA. User: pivotal Date: 9/5/13 Time: 4:49 PM To
- * change this template use File | Settings | File Templates.
+ * Created with IntelliJ IDEA.
+ * User: pivotal
+ * Date: 9/5/13
+ * Time: 4:49 PM
+ * To change this template use File | Settings | File Templates.
  */
 public interface IntervalBlockRepository {
 
@@ -41,8 +44,10 @@ public interface IntervalBlockRepository {
 
 	void createOrReplaceByUUID(IntervalBlock intervalBlock);
 
-	List<IntervalBlock> findAllByMeterReadingId(Long meterReadingId);
 
+    List<IntervalBlock> findAllByMeterReadingId(Long meterReadingId);
+	
+	/* LH customization starts here */
 	void associateByUUID(MeterReading meterReading, UUID uuid);
 
 	public List<IntervalBlock> findIntervalBlocksByPeriod(Long meterReadingId,

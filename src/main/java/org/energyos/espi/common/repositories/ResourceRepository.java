@@ -47,8 +47,6 @@ public interface ResourceRepository {
     <T extends IdentifiedObject> List<Long> findAllIds(Class<T> clazz);
 
     <T extends IdentifiedObject> List<Long> findAllIdsByUsagePointId(Long usagePointId, Class<T> clazz);
-    
-    <T extends IdentifiedObject> List<Long> findAllIdsByUsagePointId(Long usagePointId,AtomPeriod ap, Class<T> clazz);
 
     <T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1, Class<T> clazz);
 	
@@ -78,5 +76,7 @@ public interface ResourceRepository {
     <T extends IdentifiedObject> void deleteByXPathId(Long id1, Long id2, Long id3, Long id4, Class<T> clazz);
 
     <T extends IdentifiedObject> T merge(IdentifiedObject resource);
-
+	
+	/* LH customization starts here */
+    <T extends IdentifiedObject> List<Long> findAllIdsByUsagePointId(Long usagePointId,AtomPeriod ap, Class<T> clazz);
 }

@@ -100,17 +100,6 @@ import org.energyos.espi.common.models.atom.adapters.UpdatedAdapter;
 public class EntryType {
 
 
-	@XmlTransient
-	private boolean visited=false;
-	
-    public boolean isVisited() {
-		return visited;
-	}
-
-	public void setVisited(boolean visited) {
-		this.visited = visited;
-	}
-
 	@XmlElement
     protected String id;
 
@@ -346,5 +335,17 @@ public class EntryType {
         }
         return upHref;
     }
+	
+	/* LH customization starts here */
+	@XmlTransient
+	private boolean visited=false;
+	
+    public boolean isVisited() {
+		return visited;
+	}
+
+	public void setVisited(boolean visited) {
+		this.visited = visited;
+	}	
 
 }

@@ -5,6 +5,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Embeddable
@@ -12,10 +13,12 @@ public class ApplicationInformationScope {
 
 	@Column(name = "scope")
 	private String scope;
-
+	
+	@XmlTransient
 	@Column(name = "description")
 	private String description;
 	
+	@XmlTransient
 	@Transient
 	private boolean selected;
 

@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlTransient;
 
 
 /**
@@ -62,7 +63,10 @@ import javax.xml.bind.annotation.XmlSchemaType;
 @Embeddable
 public class LinkType  implements Serializable {
 
-    public static final String SELF = "self";
+    @XmlTransient
+	private static final long serialVersionUID = 528461832553643471L;
+	
+	public static final String SELF = "self";
     public static final String UP = "up";
     public static final String RELATED = "related";
     public static final String HREF = "href";

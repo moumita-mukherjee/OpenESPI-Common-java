@@ -45,13 +45,6 @@ public class MeterReadingRepositoryImpl implements MeterReadingRepository {
     }
 
     @Override
-	public MeterReading findByLink(String link) {
-		return (MeterReading) em
-				.createNamedQuery(MeterReading.QUERY_FIND_BY_LINK)
-				.setParameter("link", link).getSingleResult();
-	}
-    
-    @Override
     @Transactional (rollbackFor= {javax.xml.bind.JAXBException.class}, 
                 noRollbackFor = {javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
 
@@ -129,6 +122,14 @@ public class MeterReadingRepositoryImpl implements MeterReadingRepository {
 	            persist(meterReading);
 	        }
 	
+	}
+	
+	/* LH customization starts here */
+	@Override
+	public MeterReading findByLink(String link) {
+		return (MeterReading) em
+				.createNamedQuery(MeterReading.QUERY_FIND_BY_LINK)
+				.setParameter("link", link).getSingleResult();
 	}
 	
 }

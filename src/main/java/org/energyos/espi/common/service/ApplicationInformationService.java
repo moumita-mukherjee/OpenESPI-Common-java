@@ -11,54 +11,42 @@ import org.energyos.espi.common.utils.EntryTypeIterator;
 
 public interface ApplicationInformationService {
 
+	/**
+	 * @param kind String indicating [ DATA_CUSTODIAN_ADMIN | THIRD_PARTY | UPLOAD_ADMIN ]
+	 * @return List of ApplicationInformation Resources
+	 */
 	public List<ApplicationInformation> findByKind(String kind);
-	
-	// TODO: likely deprecated
-	public String feedFor(List<ApplicationInformation> applicationInformations);
 
-	public String entryFor(ApplicationInformation applicationInformation);
+	/**
+	 * Find an ApplicationInformation resource by using it's clientId.
 
-	public ApplicationInformation findById(Long id);
-
+	 * @param clientId String uniquely identifying a specific ApplicationInformation.clientId
+	 * @return an ApplicationInformation resource
+	 */
 	public ApplicationInformation findByClientId(String clientId);
 
-//	public ClientDetails loadClientByClientId(String clientId);
-
+	/**
+	 * Find an Application Information resource by using it's dataCustodianId.
+	 * 
+	 * @param String dataCustodianClientId
+	 * @return an ApplicationInformation resource
+	 */
 	public ApplicationInformation findByDataCustodianClientId(
 			String dataCustodianClientId);
 
+	/**
+	 * Import and XML stream, unmarshalling into an ApplicationInformation resource
+	 * 
+	 * @param stream
+	 * @return an ApplicationInformation resource
+	 */
+	public ApplicationInformation importResource(InputStream stream);
+	
+	/* LH customization starts here */
+	public ApplicationInformation findById(Long id);
 	public List<ApplicationInformation> findAll();
 	public List<ApplicationInformation> findAllThirdParties();
-
-	// persistence management services
 	public void persist(ApplicationInformation applicationInformation);
-
 	public void merge(ApplicationInformation applicationInformation);
-
-	// accessor services
-	public ApplicationInformation findByURI(String uri);
-
-	public EntryType findEntryType(Long applicationInformationId);
-
-	public EntryTypeIterator findEntryTypeIterator();
-
-	public void add(ApplicationInformation applicationInformation);
-
-	public void delete(ApplicationInformation applicationInformation);
-
-	// import-export services
-	public ApplicationInformation importResource(InputStream stream);
-
-	public ApplicationInformation findByUUID(UUID uuid);
-
-	public void setApplicationInformation(ApplicationInformation applicationInformation);
-
-	public String getDataCustodianResourceEndpoint();
-
-	public String getAuthorizationServerTokenEndpoint();
-
-	public String getThirdPartyNotifyURI();
-
-	public void updateAuthroizeStatus(Long thirdPartyId, boolean b);
 
 }

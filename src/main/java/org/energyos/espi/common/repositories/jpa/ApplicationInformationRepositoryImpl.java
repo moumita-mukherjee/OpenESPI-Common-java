@@ -37,13 +37,6 @@ public class ApplicationInformationRepositoryImpl implements ApplicationInformat
 	@PersistenceContext(unitName = "pu-energy")
 	protected EntityManager em;
 
-	public EntityManager getEm() {
-		return em;
-	}
-
-	public void setEm(EntityManager em) {
-		this.em = em;
-	}
 
 	@Override
 	public ApplicationInformation findById(Long id) {
@@ -53,37 +46,36 @@ public class ApplicationInformationRepositoryImpl implements ApplicationInformat
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<ApplicationInformation> findByKind(String kind) {
-		return (List<ApplicationInformation>) this.em.createNamedQuery(ApplicationInformation.QUERY_FIND_BY_KIND)
-				.setParameter("kind", kind).getResultList();
-
+    public List<ApplicationInformation> findByKind(String kind) {
+        return (List<ApplicationInformation>)this.em
+        		.createNamedQuery(ApplicationInformation.QUERY_FIND_BY_KIND)
+                .setParameter("kind", kind)
+                .getResultList();        
+        
+    }
+	   
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<ApplicationInformation> findAll() {
+        return (List<ApplicationInformation>)this.em
+                .createNamedQuery(ApplicationInformation.QUERY_FIND_ALL).getResultList();
 	}
 
+    
 	@Override
-	@SuppressWarnings("unchecked")
-	public List<ApplicationInformation> findAll() {
-		return (List<ApplicationInformation>) this.em.createNamedQuery(ApplicationInformation.QUERY_FIND_ALL)
-				.getResultList();
-	}
+    @Transactional (rollbackFor= {javax.xml.bind.JAXBException.class}, 
+                noRollbackFor = {javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public List<ApplicationInformation> findAllThirdParties() {
-		return (List<ApplicationInformation>) this.em.createNamedQuery(ApplicationInformation.QUERY_FIND_ALL_TP)
-				.getResultList();
-	}
-
-	@Override
-	@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
-			javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
-	public void persist(ApplicationInformation applicationInformation) {
-		em.persist(applicationInformation);
-	}
+    public void persist(ApplicationInformation applicationInformation) {
+        em.persist(applicationInformation);
+    }
 
 	@Override
 	public ApplicationInformation findByUUID(UUID uuid) {
 		return (ApplicationInformation) em.createNamedQuery(ApplicationInformation.QUERY_FIND_BY_UUID)
-				.setParameter("uuid", uuid.toString().toUpperCase()).getSingleResult();
+                .setParameter("uuid", uuid.toString().toUpperCase())
+                .getSingleResult();
 	}
 
 	@Override
@@ -94,22 +86,30 @@ public class ApplicationInformationRepositoryImpl implements ApplicationInformat
 
 	@Override
 	public ApplicationInformation findByDataCustodianClientId(String dataCustodianId) {
-		return (ApplicationInformation) em
-				.createNamedQuery(ApplicationInformation.QUERY_FIND_BY_DATA_CUSTODIAN_CLIENT_ID)
+        return (ApplicationInformation)em.createNamedQuery(ApplicationInformation.QUERY_FIND_BY_DATA_CUSTODIAN_CLIENT_ID)
 				.setParameter("dataCustodianId", dataCustodianId).getSingleResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Long> findAllIds() {
-		return (List<Long>) this.em.createNamedQuery(ApplicationInformation.QUERY_FIND_ALL_IDS).getResultList();
+        return (List<Long>)this.em.createNamedQuery(ApplicationInformation.QUERY_FIND_ALL_IDS)
+                .getResultList();
 	}
 
 	@Override
-	@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
-			javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
+	@Transactional (rollbackFor= {javax.xml.bind.JAXBException.class}, 
+                noRollbackFor = {javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
+
 	public void deleteById(Long id) {
 		em.remove(findById(id));
-
+	}
+	
+	/* LH customization starts here */
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<ApplicationInformation> findAllThirdParties() {
+		return (List<ApplicationInformation>) this.em.createNamedQuery(ApplicationInformation.QUERY_FIND_ALL_TP)
+				.getResultList();
 	}
 }

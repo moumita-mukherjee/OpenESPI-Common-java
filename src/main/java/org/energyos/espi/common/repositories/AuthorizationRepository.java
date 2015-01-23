@@ -27,13 +27,11 @@ public interface AuthorizationRepository {
 
     List<Authorization> findAllByRetailCustomerId(Long retailCustomerId);
     
-    List<Authorization> findAllActiveByRetailCustomerId(Long retailCustomerId);
+    List<Long> findAllIdsByApplicationInformationId(Long applicationInformationId);
 
     Authorization findByState(String state);
     
     Authorization findByScope(String scope, Long retailCustomerId);
-    
-    Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope );
 
     void merge(Authorization authorization);
 
@@ -46,8 +44,6 @@ public interface AuthorizationRepository {
     List<Long> findAllIds();
     
     void deleteById(Long id);
-    
-    void delete(Authorization authorization);
 
     void createOrReplaceByUUID(Authorization authorization);
     
@@ -56,5 +52,13 @@ public interface AuthorizationRepository {
 	Authorization findByRefreshToken(String refreshToken);
 	
 	public List<Long> findAllIdsByBulkId(String thirdParty, Long bulkId);
-    
+	
+	/* LH customization starts here */
+	Authorization findByApplicationInformationId(Long applicationInformationId,String scope);
+	
+    List<Authorization> findAllActiveByRetailCustomerId(Long retailCustomerId);
+	
+    void delete(Authorization authorization);    
+	
+	Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope );
 }

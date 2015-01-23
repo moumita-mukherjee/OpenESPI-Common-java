@@ -108,7 +108,6 @@ public class RetailCustomer extends IdentifiedObject implements UserDetails, Pri
     @Column(name = "role")
     @NotEmpty
     protected String role = ROLE_USER;
-    
 
     public Long getId() {
         return id;

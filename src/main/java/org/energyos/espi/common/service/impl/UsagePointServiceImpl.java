@@ -42,8 +42,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sun.syndication.io.FeedException;
 
 @Service
-@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
-		javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
+@Transactional (rollbackFor= {javax.xml.bind.JAXBException.class}, 
+                noRollbackFor = {javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
+
 public class UsagePointServiceImpl implements UsagePointService {
 	private Logger log = LoggerFactory.getLogger(UsagePointService.class);
 	@Autowired
@@ -65,6 +66,7 @@ public class UsagePointServiceImpl implements UsagePointService {
 	public ImportService getImportService() {
 		return importService;
 	}
+	
 	public void setRepository(UsagePointRepository usagePointRepository) {
 		this.usagePointRepository = usagePointRepository;
 	}
@@ -72,6 +74,7 @@ public class UsagePointServiceImpl implements UsagePointService {
 	public UsagePointRepository getRepository() {
 		return usagePointRepository;
 	}
+	
 	public void setResourceService(ResourceService resourceService) {
 		this.resourceService = resourceService;
 	}
@@ -79,6 +82,7 @@ public class UsagePointServiceImpl implements UsagePointService {
 	public ResourceService getResourceService() {
 		return resourceService;
 	}
+	
 	@Override
 	public List<UsagePoint> findAllByRetailCustomer(RetailCustomer customer) {
 		List<UsagePoint> list = usagePointRepository.findAllByRetailCustomerId(customer.getId());
@@ -155,7 +159,8 @@ public class UsagePointServiceImpl implements UsagePointService {
 
 	@Override
 	public List<Long> findAllIdsForRetailCustomer(Long retailCustomerId) {
-		return usagePointRepository.findAllIdsForRetailCustomer(retailCustomerId);
+		return usagePointRepository
+				.findAllIdsForRetailCustomer(retailCustomerId);
 	}
 
 	@Override
@@ -263,7 +268,8 @@ public class UsagePointServiceImpl implements UsagePointService {
 		EntryTypeIterator result = null;
 		try {
 			List<Long> allIdsForRetailCustomer = findAllIdsForRetailCustomer(retailCustomerId);
-			result = new EntryTypeIterator(resourceService, allIdsForRetailCustomer, UsagePoint.class);
+			result = new EntryTypeIterator(resourceService,
+					allIdsForRetailCustomer, UsagePoint.class);
 		} catch (Exception e) {
 			log.warn("Exception:",e);			
 			// TODO need a log file entry as we are going to return a null if

@@ -161,4 +161,5 @@ public class ElectricPowerQualitySummaryServiceImpl implements ElectricPowerQual
    public ImportService getImportService () {
         return this.importService;
    }
+ 
 }

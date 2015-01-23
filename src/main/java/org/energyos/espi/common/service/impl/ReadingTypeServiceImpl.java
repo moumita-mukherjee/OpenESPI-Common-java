@@ -36,7 +36,7 @@ import org.springframework.stereotype.Service;
 public class ReadingTypeServiceImpl implements ReadingTypeService {
 
     @Autowired
-    protected ReadingTypeRepository repository;
+    private ReadingTypeRepository repository;
     
     @Autowired
 	private ResourceService resourceService;
@@ -159,4 +159,5 @@ public class ReadingTypeServiceImpl implements ReadingTypeService {
    public ImportService getImportService () {
         return this.importService;
    }
+
 }

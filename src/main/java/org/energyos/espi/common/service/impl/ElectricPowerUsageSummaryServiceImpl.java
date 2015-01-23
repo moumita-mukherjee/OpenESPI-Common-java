@@ -139,6 +139,7 @@ public class ElectricPowerUsageSummaryServiceImpl implements ElectricPowerUsageS
 			return null;
 		}
 	}
+	
    public void setElectricPowerUsageSummaryRepository(ElectricPowerUsageSummaryRepository electricPowerUsageSummaryRepository) {
         this.electricPowerUsageSummaryRepository = electricPowerUsageSummaryRepository;
    }

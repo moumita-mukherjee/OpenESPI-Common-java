@@ -53,35 +53,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class EntryProcessorServiceImpl implements EntryProcessorService {
 	private Logger log = LoggerFactory.getLogger(EntryProcessorServiceImpl.class);
-	@Autowired
-	private ResourceService resourceService;
-
-	@Autowired
-	private IntervalBlockService intervalBlockService;
-
-	@Autowired
-	private MeterReadingService meterReadingService;
-
-	@Autowired
-	private RetailCustomerService retailCustomerService;
-
-	public RetailCustomerService getRetailCustomerService() {
-		return retailCustomerService;
-	}
-
-	public void setRetailCustomerService(RetailCustomerService retailCustomerService) {
-		this.retailCustomerService = retailCustomerService;
-	}
-
-	public void setMeterReadingService(MeterReadingService meterReadingService) {
-		this.meterReadingService = meterReadingService;
-	}
-
-	public void setIntervalBlockService(IntervalBlockService intervalBlockService) {
-		this.intervalBlockService = intervalBlockService;
-	}
-
-	public EntryType process(EntryType entry) {
+    
+    @Autowired
+    private ResourceService resourceService;
+    
+ public EntryType process(EntryType entry) {
 		log.debug("process ***************************************** entry " + entry);
 		convert(entry);
 		for (IdentifiedObject resource : entry.getContent().getResources()) {
@@ -275,9 +251,12 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 		for (IdentifiedObject resource : entry.getContent().getResources()) {
 			resource.setMRID(entry.getId());
 			for (LinkType link : entry.getLinks()) {
-				if (link.getRel().equals(LinkType.SELF)) resource.setSelfLink(link);
-				if (link.getRel().equals(LinkType.UP)) resource.setUpLink(link);
-				if (link.getRel().equals(LinkType.RELATED)) resource.getRelatedLinks().add(link);
+                if (link.getRel().equals(LinkType.SELF))
+                    resource.setSelfLink(link);
+                if (link.getRel().equals(LinkType.UP))
+                    resource.setUpLink(link);
+                if (link.getRel().equals(LinkType.RELATED))
+                    resource.getRelatedLinks().add(link);
 			}
 			resource.setDescription(entry.getTitle());
 			resource.setPublished(entry.getPublished().getValue().toGregorianCalendar());
@@ -290,11 +269,10 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 	//
 	private void linkUp(IdentifiedObject resource) {
 		if (resource.getUpLink() != null) {
-			List<IdentifiedObject> parents = resourceService.findByAllParentsHref(resource.getUpLink().getHref(),
-					resource);
+			List<IdentifiedObject> parents = resourceService
+					.findByAllParentsHref(resource.getUpLink().getHref(),resource);
 			for (IdentifiedObject parent : parents) {
 				// add the parent to the transaction
-				System.err.println(resource + " Link up " + parent);
 				resourceService.merge(parent);
 				// add the resource to the parent collection
 				resource.setUpResource(parent);
@@ -307,8 +285,7 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 	private void linkUpMember(IdentifiedObject resource) {
 
 		if (resource.getSelfLink() != null) {
-			List<IdentifiedObject> parents = resourceService.findByAllParentsHref(resource.getSelfLink().getHref(),
-					resource);
+            List<IdentifiedObject> parents = resourceService.findByAllParentsHref(resource.getSelfLink().getHref(), resource);
 			for (IdentifiedObject parent : parents) {
 				// put the existing resource in the transaction
 				resourceService.merge(parent);
@@ -324,16 +301,17 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 					}
 				}
 
-				if (resource instanceof ReadingType) {
-
-					MeterReading meterReading = (MeterReading) parent;
-					if (meterReading.getReadingType() == null) {
-						meterReading.setReadingType((ReadingType) resource);
-					}
-				}
-			}
-		}
-	}
+                    if (resource instanceof ReadingType) {
+                    	
+                        MeterReading meterReading = (MeterReading) parent;
+                        if (meterReading.getReadingType() == null) {
+                          meterReading.setReadingType((ReadingType) resource);
+                        }
+                    }
+                }
+            }
+        }
+    
 
 	private void linkRelatedCollection(IdentifiedObject resource) {
 
@@ -357,8 +335,7 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 				}
 
 				if (relatedResource instanceof ElectricPowerQualitySummary) {
-					((UsagePoint) resource)
-							.addElectricPowerQualitySummary((ElectricPowerQualitySummary) relatedResource);
+            			((UsagePoint) resource).addElectricPowerQualitySummary((ElectricPowerQualitySummary) relatedResource);
 				}
 			}
 			if (resource instanceof MeterReading) {
@@ -382,5 +359,31 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 
 	public ResourceService getResourceService(ResourceService resourceService) {
 		return resourceService;
+	}
+	
+	/* LH customization starts here */
+	@Autowired
+	private IntervalBlockService intervalBlockService;
+
+	@Autowired
+	private MeterReadingService meterReadingService;
+
+	@Autowired
+	private RetailCustomerService retailCustomerService;
+
+	public RetailCustomerService getRetailCustomerService() {
+		return retailCustomerService;
+	}
+
+	public void setRetailCustomerService(RetailCustomerService retailCustomerService) {
+		this.retailCustomerService = retailCustomerService;
+	}
+
+	public void setMeterReadingService(MeterReadingService meterReadingService) {
+		this.meterReadingService = meterReadingService;
+	}
+
+	public void setIntervalBlockService(IntervalBlockService intervalBlockService) {
+		this.intervalBlockService = intervalBlockService;
 	}
 }

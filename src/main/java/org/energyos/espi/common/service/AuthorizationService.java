@@ -12,7 +12,12 @@ import org.energyos.espi.common.utils.EntryTypeIterator;
 public interface AuthorizationService {
 	// residue from random stories
 	public List<Authorization> findAllByRetailCustomerId(Long retailCustomerId);
-	public List<Authorization> findAllActiveByRetailCustomerId(Long retailCustomerId);
+	
+	/**
+	 * @param authorization
+	 * @return List<Long> a list of all authorizationIds that are visible from the input authorization
+	 */
+	public List<Long> findAllIdsByApplicationInformationId(Long applicationInformationId);
 
 	public Authorization createAuthorization(Subscription subscription,
 			String accessToken);
@@ -20,8 +25,6 @@ public interface AuthorizationService {
 	public Authorization findByState(String state);
 	
 	public Authorization findByScope(String scope, Long retailCustomerId);
-	
-	Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope );
 	
 	public Authorization findByAccessToken(String accessToken);
 
@@ -36,7 +39,6 @@ public interface AuthorizationService {
 
 	// persistence management services
 	public void persist(Authorization authorization);
-		
 
 	public void merge(Authorization authorization);
 
@@ -66,4 +68,10 @@ public interface AuthorizationService {
 	
 	public List<Long> findAllIdsByBulkId(String thirdParty, Long bulkId);
 
+	/* LH customization starts here */
+	Authorization findByApplicationInformationId(Long applicationInformationId,String scope);
+	
+	List<Authorization> findAllActiveByRetailCustomerId(Long retailCustomerId);
+	
+	Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope );
 }

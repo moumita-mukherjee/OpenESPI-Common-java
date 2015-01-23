@@ -31,8 +31,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
-		javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
+@Transactional (rollbackFor= {javax.xml.bind.JAXBException.class}, 
+                noRollbackFor = {javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
 public class IntervalBlockRepositoryImpl implements IntervalBlockRepository {
 
 	@PersistenceContext(unitName = "pu-usage")
@@ -40,21 +40,10 @@ public class IntervalBlockRepositoryImpl implements IntervalBlockRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<IntervalBlock> findAllByMeterReadingId(Long meterReadingId) {
-		return (List<IntervalBlock>) this.em.createNamedQuery(IntervalBlock.QUERY_ALL_BY_METER_READING_ID)
-				.setParameter("meterReadingId", meterReadingId).getResultList();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<IntervalBlock> findIntervalBlocksByPeriod(Long meterReadingId, AtomPeriod ap) {
-		return (List<IntervalBlock>) this.em.createNamedQuery(IntervalBlock.QUERY_FIND_BY_PERIOD)
-				.setParameter("meterReadingId", meterReadingId).setParameter("publishedMin", ap.getPublishedMin())
-				.setParameter("publishedMax", ap.getPublishedMax()).setParameter("updatedMin", ap.getUpdatedMin())
-				.setParameter("updatedMax", ap.getUpdatedMax()).setParameter("usageMin", ap.getUsageMin())
-				.setParameter("usageMax", ap.getUsageMax()).getResultList();
-
-	}
+    public List<IntervalBlock> findAllByMeterReadingId(Long meterReadingId) {
+        return (List<IntervalBlock>)this.em.createNamedQuery(IntervalBlock.QUERY_ALL_BY_METER_READING_ID)
+                .setParameter("meterReadingId", meterReadingId).getResultList();
+    }
 
 	@Override
 	public IntervalBlock findById(Long intervalBlockId) {
@@ -62,45 +51,42 @@ public class IntervalBlockRepositoryImpl implements IntervalBlockRepository {
 	}
 
 	@Override
-	@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
-			javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
+        @Transactional (rollbackFor= {javax.xml.bind.JAXBException.class}, 
+                noRollbackFor = {javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
+
 	public void persist(IntervalBlock intervalBlock) {
 		em.persist(intervalBlock);
-
-	}
-	
-	@Override
-	@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
-			javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
-	public IntervalBlock merge(IntervalBlock intervalBlock) {
-		return em.merge(intervalBlock);
 
 	}
 
 	@Override
 	public IntervalBlock findByUUID(UUID uuid) {
 		return (IntervalBlock) em.createNamedQuery(IntervalBlock.QUERY_FIND_BY_UUID)
-				.setParameter("uuid", uuid.toString().toUpperCase()).getSingleResult();
+                .setParameter("uuid", uuid.toString().toUpperCase())
+                .getSingleResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Long> findAllIds() {
 		List<Long> temp;
-		temp = (List<Long>) this.em.createNamedQuery(IntervalBlock.QUERY_FIND_ALL_IDS).getResultList();
+    	temp = (List<Long>)this.em.createNamedQuery(IntervalBlock.QUERY_FIND_ALL_IDS)
+        .getResultList();
 		return temp;
 	}
 
 	@Override
-	@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
-			javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
+	@Transactional (rollbackFor= {javax.xml.bind.JAXBException.class}, 
+                noRollbackFor = {javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
+
 	public void deleteById(Long id) {
-		/*
-		 * DJ IntervalBlock ib = findById(id); MeterReading mr =
-		 * ib.getMeterReading(); if (mr != null) { mr.removeIntervalBlock(ib);
-		 * em.persist(em.contains(mr) ? mr : em.merge(mr)); }
-		 * em.remove(em.contains(ib) ? ib : em.merge(ib));
-		 */
+		IntervalBlock ib = findById(id);
+		MeterReading mr = ib.getMeterReading();
+		if (mr != null) {
+			mr.removeIntervalBlock(ib);
+			em.persist(em.contains(mr) ? mr : em.merge(mr));
+		}
+		em.remove(em.contains(ib) ? ib : em.merge(ib));
 	}
 
 	@Override
@@ -109,6 +95,7 @@ public class IntervalBlockRepositoryImpl implements IntervalBlockRepository {
 
 	}
 
+	/* LH customization starts here */
 	@Override
 	@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
 			javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
@@ -140,6 +127,23 @@ public class IntervalBlockRepositoryImpl implements IntervalBlockRepository {
 
 	public List<IntervalBlock> findIntervalBlocksByUsagePoint(Long usagePointId, AtomPeriod ap) {
 		return null;
+	}
+		@SuppressWarnings("unchecked")
+	@Override
+	public List<IntervalBlock> findIntervalBlocksByPeriod(Long meterReadingId, AtomPeriod ap) {
+		return (List<IntervalBlock>) this.em.createNamedQuery(IntervalBlock.QUERY_FIND_BY_PERIOD)
+				.setParameter("meterReadingId", meterReadingId).setParameter("publishedMin", ap.getPublishedMin())
+				.setParameter("publishedMax", ap.getPublishedMax()).setParameter("updatedMin", ap.getUpdatedMin())
+				.setParameter("updatedMax", ap.getUpdatedMax()).setParameter("usageMin", ap.getUsageMin())
+				.setParameter("usageMax", ap.getUsageMax()).getResultList();
+
+	}
+		@Override
+	@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
+			javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
+	public IntervalBlock merge(IntervalBlock intervalBlock) {
+		return em.merge(intervalBlock);
+
 	}
 
 }

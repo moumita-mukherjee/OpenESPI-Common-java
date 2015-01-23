@@ -53,6 +53,7 @@ public class TimeConfigurationServiceImpl implements TimeConfigurationService {
     public ImportService getImportService() {
     	return this.importService;
     }
+    
     public void setResourceService(ResourceService resourceService) {
     	this.resourceService = resourceService;
     }
@@ -60,6 +61,7 @@ public class TimeConfigurationServiceImpl implements TimeConfigurationService {
     public ResourceService getResourceService() {
     	return this.resourceService;
     }
+    
     public void setRepository(TimeConfigurationRepository timeConfigurationRepository) {
         this.timeConfigurationRepository = timeConfigurationRepository;
     }
@@ -67,6 +69,7 @@ public class TimeConfigurationServiceImpl implements TimeConfigurationService {
     public TimeConfigurationRepository getRepository() {
         return timeConfigurationRepository;
     }
+    
     @Override
     public TimeConfiguration findByUUID(UUID uuid) {
         return timeConfigurationRepository.findByUUID(uuid);

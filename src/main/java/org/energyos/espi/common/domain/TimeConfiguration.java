@@ -96,12 +96,10 @@ public class TimeConfiguration extends IdentifiedObject {
     public static final String QUERY_FIND_ID_BY_XPATH = "TimeConfiguration.findIdsByXpath";
     
     @XmlElement(required = true, type = String.class)
-    //@XmlJavaTypeAdapter(StringBinaryAdapter.class)
     @XmlJavaTypeAdapter(HexBinaryAdapter.class)
     protected byte [] dstEndRule;
     protected long dstOffset;
     @XmlElement(required = true, type = String.class)
-    //@XmlJavaTypeAdapter(StringBinaryAdapter.class)
     @XmlJavaTypeAdapter(HexBinaryAdapter.class)
     protected byte [] dstStartRule;
     protected long tzOffset;

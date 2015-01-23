@@ -21,6 +21,7 @@
 // Generated on: 2013.08.27 at 01:43:57 PM EDT 
 //
 
+
 package org.energyos.espi.common.domain;
 
 import java.io.Serializable;
@@ -49,17 +50,12 @@ import org.energyos.espi.common.models.atom.LinkType;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
- * This is a root class to provide common naming attributes for all classes
- * needing naming attributes
+ * This is a root class to provide common naming attributes for all classes needing naming attributes
  * <p/>
- * <p>
- * Java class for IdentifiedObject complex type.
+ * <p>Java class for IdentifiedObject complex type.
  * <p/>
- * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * <p/>
- * 
  * <pre>
  * &lt;complexType name="IdentifiedObject">
  *   &lt;complexContent>
@@ -75,15 +71,26 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "IdentifiedObject")
-@XmlSeeAlso({ MeterReading.class, UsagePoint.class, ElectricPowerUsageSummary.class, TimeConfiguration.class,
-		ApplicationInformation.class, Authorization.class, Subscription.class, ElectricPowerQualitySummary.class,
-		IntervalBlock.class, ReadingType.class })
+@XmlSeeAlso({
+        MeterReading.class,
+        UsagePoint.class,
+        ElectricPowerUsageSummary.class,
+        TimeConfiguration.class,
+        ApplicationInformation.class,
+        Authorization.class,
+        Subscription.class,
+        ElectricPowerQualitySummary.class,
+        IntervalBlock.class,
+        ReadingType.class
+})
 @MappedSuperclass
 public class IdentifiedObject extends Resource implements Linkable, Serializable {
 
 	public IdentifiedObject() {
 		super();
 	}
+    @XmlTransient
+	private static final long serialVersionUID = -5263186855332223773L;
 
 	public interface ResourceEnumClass {
 		ResourceEnum getEnumType();
@@ -96,12 +103,9 @@ public class IdentifiedObject extends Resource implements Linkable, Serializable
 	@NotNull
 	protected String uuid;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	//@GeneratedValue(strategy = GenerationType.AUTO, generator = "id_gen")
-	//@GenericGenerator(name = "id_gen", strategy="org.energyos.espi.common.utils.IdGenerator")
-	@XmlTransient
-	protected Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @XmlTransient
+    protected Long id;
 
 	@XmlTransient
 	protected GregorianCalendar updated = new GregorianCalendar();
@@ -110,23 +114,27 @@ public class IdentifiedObject extends Resource implements Linkable, Serializable
 
 	@XmlTransient
 	@Embedded
-	@AttributeOverrides({ @AttributeOverride(name = "rel", column = @Column(name = "up_link_rel")),
-			@AttributeOverride(name = "href", column = @Column(name = "up_link_href")), })
+    @AttributeOverrides( {
+            @AttributeOverride(name="rel", column = @Column(name="up_link_rel") ),
+            @AttributeOverride(name="href", column = @Column(name="up_link_href") ),
+    } )
 	private LinkType upLink;
 
 	@XmlTransient
 	@Embedded
-	@AttributeOverrides({ @AttributeOverride(name = "rel", column = @Column(name = "self_link_rel")),
-			@AttributeOverride(name = "href", column = @Column(name = "self_link_href")), })
+    @AttributeOverrides( {
+            @AttributeOverride(name="rel", column = @Column(name="self_link_rel") ),
+            @AttributeOverride(name="href", column = @Column(name="self_link_href") ),
+    } )
 	private LinkType selfLink;
 
 	@XmlTransient
 	// an enum to support class dispatching across the library
 	//
 	public enum ResourceEnum {
-		RetailCustomer(0), UsagePoint(1), MeterReadingC(2), IntervalBlock(3), TimeConfiguration(4), ElectricPowerQualitySummary(
-				5), ElectricPowerUsageSummary(6), ReadingType(7), Subscription(8), Authorization(9), ApplicationInformation(
-				10);
+  	  RetailCustomer(0), UsagePoint(1), MeterReadingC(2), IntervalBlock(3),
+  	  TimeConfiguration(4), ElectricPowerQualitySummary(5), ElectricPowerUsageSummary(6),
+  	  ReadingType(7), Subscription(8), Authorization(9), ApplicationInformation(10);
 
 		private int value;
 
@@ -147,45 +155,52 @@ public class IdentifiedObject extends Resource implements Linkable, Serializable
 		this.id = id;
 	}
 
-	/**
-	 * Gets the value of the mrid property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
+    /**
+     * Gets the value of the mrid property.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
 	public String getMRID() {
-		if (uuid == null) return null;
+        if (uuid == null)
+            return null;
 		return "urn:uuid:" + uuid;
 	}
 
-	/**
-	 * Sets the value of the mrid property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
+    /**
+     * Sets the value of the mrid property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *
+     */
 	public void setMRID(String value) {
 		this.uuid = value.replace("urn:uuid:", "").toUpperCase();
 	}
 
-	/**
-	 * Gets the value of the description property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
+    /**
+     * Gets the value of the description property.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
 	public String getDescription() {
 		return description;
 	}
 
-	/**
-	 * Sets the value of the description property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
+    /**
+     * Sets the value of the description property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *
+     */
 	public void setDescription(String value) {
 		this.description = value;
 	}
@@ -208,12 +223,17 @@ public class IdentifiedObject extends Resource implements Linkable, Serializable
 
 	public void setUUID(UUID uuid) {
 		this.uuid = uuid.toString().toUpperCase();
+        // make sure there is a uplink and a selflink
+        // so marshalling works ...
+        getSelfLink();
+        getUpLink();
 	}
 
-	public UUID getUUID() {
-		if (uuid != null) return UUID.fromString(uuid);
-		return null;
-	}
+    public UUID getUUID() {
+        if (uuid != null)
+            return UUID.fromString(uuid);
+        return null;
+    }
 
 	public String getHashedId() {
 		return "" + getUUID();
@@ -247,6 +267,10 @@ public class IdentifiedObject extends Resource implements Linkable, Serializable
 	}
 
 	public LinkType getUpLink() {
+    	if (upLink == null) {
+    		setUpLink(new LinkType());
+    		upLink.setRel("up");
+    	}
 		return upLink;
 	}
 
@@ -268,6 +292,10 @@ public class IdentifiedObject extends Resource implements Linkable, Serializable
 	}
 
 	public LinkType getSelfLink() {
+    	if (selfLink == null) {
+    		setSelfLink(new LinkType());
+    		selfLink.setRel("self");
+    	}
 		return selfLink;
 	}
 

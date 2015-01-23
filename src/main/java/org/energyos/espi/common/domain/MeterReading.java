@@ -108,7 +108,6 @@ public class MeterReading extends IdentifiedObject
     public static final String QUERY_FIND_ALL_IDS_BY_XPATH_2 = "MeterReading.findAllIdsByXpath2";
     public static final String QUERY_FIND_ID_BY_XPATH = "MeterReading.findIdByXpath";
     
-    //DJ
     @XmlTransient        
     //@OneToMany(mappedBy = "meterReading", cascade = {CascadeType.ALL}, orphanRemoval=true)
     //@LazyCollection(LazyCollectionOption.TRUE)
@@ -130,31 +129,6 @@ public class MeterReading extends IdentifiedObject
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "reading_type_id")
     private ReadingType readingType;
-    
-    @XmlTransient
-    @Column(name = "interval_reading_from")
-	protected Date intervalReadingFrom =null;
-    
-
-    @XmlTransient
-    @Column(name = "interval_reading_till")
-    protected Date intervalReadingTill =null;
-
-    public Date getIntervalReadingFrom() {
-		return intervalReadingFrom;
-	}
-
-	public void setIntervalReadingFrom(Date intervalReadingFrom) {
-		this.intervalReadingFrom = intervalReadingFrom;
-	}
-
-	public Date getIntervalReadingTill() {
-		return intervalReadingTill;
-	}
-
-	public void setIntervalReadingTill(Date intervalReadingTill) {
-		this.intervalReadingTill = intervalReadingTill;
-	}
 
 	public UsagePoint getUsagePoint() {
         return usagePoint;
@@ -166,14 +140,12 @@ public class MeterReading extends IdentifiedObject
 
     public void addIntervalBlock(IntervalBlock intervalBlock) {
         intervalBlock.setMeterReading(this);
-        //DJ
         intervalBlock.setMeterReadingId(getId());
         intervalBlocks.add(intervalBlock);
     }
 
     public void removeIntervalBlock(IntervalBlock intervalBlock) {
     	intervalBlock.setMeterReading(null);
-    	//DJ
     	intervalBlock.setMeterReadingId(null);
     	intervalBlocks.remove(intervalBlock);
     }
@@ -255,6 +227,31 @@ public class MeterReading extends IdentifiedObject
 		setReadingType(null);
 		setUsagePoint(null);
 
+	}
+	/* LH customization starts here */
+	@XmlTransient
+    @Column(name = "interval_reading_from")
+	protected Date intervalReadingFrom =null;
+    
+
+    @XmlTransient
+    @Column(name = "interval_reading_till")
+    protected Date intervalReadingTill =null;
+
+    public Date getIntervalReadingFrom() {
+		return intervalReadingFrom;
+	}
+
+	public void setIntervalReadingFrom(Date intervalReadingFrom) {
+		this.intervalReadingFrom = intervalReadingFrom;
+	}
+
+	public Date getIntervalReadingTill() {
+		return intervalReadingTill;
+	}
+
+	public void setIntervalReadingTill(Date intervalReadingTill) {
+		this.intervalReadingTill = intervalReadingTill;
 	}
     
 }

@@ -26,15 +26,17 @@ public class EntryTypeIterator {
 	private Logger log = LoggerFactory.getLogger(EntryTypeIterator.class);
 	private EntryBuilder builder;
 
-	private Iterator<Long> resourceIds;
-	@SuppressWarnings("rawtypes")
+    private Iterator<Long> resourceIds;
+    @SuppressWarnings("rawtypes")
+
 	private Iterator<Pair<Long, Class>> childIds = new ArrayList<Pair<Long, Class>>().iterator();
 	private ResourceService resourceService;
 
 	@SuppressWarnings("rawtypes")
 	// TODO: fix the EntryTypeIterator Typing System
 	private Class rootClass;
-	private Long subscriptionId;
+    
+    private Long subscriptionId;
 
 	public EntryTypeIterator(ResourceService resourceService, List<Long> ids, EntryBuilder builder) {
 		this.resourceService = resourceService;
@@ -45,6 +47,7 @@ public class EntryTypeIterator {
 	@SuppressWarnings("rawtypes")
 	// TODO: fix the EntryTypeIterator Typing System
 	public EntryTypeIterator(ResourceService resourceService, List<Long> ids, Class clazz) {
+		System.err.println(" EntryTypeIterator "+clazz + " -- "+ids);
 		this.resourceService = resourceService;
 		this.resourceIds = ids.iterator();
 		builder = new EntryBuilder();
@@ -81,32 +84,19 @@ public class EntryTypeIterator {
 		return builder.buildEntry(resource);
 	}
 
-	// For the RESTful interfaces, we don't want to build the whole child
-	// structure,
-	// only the 1 resource is exported.
-	//
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	// TODO: fix the EntryTypeIterator Typing System
-	public EntryType nextEntry(Class resourceClass) {
-		IdentifiedObject resource;
-		resource = resourceService.findById(resourceIds.next(), resourceClass);
-		return builder.buildEntry(resource);
-	}
+    // For the RESTful interfaces, we don't want to build the whole child structure, 
+    // only the 1 resource is exported.
+    //
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    // TODO: fix the EntryTypeIterator Typing System
+	public EntryType nextEntry(Class resourceClass)  {
+        IdentifiedObject resource;
+        resource = resourceService.findById(resourceIds.next(), resourceClass);
+        return builder.buildEntry(resource);
+    }
 
-	private AtomPeriod fileterPeriod;
-
-	public AtomPeriod getFileterPeriod() {
-		return fileterPeriod;
-	}
-
-	public void setFileterPeriod(AtomPeriod fileterPeriod) {
-		this.fileterPeriod = fileterPeriod;
-	}
-
-	private HashMap<Long, IntervalBlock> blockcache = new HashMap<Long, IntervalBlock>();
-
-	@SuppressWarnings("rawtypes")
-	// TODO: fix the EntryTypeIterator Typing System
+    @SuppressWarnings("rawtypes")
+    // TODO: fix the EntryTypeIterator Typing System
 	private void updateChildIds(Long usagePointId) {
 		// TODO: Deal with these Class warnings...
 
@@ -204,4 +194,16 @@ public class EntryTypeIterator {
 	public Long getSubscriptionId() {
 		return this.subscriptionId;
 	}
+	/* LH customization starts here */
+	private AtomPeriod fileterPeriod;
+
+	public AtomPeriod getFileterPeriod() {
+		return fileterPeriod;
+	}
+
+	public void setFileterPeriod(AtomPeriod fileterPeriod) {
+		this.fileterPeriod = fileterPeriod;
+	}
+
+	private HashMap<Long, IntervalBlock> blockcache = new HashMap<Long, IntervalBlock>();	
 }

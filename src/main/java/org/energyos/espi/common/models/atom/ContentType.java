@@ -21,6 +21,7 @@
 // Generated on: 2013.08.27 at 01:43:57 PM EDT
 //
 
+
 package org.energyos.espi.common.models.atom;
 
 import java.util.ArrayList;
@@ -60,18 +61,15 @@ import org.energyos.espi.common.domain.UsagePoint;
 
 import com.google.common.collect.Lists;
 
+
 /**
  * The Atom content construct is defined in section 4.1.3 of the format spec.
  * <p/>
  * <p/>
- * <p>
- * Java class for contentType complex type.
+ * <p>Java class for contentType complex type.
  * <p/>
- * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * <p/>
- * 
  * <pre>
  * &lt;complexType name="contentType">
  *   &lt;complexContent>
@@ -90,57 +88,104 @@ import com.google.common.collect.Lists;
  */
 @XmlRootElement(name = "content")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "contentType", propOrder = { "usagePoint", "meterReading", "intervalBlocks",
-		"electricPowerUsageSummary", "electricPowerQualitySummary", "readingType", "localTimeParameters",
-		"applicationInformation", "authorization", "subscription", "retailCustomer", "content" })
-@XmlSeeAlso({ MeterReading.class, UsagePoint.class, ElectricPowerUsageSummary.class, TimeConfiguration.class,
-		ApplicationInformation.class, Authorization.class, Subscription.class, ElectricPowerQualitySummary.class,
-		IntervalBlock.class, ReadingType.class, ApplicationInformation.class, Authorization.class, Subscription.class,
-		RetailCustomer.class })
+@XmlType(name = "contentType", propOrder = {
+        "usagePoint",
+        "meterReading",
+        "intervalBlocks",
+        "electricPowerUsageSummary",
+        "electricPowerQualitySummary",
+        "readingType",
+        "localTimeParameters",
+        "applicationInformation",
+        "authorization",
+        "subscription",
+        "retailCustomer",
+        "content"
+})
+@XmlSeeAlso({
+        MeterReading.class,
+        UsagePoint.class,
+        ElectricPowerUsageSummary.class,
+        TimeConfiguration.class,
+        ApplicationInformation.class,
+        Authorization.class,
+        Subscription.class,
+        ElectricPowerQualitySummary.class,
+        IntervalBlock.class,
+        ReadingType.class,
+        ApplicationInformation.class,
+        Authorization.class,
+        Subscription.class,
+        RetailCustomer.class
+})
+
 public class ContentType {
 
-	@XmlElementRefs({ @XmlElementRef(name = "UsagePoint", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false), })
+    @XmlElementRefs({
+            @XmlElementRef(name = "UsagePoint", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false),
+    })
 	@XmlAnyElement(lax = true)
 	protected UsagePoint usagePoint;
 
-	@XmlElementRefs({ @XmlElementRef(name = "MeterReading", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false), })
+    @XmlElementRefs({
+            @XmlElementRef(name = "MeterReading", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false),
+    })
 	@XmlAnyElement(lax = true)
 	protected MeterReading meterReading;
 
-	@XmlElementRefs({ @XmlElementRef(name = "IntervalBlock", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false), })
+    
+    @XmlElementRefs({
+            @XmlElementRef(name = "IntervalBlock", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false),
+    })
 	@XmlAnyElement(lax = true)
 	protected List<IntervalBlock> intervalBlocks;
 
-	@XmlElementRefs({ @XmlElementRef(name = "ElectricPowerUsageSummary", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false), })
+    @XmlElementRefs({
+            @XmlElementRef(name = "ElectricPowerUsageSummary", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false),
+    })
 	@XmlAnyElement(lax = true)
 	protected ElectricPowerUsageSummary electricPowerUsageSummary;
 
-	@XmlElementRefs({ @XmlElementRef(name = "ElectricPowerQualitySummary", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false), })
+    @XmlElementRefs({
+            @XmlElementRef(name = "ElectricPowerQualitySummary", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false),
+    })
 	@XmlAnyElement(lax = true)
 	private ElectricPowerQualitySummary electricPowerQualitySummary;
 
-	@XmlElementRefs({ @XmlElementRef(name = "ReadingType", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false), })
+    @XmlElementRefs({
+            @XmlElementRef(name = "ReadingType", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false),
+    })
 	@XmlAnyElement(lax = true)
 	protected ReadingType readingType;
 
-	@XmlElementRefs({ @XmlElementRef(name = "LocalTimeParameters", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false), })
+    @XmlElementRefs({
+            @XmlElementRef(name = "LocalTimeParameters", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false),
+    })
 	@XmlAnyElement(lax = true)
 	private TimeConfiguration localTimeParameters;
 
-	@XmlElementRefs({ @XmlElementRef(name = "ApplicationInformation", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false), })
+    @XmlElementRefs({
+        @XmlElementRef(name = "ApplicationInformation", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false),
+     })
 	@XmlAnyElement(lax = true)
 	protected ApplicationInformation applicationInformation;
 
-	@XmlElementRefs({ @XmlElementRef(name = "Authorization", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false), })
+    @XmlElementRefs({
+        @XmlElementRef(name = "Authorization", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false),
+     })
 	@XmlAnyElement(lax = true)
 	protected Authorization authorization;
 
-	@XmlElementRefs({ @XmlElementRef(name = "Subscription", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false), })
+    @XmlElementRefs({
+        @XmlElementRef(name = "Subscription", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false),
+     })
 	@XmlAnyElement(lax = true)
 	protected Subscription subscription;
 
 	// TODO note that the namespace here may be incorrect??
-	@XmlElementRefs({ @XmlElementRef(name = "RetailCustomer", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false), })
+    @XmlElementRefs({
+        @XmlElementRef(name = "RetailCustomer", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false),
+     })
 	@XmlAnyElement(lax = true)
 	protected RetailCustomer retailCustomer;
 
@@ -199,43 +244,44 @@ public class ContentType {
 		this.applicationInformation = applicationInformation;
 	}
 
-	public Authorization getAuthorization() {
-		return this.authorization;
-	}
+    public Authorization getAuthorization() {
+    	return this.authorization;
+    }
+    public void setAuthorization(Authorization authorization){
+    	this.authorization = authorization;
+    }
+    
+    /**
+     * The Atom content construct is defined in section 4.1.3 of the format spec.
+     * Gets the value of the content property.
+     * <p/>
+     * <p/>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the content property.
+     * <p/>
+     * <p/>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Object }
+     * {@link String }
+     */
+    public List<Object> getContent() {
+        if (content == null) {
+            content = new ArrayList<>();
+        }
+        return this.content;
+    }
 
-	public void setAuthorization(Authorization authorization) {
-		this.authorization = authorization;
-	}
-
-	/**
-	 * The Atom content construct is defined in section 4.1.3 of the format
-	 * spec. Gets the value of the content property.
-	 * <p/>
-	 * <p/>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the content property.
-	 * <p/>
-	 * <p/>
-	 * Objects of the following type(s) are allowed in the list {@link Object }
-	 * {@link String }
-	 */
-	public List<Object> getContent() {
-		if (content == null) {
-			content = new ArrayList<>();
-		}
-		return this.content;
-	}
-
-	/**
-	 * Gets the value of the type property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getType() {
-		return type;
-	}
+    /**
+     * Gets the value of the type property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getType() {
+        return type;
+    }
 
 	/**
 	 * Sets the value of the type property.
@@ -247,14 +293,15 @@ public class ContentType {
 		this.type = value;
 	}
 
-	/**
-	 * Gets the value of the src property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getSrc() {
-		return src;
-	}
+    /**
+     * Gets the value of the src property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getSrc() {
+        return src;
+    }
 
 	/**
 	 * Sets the value of the src property.
@@ -266,14 +313,15 @@ public class ContentType {
 		this.src = value;
 	}
 
-	/**
-	 * Gets the value of the base property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getBase() {
-		return base;
-	}
+    /**
+     * Gets the value of the base property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getBase() {
+        return base;
+    }
 
 	/**
 	 * Sets the value of the base property.
@@ -285,14 +333,15 @@ public class ContentType {
 		this.base = value;
 	}
 
-	/**
-	 * Gets the value of the lang property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getLang() {
-		return lang;
-	}
+    /**
+     * Gets the value of the lang property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getLang() {
+        return lang;
+    }
 
 	/**
 	 * Sets the value of the lang property.
@@ -304,30 +353,28 @@ public class ContentType {
 		this.lang = value;
 	}
 
-	/**
-	 * Gets a map that contains attributes that aren't bound to any typed
-	 * property on this class.
-	 * <p/>
-	 * <p/>
-	 * the map is keyed by the name of the attribute and the value is the string
-	 * value of the attribute.
-	 * <p/>
-	 * the map returned by this method is live, and you can add new attribute by
-	 * updating the map directly. Because of this design, there's no setter.
-	 * 
-	 * @return always non-null
-	 */
-	public Map<QName, String> getOtherAttributes() {
-		return otherAttributes;
-	}
+    /**
+     * Gets a map that contains attributes that aren't bound to any typed property on this class.
+     * <p/>
+     * <p/>
+     * the map is keyed by the name of the attribute and
+     * the value is the string value of the attribute.
+     * <p/>
+     * the map returned by this method is live, and you can add new attribute
+     * by updating the map directly. Because of this design, there's no setter.
+     *
+     * @return always non-null
+     */
+    public Map<QName, String> getOtherAttributes() {
+        return otherAttributes;
+    }
 
-	public RetailCustomer getRetailCustomer() {
-		return this.retailCustomer;
-	}
-
-	public void setRetailCustomer(RetailCustomer retailCustomer) {
-		this.retailCustomer = retailCustomer;
-	}
+    public RetailCustomer getRetailCustomer() {
+    	return this.retailCustomer;
+    }
+    public void setRetailCustomer(RetailCustomer retailCustomer){
+    	this.retailCustomer = retailCustomer;
+    }
 
 	public void setReadingType(ReadingType readingType) {
 		this.readingType = readingType;
@@ -349,17 +396,17 @@ public class ContentType {
 		return electricPowerQualitySummary;
 	}
 
-	public void setElectricPowerQualitySummary(ElectricPowerQualitySummary electricPowerQualitySummary) {
-		this.electricPowerQualitySummary = electricPowerQualitySummary;
-	}
-
-	public Subscription getSubscription() {
-		return this.subscription;
-	}
-
-	public void setSubscription(Subscription subscription) {
-		this.subscription = subscription;
-	}
+    public void setElectricPowerQualitySummary(ElectricPowerQualitySummary electricPowerQualitySummary) {
+        this.electricPowerQualitySummary = electricPowerQualitySummary;
+    }
+    
+    public Subscription getSubscription() {
+    	return this.subscription;
+    }
+    public void setSubscription(Subscription subscription){
+    	this.subscription = subscription;
+    }
+    
 
 	public TimeConfiguration getLocalTimeParameters() {
 		return localTimeParameters;
@@ -405,36 +452,36 @@ public class ContentType {
 		return resources;
 	}
 
-	public void setResource(IdentifiedObject resource) {
-		if (resource instanceof UsagePoint) {
-			setUsagePoint((UsagePoint) resource);
-		} else if (resource instanceof MeterReading) {
-			setMeterReading((MeterReading) resource);
-		} else if (resource instanceof TimeConfiguration) {
-			setLocalTimeParameters((TimeConfiguration) resource);
-		} else if (resource instanceof IntervalBlock) {
-			setIntervalBlocks(Lists.newArrayList((IntervalBlock) resource));
-		} else if (resource instanceof ElectricPowerUsageSummary) {
-			setElectricPowerUsageSummary((ElectricPowerUsageSummary) resource);
-		} else if (resource instanceof ElectricPowerQualitySummary) {
-			setElectricPowerQualitySummary((ElectricPowerQualitySummary) resource);
-		} else if (resource instanceof ReadingType) {
-			setReadingType((ReadingType) resource);
-		} else if (resource instanceof ApplicationInformation) {
-			setApplicationInformation((ApplicationInformation) resource);
-		} else if (resource instanceof Authorization) {
-			setAuthorization((Authorization) resource);
-		} else if (resource instanceof Subscription) {
-			setSubscription((Subscription) resource);
-		} else if (resource instanceof RetailCustomer) {
-			setRetailCustomer((RetailCustomer) resource);
-
-		}
-	}
+    public void setResource(IdentifiedObject resource) {
+        if (resource instanceof UsagePoint) {
+            setUsagePoint((UsagePoint) resource);
+        } else if (resource instanceof MeterReading) {
+            setMeterReading((MeterReading) resource);
+        } else if (resource instanceof TimeConfiguration) {
+            setLocalTimeParameters((TimeConfiguration) resource);
+        } else if (resource instanceof IntervalBlock) {
+            setIntervalBlocks(Lists.newArrayList((IntervalBlock) resource));
+        } else if (resource instanceof ElectricPowerUsageSummary) {
+            setElectricPowerUsageSummary((ElectricPowerUsageSummary) resource);
+        } else if (resource instanceof ElectricPowerQualitySummary) {
+            setElectricPowerQualitySummary((ElectricPowerQualitySummary) resource);
+        } else if (resource instanceof ReadingType) {
+            setReadingType((ReadingType) resource);
+        } else if (resource instanceof ApplicationInformation) {
+        	setApplicationInformation((ApplicationInformation) resource);
+        } else if (resource instanceof Authorization) {
+        	setAuthorization((Authorization) resource);
+        } else if (resource instanceof Subscription) {
+        	setSubscription((Subscription) resource);
+        } else if (resource instanceof RetailCustomer) {
+        	setRetailCustomer((RetailCustomer) resource);
+        }
+    }
 
 	@SuppressWarnings("unchecked")
 	public void setResources(List<IdentifiedObject> identifiedObjects) {
-		if (identifiedObjects == null) return;
+        if (identifiedObjects == null)
+            return;
 
 		if (identifiedObjects.get(0) instanceof IntervalBlock) {
 			List<IntervalBlock> intervalBlocks = (List<IntervalBlock>) (List<?>) identifiedObjects;
@@ -774,5 +821,6 @@ public class ContentType {
 		}
 		return result;
 	}
+
 
 }

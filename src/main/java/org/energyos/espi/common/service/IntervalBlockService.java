@@ -30,8 +30,6 @@ import org.energyos.espi.common.utils.EntryTypeIterator;
 
 public interface IntervalBlockService {
 	// TODO: likely deprecated
-	void flush();
-	
 	List<IntervalBlock> findAllByMeterReadingId(Long meterReadingId);
 
 	String feedFor(List<IntervalBlock> intervalBlocks);
@@ -68,12 +66,14 @@ public interface IntervalBlockService {
 	public IntervalBlock importResource(InputStream stream) throws Exception;
 
 	IntervalBlock findById(long intervalBlockId);
-
+	
+	/* LH customization starts here */
 	public List<IntervalBlock> findIntervalBlocksByPeriod(Long meterReadingId,
 			AtomPeriod ap);
 	
 	public IntervalBlock findByUUID(UUID uuid) ;
 	
 	public IntervalBlock merge(IntervalBlock existingResource);
+    void flush();
 
 }

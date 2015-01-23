@@ -24,6 +24,7 @@ import javax.persistence.PersistenceContext;
 
 import org.energyos.espi.common.domain.RetailCustomer;
 import org.energyos.espi.common.repositories.RetailCustomerRepository;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @Transactional (rollbackFor= {javax.xml.bind.JAXBException.class}, 
                 noRollbackFor = {javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
+
+
 public class RetailCustomerRepositoryImpl implements RetailCustomerRepository {
 
 	
@@ -58,31 +61,12 @@ public class RetailCustomerRepositoryImpl implements RetailCustomerRepository {
     public RetailCustomer findById(Long id) {
         return this.em.find(RetailCustomer.class, id);
     }
-    
 
     @Override
     public UserDetails findByUsername(String username) {
         return (UserDetails)this.em.createNamedQuery(RetailCustomer.QUERY_FIND_BY_USERNAME)
                 .setParameter("username", username).getSingleResult();
     }
-    
-
-    @Override
-    public RetailCustomer findByLink(String link) {
-        return (RetailCustomer)this.em.createNamedQuery(RetailCustomer.QUERY_FIND_BY_LINK)
-                .setParameter("link", link).getSingleResult();
-    }
-    
-    @Override
-    public RetailCustomer findByUUID(UUID uuid) {        
-        
-        return (RetailCustomer) em.createNamedQuery(RetailCustomer.QUERY_FIND_BY_UUID)
-                .setParameter("uuid", uuid.toString().toUpperCase())
-                .getSingleResult();
-        
-    }
-    
-    
 
 	@Override
 	public RetailCustomer findById(String id) {
@@ -97,4 +81,20 @@ public class RetailCustomerRepositoryImpl implements RetailCustomerRepository {
     		RetailCustomer rc = findById(id);
     	    em.remove(em.contains(rc) ? rc : em.merge(rc));
 	}
+	
+	/* LH customization starts here */
+	@Override
+    public RetailCustomer findByLink(String link) {
+        return (RetailCustomer)this.em.createNamedQuery(RetailCustomer.QUERY_FIND_BY_LINK)
+                .setParameter("link", link).getSingleResult();
+    }
+    
+    @Override
+    public RetailCustomer findByUUID(UUID uuid) {        
+        
+        return (RetailCustomer) em.createNamedQuery(RetailCustomer.QUERY_FIND_BY_UUID)
+                .setParameter("uuid", uuid.toString().toUpperCase())
+                .getSingleResult();
+        
+    }
 }

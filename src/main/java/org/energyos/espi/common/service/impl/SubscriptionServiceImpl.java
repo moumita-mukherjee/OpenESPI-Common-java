@@ -16,13 +16,13 @@
 
 package org.energyos.espi.common.service.impl;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import org.energyos.espi.common.domain.RetailCustomer;
 import org.energyos.espi.common.domain.Subscription;
 import org.energyos.espi.common.domain.UsagePoint;
 import org.energyos.espi.common.domain.User;
@@ -58,58 +58,34 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 	@Override
 	@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
-			javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
-	public Subscription createSubscription(OAuth2Authentication authentication, Long usagePointId) {
+			javax.persistence.NoResultException.class,
+			org.springframework.dao.EmptyResultDataAccessException.class })
+	public Subscription createSubscription(OAuth2Authentication authentication) {
 		Subscription subscription = new Subscription();
 		subscription.setUUID(UUID.randomUUID());
-		subscription.setApplicationInformation(applicationInformationService.findByClientId(authentication
-				.getOAuth2Request().getClientId()));
-		// DJ
-		// subscription.setRetailCustomer((RetailCustomer)authentication.getPrincipal());
-
-		subscription.setRetailCustomer(((User) authentication.getPrincipal()).getRetailCustomer());
+		subscription
+				.setApplicationInformation(applicationInformationService
+						.findByClientId(authentication.getOAuth2Request()
+								.getClientId()));
+		subscription.setRetailCustomer(((RetailCustomer) authentication.getPrincipal()));
 		subscription.setUsagePoints(new ArrayList<UsagePoint>());
-
-		if (subscription.getRetailCustomer() != null) {
-			System.err.println("subscription getRetailCustomer " + subscription.getRetailCustomer().getFirstName());
-			System.err.println("subscription getRetailCustomer " + subscription.getRetailCustomer().getId());
-		}
-
 		// set up the subscription's usagePoints list. Keep in mind that right
 		// now this is ALL usage points belonging to the RetailCustomer.
 		// TODO - scope this to only a selected (proper) subset of the
 		// usagePoints as passed
 		// through from the UX or a restful call.
-		List<Long> upIds = resourceService
-				.findAllIdsByXPath(subscription.getRetailCustomer().getId(), UsagePoint.class);
+		List<Long> upIds = resourceService.findAllIdsByXPath(subscription
+				.getRetailCustomer().getId(), UsagePoint.class);
 		Iterator<Long> it = upIds.iterator();
 		while (it.hasNext()) {
-			Long upid = it.next();
-			if (usagePointId == null || usagePointId == 0 || usagePointId.longValue() == upid.longValue()) {
-				UsagePoint usagePoint = resourceService.findById(upid, UsagePoint.class);
-				subscription.getUsagePoints().add(usagePoint);
-			}
+			UsagePoint usagePoint = resourceService.findById(it.next(),
+					UsagePoint.class);
+			subscription.getUsagePoints().add(usagePoint);
 		}
-
 		subscription.setLastUpdate(new GregorianCalendar());
 		subscriptionRepository.persist(subscription);
 
 		return subscription;
-	}
-
-	@Override
-	public List<Subscription> findAll() {
-		return subscriptionRepository.findAll();
-	}
-
-	@Override
-	public void persist(Subscription subscription) {
-		subscriptionRepository.persist(subscription);
-	}
-
-	@Override
-	public Subscription findByUUID(UUID uuid) {
-		return subscriptionRepository.findByUUID(uuid);
 	}
 
 	@Override
@@ -119,27 +95,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 	@Override
 	public EntryTypeIterator findEntriesByHashedId(String hashedId) {
-		Subscription subscription = subscriptionRepository.findByHashedId(hashedId);
+		Subscription subscription = subscriptionRepository
+				.findByHashedId(hashedId);
 		List<Long> subscriptionIds = new ArrayList<Long>();
 		subscriptionIds.add(subscription.getId());
-		return new EntryTypeIterator(resourceService, subscriptionIds, Subscription.class);
+		return new EntryTypeIterator(resourceService, subscriptionIds,
+				Subscription.class);
 	}
-
-	public void setRepository(SubscriptionRepository subscriptionRepository) {
-		this.subscriptionRepository = subscriptionRepository;
-	}
-
-	@Override
-	public EntryTypeIterator find(String subscriptionHashedId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Subscription findById(String subscriptionId) {
-		return subscriptionRepository.findByHashedId(subscriptionId);
-
-	}
+	
 
 	@Override
 	public EntryType findEntryType(Long retailCustomerId, Long subscriptionId) {
@@ -147,7 +110,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		try {
 			List<Long> allIds = new ArrayList<Long>();
 			allIds.add(subscriptionId);
-			result = (new EntryTypeIterator(resourceService, allIds, Subscription.class)).nextEntry(Subscription.class);
+			result = (new EntryTypeIterator(resourceService, allIds,
+					Subscription.class)).nextEntry(Subscription.class);
 		} catch (Exception e) {
 			// TODO need a log file entry as we are going to return a null if
 			// it's not found
@@ -161,7 +125,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		EntryTypeIterator result = null;
 		try {
 
-			result = (new EntryTypeIterator(resourceService, findUsagePointIds(subscriptionId), Subscription.class));
+			result = (new EntryTypeIterator(resourceService,
+					findUsagePointIds(subscriptionId), Subscription.class));
 			result.setSubscriptionId(subscriptionId);
 			
 		} catch (Exception e) {
@@ -173,53 +138,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	}
 
 	@Override
-	public List<EntryTypeIterator> findEntryTypeIterator(List<Long> subscriptions) {
-		List<EntryTypeIterator> result = new ArrayList<EntryTypeIterator> ();
-		try {
-			for (Long subscriptionId : subscriptions) {
-				
-				EntryTypeIterator eti = new EntryTypeIterator(resourceService, findUsagePointIds(subscriptionId), Subscription.class);
-				eti.setSubscriptionId(subscriptionId);
-			    result.add(eti);
-			}
-			
-		} catch (Exception e) {
-			// TODO need a log file entry as we are going to return a null if
-			// it's not found
-			result = null;
-		}
-		return result;	
-	}
-
-	@Override
-	public void delete(Subscription subscription) {
-		subscriptionRepository.deleteById(subscription.getId());
-	}
-
-	@Override
 	public void merge(Subscription subscription) {
 		subscriptionRepository.merge(subscription);
 	}
 
 	@Override
-	public Subscription importResource(InputStream stream) {
-		try {
-			importService.importData(stream, null);
-			EntryType entry = importService.getEntries().get(0);
-			Subscription subscription = entry.getContent().getSubscription();
-			return subscription;
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	@Override
 	public Subscription findById(Long subscriptionId) {
-		return subscriptionRepository.findById(subscriptionId);
-	}
-
-	@Override
-	public Subscription findById(Long retailCustomerId, Long subscriptionId) {
 		return subscriptionRepository.findById(subscriptionId);
 	}
 
@@ -231,7 +155,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		for (UsagePoint up : subscription.getUsagePoints()) {
 			result.add(up.getId());
 		}
-
 		return result;
 	}
 
@@ -242,8 +165,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 	@Override
 	@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
-			javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
-	public Subscription addUsagePoint(Subscription subscription, UsagePoint usagePoint) {
+			javax.persistence.NoResultException.class,
+			org.springframework.dao.EmptyResultDataAccessException.class })
+	public Subscription addUsagePoint(Subscription subscription,
+			UsagePoint usagePoint) {
 
 		subscription.getUsagePoints().add(usagePoint);
 		return subscription;
@@ -251,17 +176,24 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	}
 
 	@Override
-	public List<Long> findByBulkId(Long bulkId) {
-		// TODO :pending implementation of the bulk_id relationship in the
-		// domain object
-		List<Long> result = new ArrayList<Long>();
-		// for now treat this like a subscriptionId and just return it
-		result.add(bulkId);
+	public Long findRetailCustomerId(Long subscriptionId, Long usagePointId) {
+		Long result = null;
+		Subscription s = resourceService.findById(subscriptionId,
+				Subscription.class);
+		result = s.getRetailCustomer().getId();
+		if (result.equals(0L)) {
+			// we have a subscription that is based upon client credentials
+			// now we must find the actual retail customer associated with
+			// this particular usagePoint
+			result = resourceService.findById(usagePointId, UsagePoint.class)
+					.getRetailCustomer().getId();
+		}
+		s.getAuthorization().getRetailCustomer();
 		return result;
-
 	}
 
-	public void setSubscriptionRepository(SubscriptionRepository subscriptionRepository) {
+	public void setSubscriptionRepository(
+			SubscriptionRepository subscriptionRepository) {
 		this.subscriptionRepository = subscriptionRepository;
 	}
 
@@ -269,7 +201,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		return this.subscriptionRepository;
 	}
 
-	public void setUsagePointRepository(UsagePointRepository usagePointRepository) {
+	public void setUsagePointRepository(
+			UsagePointRepository usagePointRepository) {
 		this.usagePointRepository = usagePointRepository;
 	}
 
@@ -277,7 +210,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		return this.usagePointRepository;
 	}
 
-	public void setApplicationInformationService(ApplicationInformationService applicationInformationService) {
+	public void setApplicationInformationService(
+			ApplicationInformationService applicationInformationService) {
 		this.applicationInformationService = applicationInformationService;
 	}
 
@@ -300,4 +234,38 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	public ImportService getImportService() {
 		return this.importService;
 	}
+	/* LH customization starts here */
+	public Subscription createSubscription(OAuth2Authentication authentication, Long usagePointId) {
+		Subscription subscription = new Subscription();
+		subscription.setUUID(UUID.randomUUID());
+		subscription.setApplicationInformation(applicationInformationService.findByClientId(authentication
+				.getOAuth2Request().getClientId()));
+		// DJ
+		// subscription.setRetailCustomer((RetailCustomer)authentication.getPrincipal());
+
+		subscription.setRetailCustomer(((User) authentication.getPrincipal()).getRetailCustomer());
+		subscription.setUsagePoints(new ArrayList<UsagePoint>());
+
+		// set up the subscription's usagePoints list. Keep in mind that right
+		// now this is ALL usage points belonging to the RetailCustomer.
+		// TODO - scope this to only a selected (proper) subset of the
+		// usagePoints as passed
+		// through from the UX or a restful call.
+		List<Long> upIds = resourceService
+				.findAllIdsByXPath(subscription.getRetailCustomer().getId(), UsagePoint.class);
+		Iterator<Long> it = upIds.iterator();
+		while (it.hasNext()) {
+			Long upid = it.next();
+			if (usagePointId == null || usagePointId == 0 || usagePointId.longValue() == upid.longValue()) {
+				UsagePoint usagePoint = resourceService.findById(upid, UsagePoint.class);
+				subscription.getUsagePoints().add(usagePoint);
+			}
+		}
+		subscription.setLastUpdate(new GregorianCalendar());
+		subscriptionRepository.persist(subscription);
+
+		return subscription;
+	}
+
+
 }

@@ -58,19 +58,14 @@ import org.energyos.espi.common.models.atom.adapters.UsagePointAdapter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+
 /**
- * Logical point on a network at which consumption or production is either
- * physically measured (e.g., metered) or estimated (e.g., unmetered street
- * lights).
+ * Logical point on a network at which consumption or production is either physically measured (e.g., metered) or estimated (e.g., unmetered street lights).
  * <p/>
- * <p>
- * Java class for UsagePoint complex type.
+ * <p>Java class for UsagePoint complex type.
  * <p/>
- * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * <p/>
- * 
  * <pre>
  * &lt;complexType name="UsagePoint">
  *   &lt;complexContent>
@@ -85,9 +80,18 @@ import org.hibernate.annotations.LazyCollectionOption;
  * &lt;/complexType>
  * </pre>
  */
-@XmlRootElement(name = "UsagePoint")
+/**
+ * @author jat1
+ *
+ */
+@XmlRootElement(name="UsagePoint")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "UsagePoint", propOrder = { "roleFlags", "serviceCategory", "status", "serviceDeliveryPoint" })
+@XmlType(name = "UsagePoint", propOrder = {
+        "roleFlags",
+        "serviceCategory",
+        "status",
+        "serviceDeliveryPoint"
+})
 @Entity
 @Table(name = "usage_points", uniqueConstraints = { @UniqueConstraint(columnNames = { "uuid" }) })
 @NamedQueries(value = {
@@ -104,8 +108,11 @@ import org.hibernate.annotations.LazyCollectionOption;
 		@NamedQuery(name = UsagePoint.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT u.id FROM UsagePoint u WHERE u.retailCustomer.id = :o1Id AND u.id = :o2Id")
 
 })
+
 @XmlJavaTypeAdapter(UsagePointAdapter.class)
-public class UsagePoint extends IdentifiedObject {
+public class UsagePoint
+        extends IdentifiedObject
+{
 	public static final String QUERY_FIND_ALL_BY_RETAIL_CUSTOMER_ID = "UsagePoint.findUsagePointsByRetailCustomer";
 	public static final String QUERY_FIND_BY_UUID = "UsagePoint.findByUUID";
 	public static final String QUERY_FIND_BY_ID = "UsagePoint.findById";
@@ -118,32 +125,23 @@ public class UsagePoint extends IdentifiedObject {
 	public static final String QUERY_FIND_ALL_IDS_BY_XPATH_1 = "UsagePoint.findAllIdsByXpath1";
 	public static final String QUERY_FIND_ID_BY_XPATH = "UsagePoint.findIdByXpath";
 
-	@XmlElement(type = String.class)
-	@XmlJavaTypeAdapter(HexBinaryAdapter.class)
-	protected byte[] roleFlags;
+    
+    @XmlElement(type = String.class)
+    @XmlJavaTypeAdapter(HexBinaryAdapter.class)
+    protected byte[] roleFlags;
 
-	@XmlElement(name = "ServiceCategory")
-	@NotNull
-	// @ManyToOne (cascade = {CascadeType.DETACH, CascadeType.REFRESH})
-	protected ServiceCategory serviceCategory;
+    @XmlElement(name = "ServiceCategory")
+    @NotNull
+//    @Column(name="servicecategory_kind", columnDefinition="bigint(20) NOT NULL")
+    protected ServiceCategory serviceCategory;
+    
+    
+    
+    @XmlElement(name = "ServiceDeliveryPoint")
+    @OneToOne(cascade = {CascadeType.ALL})
+    protected ServiceDeliveryPoint serviceDeliveryPoint;
 
-	@XmlElement(name = "ServiceDeliveryPoint")
-	@OneToOne(cascade = { CascadeType.ALL })
-	protected ServiceDeliveryPoint serviceDeliveryPoint;
-
-	@XmlTransient
-	@Transient
-	protected UsagePointDetail usagePointDetail;
-
-	public UsagePointDetail getUsagePointDetail() {
-		return usagePointDetail;
-	}
-
-	public void setUsagePointDetail(UsagePointDetail usagePointDetail) {
-		this.usagePointDetail = usagePointDetail;
-	}
-
-	protected Short status;
+    protected Short status;
 
 	@XmlTransient
 	@OneToMany(mappedBy = "usagePoint", cascade = { CascadeType.ALL }, orphanRemoval = true)
@@ -185,12 +183,14 @@ public class UsagePoint extends IdentifiedObject {
 	@Transient
 	private Subscription subscription;
 
-	public void addMeterReading(MeterReading meterReading) {
+    public void addMeterReading(MeterReading meterReading)
+    {
 		meterReading.setUsagePoint(this);
 		meterReadings.add(meterReading);
 	}
 
-	public void removeMeterReading(MeterReading meterReading) {
+    public void removeMeterReading(MeterReading meterReading)
+    {
 		meterReading.setUsagePoint(null);
 		meterReadings.remove(meterReading);
 	}
@@ -211,68 +211,77 @@ public class UsagePoint extends IdentifiedObject {
 		return null;
 	}
 
-	/**
-	 * Gets the value of the roleFlags property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public byte[] getRoleFlags() {
-		return roleFlags;
-	}
+    /**
+     * Gets the value of the roleFlags property.
+     *
+     * @return
+     *     possible object is
+     *     {@link String }
+     *
+     */
+    public byte[] getRoleFlags() {
+        return roleFlags;
+    }
 
-	/**
-	 * Sets the value of the roleFlags property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setRoleFlags(byte[] value) {
-		this.roleFlags = value;
-	}
+    /**
+     * Sets the value of the roleFlags property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *
+     */
+    public void setRoleFlags(byte[] value) {
+        this.roleFlags = value;
+    }
 
-	/**
-	 * Gets the value of the serviceCategory property.
-	 * 
-	 * @return possible object is {@link ServiceCategory }
-	 * 
-	 */
-	public ServiceCategory getServiceCategory() {
-		return serviceCategory;
-	}
+    /**
+     * Gets the value of the serviceCategory property.
+     *
+     * @return
+     *     possible object is
+     *     {@link ServiceCategory }
+     *
+     */
+    public ServiceCategory getServiceCategory() {
+        return serviceCategory;
+    }
 
-	/**
-	 * Sets the value of the serviceCategory property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link ServiceCategory }
-	 * 
-	 */
-	public void setServiceCategory(ServiceCategory value) {
-		this.serviceCategory = value;
-	}
+    /**
+     * Sets the value of the serviceCategory property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link ServiceCategory }
+     *
+     */
+    public void setServiceCategory(ServiceCategory value) {
+        this.serviceCategory = value;
+    }
 
-	/**
-	 * Gets the value of the status property.
-	 * 
-	 * @return possible object is {@link Short }
-	 * 
-	 */
-	public Short getStatus() {
-		return status;
-	}
+    /**
+     * Gets the value of the status property.
+     *
+     * @return
+     *     possible object is
+     *     {@link Short }
+     *
+     */
+    public Short getStatus() {
+        return status;
+    }
 
-	/**
-	 * Sets the value of the status property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link Short }
-	 * 
-	 */
-	public void setStatus(Short value) {
-		this.status = value;
-	}
+    /**
+     * Sets the value of the status property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link Short }
+     *
+     */
+    public void setStatus(Short value) {
+        this.status = value;
+    }
 
 	public List<MeterReading> getMeterReadings() {
 		return meterReadings;
@@ -377,12 +386,14 @@ public class UsagePoint extends IdentifiedObject {
 		return QUERY_FIND_ALL_RELATED;
 	}
 
-	@Override
-	public void merge(IdentifiedObject resource) {
-		super.merge(resource);
-		this.setRelatedLinks(resource.getRelatedLinks());
-		this.setServiceCategory(((UsagePoint) resource).getServiceCategory());
-	}
+
+    @Override
+    public void merge(IdentifiedObject resource) {
+    	super.merge(resource);
+        this.setRelatedLinks(resource.getRelatedLinks());
+        this.setServiceCategory(((UsagePoint)resource).getServiceCategory());
+    }
+
 
 	@Override
 	public void unlink() {
@@ -397,27 +408,49 @@ public class UsagePoint extends IdentifiedObject {
 		getSubscriptions().clear();
 
 	}
+    
+	/**
+	 * 
+	 * @return
+	 */
+    public String getURI() {
+        return uri;
+    }
 
-	public String getURI() {
-		return uri;
+    /**
+     * 
+     * @param URI
+     */
+    public void setURI(String URI) {
+        this.uri = URI;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public Subscription getSubscription() {
+        return subscription;
+    }
+
+    /**
+     * 
+     * @param subscription
+     */
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
+    }
+    
+    /**
+     * 
+     * @param up
+     * @return
+     */
+    public boolean equals (UsagePoint up) {
+    	return (this.getId().equals(up.getId()));
 	}
 
-	public void setURI(String URI) {
-		this.uri = URI;
-	}
-
-	public Subscription getSubscription() {
-		return subscription;
-	}
-
-	public void setSubscription(Subscription subscription) {
-		this.subscription = subscription;
-	}
-
-	public boolean equals(UsagePoint up) {
-		return (this.getId().equals(up.getId()));
-	}
-
+    /* LH custom code starts here */
 	public String [] filterCompatibleWithScope(String[] scopes) {
 		List<String> compatibleScope = new ArrayList<String>(4);
 		for (int i = 0; i < scopes.length; i++) {
@@ -478,5 +511,17 @@ public class UsagePoint extends IdentifiedObject {
 			}
 		}
 		return false;
+	}
+	
+	@XmlTransient
+	@Transient
+	protected UsagePointDetail usagePointDetail;
+
+	public UsagePointDetail getUsagePointDetail() {
+		return usagePointDetail;
+	}
+
+	public void setUsagePointDetail(UsagePointDetail usagePointDetail) {
+		this.usagePointDetail = usagePointDetail;
 	}
 }

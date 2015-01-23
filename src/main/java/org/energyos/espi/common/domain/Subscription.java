@@ -102,7 +102,6 @@ public class Subscription
 
     @OneToOne
     @NotNull
-    //DJ
     @XmlTransient
     private ApplicationInformation applicationInformation;
 
@@ -193,7 +192,7 @@ public class Subscription
     }
 
     public boolean equals (Subscription s) {
-    	return (this.getId() == s.getId());
+    	return (this.getId().equals(s.getId()));
     }
     
     @PreRemove
