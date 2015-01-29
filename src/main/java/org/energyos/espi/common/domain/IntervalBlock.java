@@ -302,6 +302,8 @@ public class IntervalBlock
 					if (eir.getTimePeriod().getStart().equals(nir.getTimePeriod().getStart())) {
 						// for old one, take new one
 						eir.setTimePeriod(nir.getTimePeriod());
+						eir.setValue(nir.getValue());
+						eir.setReadingQualities(nir.getReadingQualities());
 						match = true;
 						break;
 					}

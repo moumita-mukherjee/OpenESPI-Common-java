@@ -24,6 +24,8 @@
 
 package org.energyos.espi.common.domain;
 
+import java.util.Date;
+
 import javax.persistence.Embeddable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -108,6 +110,9 @@ public class DateTimeInterval
      */
     public void setStart(Long value) {
         this.start = value;
+    }
+    public Date getDate() {
+    	return new Date(start.longValue()*1000L);
     }
 
 }

@@ -167,6 +167,15 @@ public class IntervalReading {
     public List<ReadingQuality> getReadingQualities() {
         return this.readingQualities;
     }
+    
+    public void setReadingQualities(List<ReadingQuality> rqs) {
+        this.readingQualities=rqs;
+        if(this.readingQualities!=null) {
+        	for(ReadingQuality rq:this.readingQualities) {
+        		rq.setIntervalReading(this);
+        	}
+        }
+    }
 
     /**
      * Gets the value of the timePeriod property.

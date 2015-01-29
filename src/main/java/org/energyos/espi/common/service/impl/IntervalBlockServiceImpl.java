@@ -30,6 +30,7 @@ import org.energyos.espi.common.service.ImportService;
 import org.energyos.espi.common.service.IntervalBlockService;
 import org.energyos.espi.common.service.ResourceService;
 import org.energyos.espi.common.utils.EntryTypeIterator;
+import org.energyos.espi.common.utils.ExportFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -188,7 +189,7 @@ public class IntervalBlockServiceImpl implements IntervalBlockService {
 		return intervalBlockRepository.merge(intervalBlock);
 	}
 		@Override
-	public List<IntervalBlock> findIntervalBlocksByPeriod(Long meterReadingId, AtomPeriod ap) {
+	public List<IntervalBlock> findIntervalBlocksByPeriod(Long meterReadingId, ExportFilter ap) {
 		return intervalBlockRepository.findIntervalBlocksByPeriod(meterReadingId, ap);
 	}
 

@@ -450,7 +450,7 @@ public class ExportServiceImpl implements ExportService {
 		exportEntries(
 				subscriptionId,
 				findEntryTypeIteratorXPath(subscriptionId, retailCustomerId,
-						usagePointId, meterReadingId, IntervalBlock.class),
+						usagePointId, meterReadingId, IntervalBlock.class,exportFilter),
 				stream, exportFilter, IntervalBlock.class, hrefFragment);
 	}
 
@@ -498,7 +498,7 @@ public class ExportServiceImpl implements ExportService {
 		exportEntries(
 				subscriptionId,
 				findEntryTypeIteratorXPath(subscriptionId, retailCustomerId,
-						usagePointId, 0L, MeterReading.class), stream,
+						usagePointId, 0L, MeterReading.class,exportFilter), stream,
 				exportFilter, MeterReading.class, hrefFragment);
 	}
 
@@ -540,7 +540,7 @@ public class ExportServiceImpl implements ExportService {
 			throws Exception {
 		String hrefFragment = "/RetailCustomer";
 		exportEntries(
-				findEntryTypeIteratorXPath(0L, 0L, 0L, 0L, RetailCustomer.class),
+				findEntryTypeIteratorXPath(0L, 0L, 0L, 0L, RetailCustomer.class,exportFilter),
 				stream, exportFilter, UsagePoint.class, hrefFragment);
 	}
 
@@ -644,7 +644,7 @@ public class ExportServiceImpl implements ExportService {
 		exportEntries(
 				subscriptionId,
 				findEntryTypeIteratorXPath(subscriptionId, retailCustomerId,
-						0L, 0L, UsagePoint.class), stream, exportFilter,
+						0L, 0L, UsagePoint.class,exportFilter), stream, exportFilter,
 				UsagePoint.class, hrefFragment);
 	}
 
@@ -818,7 +818,7 @@ public class ExportServiceImpl implements ExportService {
 
 		// start the recursion
         exportRootForm_Internal ("/Subscription/" + subscriptionId, subscriptionId, Long.valueOf(0L), Long.valueOf(0L), Long.valueOf(0L), 
-        		resourceService.findAllIds(UsagePoint.class), 
+        		resourceService.findAllIds(UsagePoint.class,exportFilter), 
         		UsagePoint.class, targetClass, stream, exportFilter);
 
 		stream.write("</feed>\n".getBytes());
@@ -867,7 +867,7 @@ public class ExportServiceImpl implements ExportService {
 						for (Long id2 : resourceService.findAllIdsByXPath(retailCustomerId, id, MeterReading.class)) {
 
 							nextResourceList = resourceService
-									.findAllIdsByXPath(retailCustomerId, usagePointId, id2, IntervalBlock.class);
+									.findAllIdsByXPath(retailCustomerId, usagePointId, id2, IntervalBlock.class,exportFilter);
 							exportRootForm_Internal(
 									workingFragment + "/MeterReading/" +id2,
 									subscriptionId, retailCustomerId, usagePointId, id2, nextResourceList,
@@ -1125,7 +1125,7 @@ public class ExportServiceImpl implements ExportService {
 	// TODO: need to make RetailCustomer inherit from IdentifiedObject to remove
 	// the above @Suppress
 	private EntryTypeIterator findEntryTypeIteratorXPath(Long subscriptionId,
-			Long id1, Long id2, Long id3, Class clazz) {
+			Long id1, Long id2, Long id3, Class clazz,ExportFilter exportFilter) {
 		EntryTypeIterator result = null;
 		List<Long> temp = new ArrayList<Long>();
 		Subscription subscription = null;
@@ -1133,9 +1133,11 @@ public class ExportServiceImpl implements ExportService {
 
 		try {
 
+			System.err.println("subscriptionId "+subscriptionId);
 			if (!(subscriptionId.equals(0L))) {
 				subscription = resourceService.findById(subscriptionId, Subscription.class);
 				Authorization authorization = subscription.getAuthorization();
+				System.err.println("authorization.getThirdParty() "+authorization.getThirdParty());
 				if (!(authorization.getThirdParty().contentEquals("third_party"))) {
 					// a special case (client credentials base) access. So the retailCustomerId is not
 					// correct
@@ -1161,11 +1163,12 @@ public class ExportServiceImpl implements ExportService {
 				// subscription
 				valid = true;
 			}
-
+			System.err.println("valid "+valid + " "+id1+ " "+id2+ " "+id3);
+			valid = true;
 			if (valid) {
 				if (!(id3.equals(0L))) {
 					temp = resourceService.findAllIdsByXPath(id1, id2, id3,
-							clazz);
+							clazz,exportFilter);
 				} else {
 					if (!(id2.equals(0L))) {
 						temp = resourceService.findAllIdsByXPath(id1, id2,
@@ -1208,7 +1211,7 @@ public class ExportServiceImpl implements ExportService {
 		EntryType mrentry = meterReadingService.findEntryType(retailCustomerId, usagePointId, meterReadingId);
 
 		List<IntervalBlock> blocks = intervalBlockService.findIntervalBlocksByPeriod(meterReadingId,
-				exportFilter.getFilterPeriod());
+				exportFilter);
 		System.err.println("mrentry.getId() "+mrentry.getId());
 		System.err.println("blocks.size() "+blocks.size());
 		

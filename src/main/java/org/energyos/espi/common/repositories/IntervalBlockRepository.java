@@ -22,6 +22,7 @@ import java.util.UUID;
 import org.energyos.espi.common.domain.AtomPeriod;
 import org.energyos.espi.common.domain.IntervalBlock;
 import org.energyos.espi.common.domain.MeterReading;
+import org.energyos.espi.common.utils.ExportFilter;
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,10 +52,10 @@ public interface IntervalBlockRepository {
 	void associateByUUID(MeterReading meterReading, UUID uuid);
 
 	public List<IntervalBlock> findIntervalBlocksByPeriod(Long meterReadingId,
-			AtomPeriod ap);
+			ExportFilter ap);
 
 	public List<IntervalBlock> findIntervalBlocksByUsagePoint(
-			Long usagePointId, AtomPeriod ap);
+			Long usagePointId, ExportFilter ap);
 
 	void flush();
 	public IntervalBlock merge(IntervalBlock resource);

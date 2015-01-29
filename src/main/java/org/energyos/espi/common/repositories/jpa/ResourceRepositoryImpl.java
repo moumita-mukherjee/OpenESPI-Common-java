@@ -34,6 +34,7 @@ import org.energyos.espi.common.domain.ReadingType;
 import org.energyos.espi.common.domain.TimeConfiguration;
 import org.energyos.espi.common.domain.UsagePoint;
 import org.energyos.espi.common.repositories.ResourceRepository;
+import org.energyos.espi.common.utils.ExportFilter;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -256,6 +257,22 @@ class ResourceRepositoryImpl implements ResourceRepository {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends IdentifiedObject> List<Long> findAllIds(Class<T> clazz,ExportFilter exportFilter) {
+		try {
+			String queryFindById = (String) clazz.getDeclaredField(
+					"QUERY_FIND_ALL_IDS_FILTER").get(String.class);
+			return em.createNamedQuery(queryFindById).setParameter("publishedMin", exportFilter.getFilterPeriod().getPublishedMin())
+					.setParameter("publishedMax", exportFilter.getFilterPeriod().getPublishedMax()).setParameter("updatedMin", exportFilter.getFilterPeriod().getUpdatedMin())
+					.setParameter("updatedMax", exportFilter.getFilterPeriod().getUpdatedMax()).setMaxResults(exportFilter.getMaxResults()).getResultList();
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			System.err.printf("**** FindAllIds Exception: %s - %s\n",
+					clazz.toString(), e.toString());
+			throw new RuntimeException(e);
+		}
+	}
+
     @SuppressWarnings("unchecked")
 	@Override
 	public <T extends IdentifiedObject> List<Long> findAllIdsByUsagePointId(
@@ -332,7 +349,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1,
-			Long id2, Long id3, Class<T> clazz) {
+			Long id2, Long id3, Class<T> clazz,ExportFilter exportFilter) {
         try {
 			String findAllIdsByXPath = (String) clazz.getDeclaredField(
 					"QUERY_FIND_ALL_IDS_BY_XPATH_3").get(String.class);

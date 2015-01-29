@@ -23,6 +23,7 @@ import org.energyos.espi.common.domain.AtomPeriod;
 import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.Linkable;
 import org.energyos.espi.common.domain.UsagePoint;
+import org.energyos.espi.common.utils.ExportFilter;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface ResourceRepository {
@@ -45,6 +46,8 @@ public interface ResourceRepository {
     <T extends IdentifiedObject> T findById(Long id, Class<T> clazz);
 
     <T extends IdentifiedObject> List<Long> findAllIds(Class<T> clazz);
+    
+    <T extends IdentifiedObject> List<Long> findAllIds(Class<T> clazz,ExportFilter exportFilter);
 
     <T extends IdentifiedObject> List<Long> findAllIdsByUsagePointId(Long usagePointId, Class<T> clazz);
 
@@ -52,7 +55,7 @@ public interface ResourceRepository {
 	
 	<T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1, Long id2, Class<T> clazz);
 	
-	<T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1, Long id2, Long id3, Class<T> clazz);
+	<T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1, Long id2, Long id3, Class<T> clazz,ExportFilter exportFilter);
 
 	<T extends IdentifiedObject> List<Long> findAllIdsByXPath(Class<T> clazz);
 	

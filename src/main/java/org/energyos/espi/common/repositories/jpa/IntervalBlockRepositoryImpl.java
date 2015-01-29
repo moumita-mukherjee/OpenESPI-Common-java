@@ -27,6 +27,7 @@ import org.energyos.espi.common.domain.AtomPeriod;
 import org.energyos.espi.common.domain.IntervalBlock;
 import org.energyos.espi.common.domain.MeterReading;
 import org.energyos.espi.common.repositories.IntervalBlockRepository;
+import org.energyos.espi.common.utils.ExportFilter;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -125,17 +126,17 @@ public class IntervalBlockRepositoryImpl implements IntervalBlockRepository {
 		em.flush();
 	}
 
-	public List<IntervalBlock> findIntervalBlocksByUsagePoint(Long usagePointId, AtomPeriod ap) {
+	public List<IntervalBlock> findIntervalBlocksByUsagePoint(Long usagePointId, ExportFilter ap) {
 		return null;
 	}
 		@SuppressWarnings("unchecked")
 	@Override
-	public List<IntervalBlock> findIntervalBlocksByPeriod(Long meterReadingId, AtomPeriod ap) {
+	public List<IntervalBlock> findIntervalBlocksByPeriod(Long meterReadingId, ExportFilter ap) {
 		return (List<IntervalBlock>) this.em.createNamedQuery(IntervalBlock.QUERY_FIND_BY_PERIOD)
-				.setParameter("meterReadingId", meterReadingId).setParameter("publishedMin", ap.getPublishedMin())
-				.setParameter("publishedMax", ap.getPublishedMax()).setParameter("updatedMin", ap.getUpdatedMin())
-				.setParameter("updatedMax", ap.getUpdatedMax()).setParameter("usageMin", ap.getUsageMin())
-				.setParameter("usageMax", ap.getUsageMax()).getResultList();
+				.setParameter("meterReadingId", meterReadingId).setParameter("publishedMin", ap.getFilterPeriod().getPublishedMin())
+				.setParameter("publishedMax", ap.getFilterPeriod().getPublishedMax()).setParameter("updatedMin", ap.getFilterPeriod().getUpdatedMin())
+				.setParameter("updatedMax", ap.getFilterPeriod().getUpdatedMax()).setParameter("usageMin", ap.getFilterPeriod().getUsageMin())
+				.setParameter("usageMax", ap.getFilterPeriod().getUsageMax()).getResultList();
 
 	}
 		@Override

@@ -21,6 +21,7 @@ public class ExportFilter {
 	private int matchedCounter = 0, emittedCounter = 0;
 	private AtomPeriod filterPeriod = new AtomPeriod();
 	private boolean subscriptionReq=false;
+	private int maxResults=1000;
 
 	public boolean isSubscriptionReq() {
 		return subscriptionReq;
@@ -40,19 +41,25 @@ public class ExportFilter {
 
 	public ExportFilter(Map<String, String> params) throws Exception{
 		this.params = params;
+		if (hasParam("max-results")) {
+			if (!(params.get("max-results").equals("All"))) {
+				maxResults= Integer.valueOf(params.get("max-results").trim());									
+			}
+		}
+
 		// update the filter period
 		filterPeriod = new AtomPeriod();
 		if (hasParam("published-min")) {
-			filterPeriod.getPublishedMin().setTime(toTime("published-min"));
+			filterPeriod.getPublishedMin().setTimeInMillis(toTime("published-min"));
 		}
 		if (hasParam("published-max")) {
-			filterPeriod.getPublishedMax().setTime(toTime("published-max"));
+			filterPeriod.getPublishedMax().setTimeInMillis(toTime("published-max"));
 		}
 		if (hasParam("updated-min")) {
-			filterPeriod.getUpdatedMin().setTime(toTime("updated-min"));
+			filterPeriod.getUpdatedMin().setTimeInMillis(toTime("updated-min"));
 		}
 		if (hasParam("updated-max")) {
-			filterPeriod.getUpdatedMax().setTime(toTime("updated-max"));
+			filterPeriod.getUpdatedMax().setTimeInMillis(toTime("updated-max"));
 		}
 		if (hasParam("usage-min")) {
 			filterPeriod.setUsageMin(Long.parseLong(params.get("usage-min").trim()));
@@ -66,7 +73,7 @@ public class ExportFilter {
 	}
 
 	public boolean matches(EntryType entry) throws Exception {
-		System.err.println(entry.isVisited() + " ---- "+entry + "  --- "+entry.getContent().getResource());
+		//System.err.println(entry.isVisited() + " ---- "+entry + "  --- "+entry.getContent().getResource());
 		if(entry.isVisited()) {
 			return false;
 		}
@@ -229,5 +236,12 @@ public class ExportFilter {
 	@Override
 	public int hashCode() {
 		return params.hashCode();
+	}
+	public int getMaxResults() {
+		return maxResults;
+	}
+
+	public void setMaxResults(int maxResults) {
+		this.maxResults = maxResults;
 	}
 }

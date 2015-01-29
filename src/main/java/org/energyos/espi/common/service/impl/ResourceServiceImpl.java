@@ -37,6 +37,7 @@ import org.energyos.espi.common.models.atom.EntryType;
 import org.energyos.espi.common.repositories.ResourceRepository;
 import org.energyos.espi.common.service.ResourceService;
 import org.energyos.espi.common.utils.EntryTypeIterator;
+import org.energyos.espi.common.utils.ExportFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -175,6 +176,11 @@ public class ResourceServiceImpl implements ResourceService {
 	public <T extends IdentifiedObject> List<Long> findAllIds(Class<T> clazz) {
 		return repository.findAllIds(clazz);
 	}
+	@Override
+	public <T extends IdentifiedObject> List<Long> findAllIds(Class<T> clazz,ExportFilter exportFilter) {
+		return repository.findAllIds(clazz,exportFilter);
+	}
+
 
     @Override
     public <T extends IdentifiedObject> List<Long> findAllIdsByUsagePointId(Long id, Class<T> clazz) {
@@ -203,8 +209,8 @@ public class ResourceServiceImpl implements ResourceService {
 
 	@Override
 	public <T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1,
-			Long id2, Long id3, Class<T> clazz) {
-		return repository.findAllIdsByXPath(id1, id2, id3, clazz);
+			Long id2, Long id3, Class<T> clazz,ExportFilter exportFilter) {
+		return repository.findAllIdsByXPath(id1, id2, id3, clazz,exportFilter);
 	}
 
 	@Override
@@ -234,10 +240,16 @@ public class ResourceServiceImpl implements ResourceService {
 	public void setRepository(ResourceRepository repository) {
 		this.repository = repository;
 	}
-
 	@Override
 	public <T extends IdentifiedObject> EntryTypeIterator findEntryTypeIterator(Class<T> clazz) {
 		List<Long> idList = repository.findAllIds(clazz);
+		return findEntryTypeIterator(idList, clazz);
+	}
+
+
+	@Override
+	public <T extends IdentifiedObject> EntryTypeIterator findEntryTypeIterator(Class<T> clazz,ExportFilter exportFilter) {
+		List<Long> idList = repository.findAllIds(clazz,exportFilter);
 		return findEntryTypeIterator(idList, clazz);
 	}
 

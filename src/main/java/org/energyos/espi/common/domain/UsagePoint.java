@@ -104,6 +104,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 		@NamedQuery(name = UsagePoint.QUERY_FIND_BY_URI, query = "SELECT point FROM UsagePoint point WHERE point.uri = :uri"),
 		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS_FOR_RETAIL_CUSTOMER, query = "SELECT point.id from UsagePoint point where point.retailCustomer.id = :retailCustomerId"),
 		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS, query = "SELECT point.id from UsagePoint point"),
+		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS_FILTER, query = "SELECT point.id from UsagePoint point where point.published >=:publishedMin AND point.published <=:publishedMax AND point.updated >=:updatedMin and point.updated <=:updatedMax"),
 		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS_BY_XPATH_1, query = "SELECT DISTINCT u.id FROM UsagePoint u WHERE u.retailCustomer.id = :o1Id"),
 		@NamedQuery(name = UsagePoint.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT u.id FROM UsagePoint u WHERE u.retailCustomer.id = :o1Id AND u.id = :o2Id")
 
@@ -122,6 +123,7 @@ public class UsagePoint
 	public static final String QUERY_FIND_BY_URI = "UsagePoint.findByURI";
 	public static final String QUERY_FIND_ALL_IDS_FOR_RETAIL_CUSTOMER = "UsagePoint.findAllIdsForRetailCustomer";
 	public static final String QUERY_FIND_ALL_IDS = "UsagePoint.findAllIds";
+	public static final String QUERY_FIND_ALL_IDS_FILTER = "UsagePoint.findAllIdsByFilter";
 	public static final String QUERY_FIND_ALL_IDS_BY_XPATH_1 = "UsagePoint.findAllIdsByXpath1";
 	public static final String QUERY_FIND_ID_BY_XPATH = "UsagePoint.findIdByXpath";
 

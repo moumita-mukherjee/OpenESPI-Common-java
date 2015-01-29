@@ -26,6 +26,7 @@ import org.energyos.espi.common.domain.IntervalBlock;
 import org.energyos.espi.common.domain.Linkable;
 import org.energyos.espi.common.models.atom.EntryType;
 import org.energyos.espi.common.utils.EntryTypeIterator;
+import org.energyos.espi.common.utils.ExportFilter;
 
 /**
  * Provides a resource type independent access to ESPI Resources
@@ -72,6 +73,7 @@ public interface ResourceService {
 	 * 
 	 */
 	<T extends IdentifiedObject> List<Long> findAllIds(Class<T> clazz);
+	<T extends IdentifiedObject> List<Long> findAllIds(Class<T> clazz,ExportFilter exportFilter);
 
 	/**
 	 * @param usagePointId
@@ -123,7 +125,7 @@ public interface ResourceService {
 	 * @param clazz
 	 * @return a List of Long's == resourceIds of the resultant search
 	 */
-	<T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1, Long id2, Long id3, Class<T> clazz);
+	<T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1, Long id2, Long id3, Class<T> clazz,ExportFilter exportFilter);
 
 	/**
 	 * @param id1
@@ -164,6 +166,7 @@ public interface ResourceService {
 	 * @return an {@link EntryTypeIterator} that may be used to export the associated resource tree
 	 *
 	 */
+	<T extends IdentifiedObject> EntryTypeIterator findEntryTypeIterator(Class<T> clazz,ExportFilter exportFilter);
 	<T extends IdentifiedObject> EntryTypeIterator findEntryTypeIterator(Class<T> clazz);
 	
 	/**

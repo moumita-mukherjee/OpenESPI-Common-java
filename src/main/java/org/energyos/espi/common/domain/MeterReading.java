@@ -91,6 +91,7 @@ import org.hibernate.annotations.LazyCollectionOption;
                 query = "SELECT reading.id FROM MeterReading reading WHERE reading.usagePoint.id = :usagePointId"),
         @NamedQuery(name = MeterReading.QUERY_FIND_ALL_IDS,
                 query = "SELECT meterReading.id FROM MeterReading meterReading"),
+        @NamedQuery(name = MeterReading.QUERY_FIND_ALL_IDS_FILTER, query = "SELECT meterReading.id FROM MeterReading meterReading where meterReading.published >=:publishedMin AND meterReading.published <=:publishedMax AND meterReading.updated >=:updatedMin and meterReading.updated <=:updatedMax"),
         @NamedQuery(name = MeterReading.QUERY_FIND_ALL_IDS_BY_XPATH_2, query = "SELECT DISTINCT m.id FROM UsagePoint u, MeterReading m WHERE u.retailCustomer.id = :o1Id AND m.usagePoint.id = :o2Id"),
         @NamedQuery(name = MeterReading.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT m.id FROM  UsagePoint u, MeterReading m WHERE u.retailCustomer.id = :o1Id AND m.usagePoint.id = :o2Id AND m.id = :o3Id")
 
@@ -105,6 +106,7 @@ public class MeterReading extends IdentifiedObject
     public static final String QUERY_FIND_ALL_RELATED = "MeterReading.findAllRelated";
     public static final String QUERY_FIND_ALL_IDS_BY_USAGE_POINT_ID = "MeterReading.findAllIdsByUsagePointId";
 	public static final String QUERY_FIND_ALL_IDS = "MeterReading.findAllIds";
+	public static final String QUERY_FIND_ALL_IDS_FILTER = "MeterReading.findAllIdsByFilter";
     public static final String QUERY_FIND_ALL_IDS_BY_XPATH_2 = "MeterReading.findAllIdsByXpath2";
     public static final String QUERY_FIND_ID_BY_XPATH = "MeterReading.findIdByXpath";
     
