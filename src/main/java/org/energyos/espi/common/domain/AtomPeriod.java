@@ -24,21 +24,19 @@
 package org.energyos.espi.common.domain;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class AtomPeriod {
 
 	private static GregorianCalendar mindate=new GregorianCalendar(2000,0,1);
+	private static GregorianCalendar maxdate=new GregorianCalendar(9999,0,1);
 	public AtomPeriod() {
 		super();
 		updatedMin = new GregorianCalendar(mindate.get(Calendar.YEAR),mindate.get(Calendar.MONTH),mindate.get(Calendar.DAY_OF_MONTH));
-		//updatedMin.set(2000, 0, 1);
-		updatedMax = new GregorianCalendar();
+		updatedMax = new GregorianCalendar(maxdate.get(Calendar.YEAR),maxdate.get(Calendar.MONTH),maxdate.get(Calendar.DAY_OF_MONTH));
 
 		publishedMin = new GregorianCalendar(mindate.get(Calendar.YEAR),mindate.get(Calendar.MONTH),mindate.get(Calendar.DAY_OF_MONTH));
-		//publishedMin.set(2000, 0, 1);
-		publishedMax = new GregorianCalendar();
+		publishedMax = new GregorianCalendar(maxdate.get(Calendar.YEAR),maxdate.get(Calendar.MONTH),maxdate.get(Calendar.DAY_OF_MONTH));
 	}
 
 	public boolean isFilterOnPublished() {

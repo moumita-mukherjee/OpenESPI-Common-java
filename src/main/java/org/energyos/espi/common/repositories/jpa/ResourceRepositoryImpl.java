@@ -263,6 +263,8 @@ class ResourceRepositoryImpl implements ResourceRepository {
 		try {
 			String queryFindById = (String) clazz.getDeclaredField(
 					"QUERY_FIND_ALL_IDS_FILTER").get(String.class);
+			
+			System.err.print("exportFilter.getFilterPeriod()="+exportFilter.getFilterPeriod());
 			return em.createNamedQuery(queryFindById).setParameter("publishedMin", exportFilter.getFilterPeriod().getPublishedMin())
 					.setParameter("publishedMax", exportFilter.getFilterPeriod().getPublishedMax()).setParameter("updatedMin", exportFilter.getFilterPeriod().getUpdatedMin())
 					.setParameter("updatedMax", exportFilter.getFilterPeriod().getUpdatedMax()).setMaxResults(exportFilter.getMaxResults()).getResultList();

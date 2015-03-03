@@ -86,7 +86,7 @@ import org.hibernate.annotations.LazyCollectionOption;
         "value",
         "consumptionTier",
         "tou",
-        "cpp"
+        "cpp"        
 })
 @Entity
 @Table(name = "interval_readings")
@@ -142,6 +142,26 @@ public class IntervalReading {
      */
     public void setCost(Long value) {
         this.cost = value;
+    }
+    
+    /**
+     * Gets the value of the cost property.
+     *
+     * @return possible object is
+     *         {@link Long }
+     */
+    public Long getTou() {
+        return tou;
+    }
+
+    /**
+     * Sets the value of the cost property.
+     *
+     * @param value allowed object is
+     * {@link Long }
+     */
+    public void setTou(Long tou) {
+        this.tou = tou;
     }
 
     /**
@@ -238,4 +258,16 @@ public class IntervalReading {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	@XmlTransient
+	private String msg;
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+	
 }

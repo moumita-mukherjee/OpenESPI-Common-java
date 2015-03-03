@@ -24,7 +24,9 @@
 
 package org.energyos.espi.common.domain;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import javax.persistence.Embeddable;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -111,8 +113,11 @@ public class DateTimeInterval
     public void setStart(Long value) {
         this.start = value;
     }
-    public Date getDate() {
-    	return new Date(start.longValue()*1000L);
+    public Date getDate(TimeZone zone) {
+    	Calendar cal=Calendar.getInstance(TimeZone.getTimeZone("EST"));
+    	cal.setTimeInMillis(start.longValue()*1000L);
+    	cal.setTimeZone(zone);
+    	return cal.getTime();
     }
 
 }

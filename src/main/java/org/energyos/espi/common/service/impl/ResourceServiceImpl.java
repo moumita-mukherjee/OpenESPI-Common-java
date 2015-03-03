@@ -369,7 +369,7 @@ public class ResourceServiceImpl implements ResourceService {
 	}
 
 	@Override
-	public List<IntervalBlock> findAllByUsagePointId(Long id, AtomPeriod ap) {
+	public List<IntervalBlock> findAllByUsagePointId(Long id, ExportFilter ap) {
 		// not implemented
 		return null;
 

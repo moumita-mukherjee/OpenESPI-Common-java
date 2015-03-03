@@ -121,32 +121,33 @@ public class EntryTypeIterator {
 		}
 		blockcache.clear();
 		try {
-			log.debug(usagePointId + " Load  IntervalBlock " + fileterPeriod);
-
+			log.debug(usagePointId + " Load  IntervalBlock " + exportFilter);
 			HashMap<Long, MeterReading> lomcalmrmap = new HashMap<Long, MeterReading>();
 
-			List<IntervalBlock> blocks = resourceService.findAllByUsagePointId(usagePointId, fileterPeriod);
-
-			for (IntervalBlock block : blocks) {
-				blockcache.put(block.getId(), block);
-				if (block.getMeterReading() == null) {
-					// associate meter reading
-					MeterReading mr = null;
-					if (lomcalmrmap.containsKey(block.getMeterReadingId())) {
-						mr = lomcalmrmap.get(block.getMeterReadingId());
-					} else {
-						try {
-							mr = resourceService.findById(block.getMeterReadingId(), MeterReading.class);
-							lomcalmrmap.put(mr.getId(), mr);
-						} catch (EmptyResultDataAccessException ignore) {
-
+			List<IntervalBlock> blocks = resourceService.findAllByUsagePointId(usagePointId, exportFilter);
+			
+			if(blocks!=null) {
+				for (IntervalBlock block : blocks) {
+					blockcache.put(block.getId(), block);
+					if (block.getMeterReading() == null) {
+						// associate meter reading
+						MeterReading mr = null;
+						if (lomcalmrmap.containsKey(block.getMeterReadingId())) {
+							mr = lomcalmrmap.get(block.getMeterReadingId());
+						} else {
+							try {
+								mr = resourceService.findById(block.getMeterReadingId(), MeterReading.class);
+								lomcalmrmap.put(mr.getId(), mr);
+							} catch (EmptyResultDataAccessException ignore) {
+	
+							}
 						}
+						block.setMeterReading(mr);
+					} else {
+						lomcalmrmap.put(block.getMeterReadingId(), block.getMeterReading());
 					}
-					block.setMeterReading(mr);
-				} else {
-					lomcalmrmap.put(block.getMeterReadingId(), block.getMeterReading());
+					pairs.add(new ImmutablePair<Long, Class>(block.getId(), IntervalBlock.class));
 				}
-				pairs.add(new ImmutablePair<Long, Class>(block.getId(), IntervalBlock.class));
 			}
 		} catch (EmptyResultDataAccessException ignore) {
 			log.warn("Exception ", ignore);
@@ -195,14 +196,14 @@ public class EntryTypeIterator {
 		return this.subscriptionId;
 	}
 	/* LH customization starts here */
-	private AtomPeriod fileterPeriod;
+	private ExportFilter exportFilter;
 
-	public AtomPeriod getFileterPeriod() {
-		return fileterPeriod;
+	public ExportFilter getExportFilter() {
+		return exportFilter;
 	}
 
-	public void setFileterPeriod(AtomPeriod fileterPeriod) {
-		this.fileterPeriod = fileterPeriod;
+	public void setExportFilter(ExportFilter fileterPeriod) {
+		this.exportFilter = fileterPeriod;
 	}
 
 	private HashMap<Long, IntervalBlock> blockcache = new HashMap<Long, IntervalBlock>();	

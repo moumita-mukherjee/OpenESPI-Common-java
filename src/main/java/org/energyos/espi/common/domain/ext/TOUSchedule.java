@@ -10,13 +10,24 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+
+import org.energyos.espi.common.utils.DateTimeUtils;
 @Entity
 @Table(name = "tou_schedules")
 @NamedQueries(value = {
-		@NamedQuery(name = TOUSchedule.QUERY_FIND_ALL, query = "SELECT tou FROM TOUSchedule tou")		
+		@NamedQuery(name = TOUSchedule.QUERY_FIND_ALL, query = "SELECT tou FROM TOUSchedule tou order by tou.effDate, tou.effHour ")		
 })
 public class TOUSchedule {
 	private static final long serialVersionUID = 2039274056287015564L;
+
+	public static final String TOU_OP="TOU_OP";
+	public static final String TOU_MP="TOU_MP";
+	public static final String TOU_PK="TOU_PK";
+	
+	public static final long TOU_OP_GB=1L;
+	public static final long TOU_MP_GB=2L;
+	public static final long TOU_PK_GB=3L;
+
 
 	public static final String QUERY_FIND_ALL = "TOUSchedule.findAll";
 	
@@ -125,7 +136,7 @@ public class TOUSchedule {
 	}
 
 	public boolean matches(Date date) {
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = DateTimeUtils.getCalendarInstance();
 		// First match dates
 		cal.setTime(date);
 		cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -142,8 +153,12 @@ public class TOUSchedule {
 
 		cal.clear();
 		cal.setTime(date);
+		
 
-		int h = cal.get(Calendar.HOUR_OF_DAY);
+		boolean match;
+		int h = cal.get(Calendar.HOUR_OF_DAY);		
+		
+		
 		// Hours are relative to the epoch
 		cal.clear();
 		cal.setTime(effHour);
@@ -151,8 +166,10 @@ public class TOUSchedule {
 		cal.setTime(endHour);
 		cal.add(Calendar.MINUTE, 1); // A workaround for up-to-a-minute schedule
 		int endh = cal.get(Calendar.HOUR_OF_DAY);
-
-		boolean match;
+		
+		effh=effHour.getHours();
+		endh=endHour.getHours();
+		
 		// If this is the night schedule, time must be shifted 12 hours
 		if (effh > endh) {
 			match = (h >= effh && h <= 23) || (h >= 0 && h < endh); // Looking
@@ -160,7 +177,18 @@ public class TOUSchedule {
 		} else {
 			match = h >= effh && h < endh;
 		}
+		System.err.println(match +" "+ effHour + "--"+endHour +" effh " + effh+ " endh "+endh + " H " + h+" date "+date);		
+
+
 		return match;
+	}
+	public long getTOUCode() {
+		if (TOU_OP.equals(peak)) return TOU_OP_GB;
+		if (TOU_MP.equals(peak)) return TOU_MP_GB;
+		if (TOU_PK.equals(peak)) return TOU_PK_GB;;
+		
+		return 0L;
+		
 	}
 
 }

@@ -117,4 +117,12 @@ public class ContractRate
     
     public String getSupplyRateSuffix() { return supplyRate == null || supplyRate.indexOf("_") == -1 ? "" :supplyRate.substring(supplyRate.indexOf("_") + 1); }
     
+    public String toString() {
+    	StringBuffer sb = new StringBuffer();
+    	sb.append(" contractId"+contractId);
+    	sb.append(" supplyRate"+supplyRate);
+    	sb.append(" distributionRate"+distributionRate);
+    	return sb.toString();
+    }
+    
 }

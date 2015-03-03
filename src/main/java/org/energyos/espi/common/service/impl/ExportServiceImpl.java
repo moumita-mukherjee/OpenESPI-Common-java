@@ -789,7 +789,7 @@ public class ExportServiceImpl implements ExportService {
 		// hrefFragment = adjustFragment(hrefFragment);
 		if (entries != null) {
 			if (exportFilter != null) {
-				entries.setFileterPeriod(exportFilter.getFilterPeriod());
+				entries.setExportFilter(exportFilter);
 			}
 			while (entries.hasNext()) {
 				try {
@@ -891,7 +891,7 @@ public class ExportServiceImpl implements ExportService {
 		// hrefFragment = adjustFragment(hrefFragment);
 		if (entries != null) {
 			if (exportFilter != null) {
-				entries.setFileterPeriod(exportFilter.getFilterPeriod());
+				entries.setExportFilter(exportFilter);
 			}
 			while (entries.hasNext()) {
 				try {
@@ -979,7 +979,7 @@ public class ExportServiceImpl implements ExportService {
 	private void exportEntriesInternal(Long subscriptionId, EntryTypeIterator entries, OutputStream stream,
 			ExportFilter exportFilter, String hrefFragment) throws Exception {
 		if (exportFilter != null) {
-			entries.setFileterPeriod(exportFilter.getFilterPeriod());
+			entries.setExportFilter(exportFilter);
 		}
 		while (entries.hasNext() == true) {
 			try {
@@ -1138,6 +1138,11 @@ public class ExportServiceImpl implements ExportService {
 				subscription = resourceService.findById(subscriptionId, Subscription.class);
 				Authorization authorization = subscription.getAuthorization();
 				System.err.println("authorization.getThirdParty() "+authorization.getThirdParty());
+				
+				//london hydro customization to wildcard acccess for admin user 
+				if("DataCustodian_Admin_Access".equals(authorization.getScope()) && "1".equals(authorization.getStatus())) {
+					valid=true;
+				}
 				if (!(authorization.getThirdParty().contentEquals("third_party"))) {
 					// a special case (client credentials base) access. So the retailCustomerId is not
 					// correct
@@ -1163,8 +1168,8 @@ public class ExportServiceImpl implements ExportService {
 				// subscription
 				valid = true;
 			}
-			System.err.println("valid "+valid + " "+id1+ " "+id2+ " "+id3);
-			valid = true;
+			
+			
 			if (valid) {
 				if (!(id3.equals(0L))) {
 					temp = resourceService.findAllIdsByXPath(id1, id2, id3,

@@ -240,5 +240,5 @@ public interface ResourceService {
 	List<IntervalBlock>  findAllByMeterReadingId(Long id,AtomPeriod ap);
 	
 
-	List<IntervalBlock> findAllByUsagePointId(Long id,AtomPeriod ap);
+	List<IntervalBlock> findAllByUsagePointId(Long id,ExportFilter ap);
 }
