@@ -24,6 +24,7 @@ import java.util.UUID;
 import javax.persistence.NoResultException;
 
 import org.energyos.espi.common.domain.Authorization;
+import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.Subscription;
 import org.energyos.espi.common.domain.UsagePoint;
 import org.energyos.espi.common.models.atom.EntryType;
@@ -57,7 +58,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	}
 
     @Override
-    public List<Long> findAllIdsByApplicationInformationId(Long applicationInformationId) {	
+    public List<IdentifiedObject> findAllIdsByApplicationInformationId(Long applicationInformationId) {	
     	return authorizationRepository.findAllIdsByApplicationInformationId(applicationInformationId);
     }
 
@@ -132,9 +133,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		try {
 			// TODO - this is sub-optimal (but defers the need to understand
 			// creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 			Authorization authorization = authorizationRepository.findById(authorizationId);
-			temp.add(authorization.getId());
+			temp.add(authorization);
 			result = (new EntryTypeIterator(resourceService, temp, Authorization.class)).nextEntry(Authorization.class);
 		} catch (Exception e) {
 			// TODO need a log file entry as we are going to return a null if
@@ -150,7 +151,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		try {
 			// TODO - this is sub-optimal (but defers the need to understan
 			// creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 			temp = authorizationRepository.findAllIds(retailCustomerId);
 			result = (new EntryTypeIterator(resourceService, temp, Authorization.class));
 		} catch (Exception e) {
@@ -167,9 +168,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		try {
 			// TODO - this is sub-optimal (but defers the need to understan
 			// creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 			Authorization authorization = authorizationRepository.findById(authorizationId);
-			temp.add(authorization.getId());
+			temp.add(authorization);
 			result = (new EntryTypeIterator(resourceService, temp, Authorization.class)).next();
 		} catch (Exception e) {
 			// TODO need a log file entry as we are going to return a null if
@@ -185,7 +186,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		try {
 			// TODO - this is sub-optimal (but defers the need to understan
 			// creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 			temp = authorizationRepository.findAllIds();
 			result = (new EntryTypeIterator(resourceService, temp, Authorization.class));
 		} catch (Exception e) {

@@ -88,12 +88,12 @@ import org.hibernate.annotations.LazyCollectionOption;
         @NamedQuery(name = MeterReading.QUERY_FIND_ALL_RELATED,
                 query = "SELECT readingType FROM ReadingType readingType WHERE readingType.selfLink.href in (:relatedLinkHrefs)"),
         @NamedQuery(name = MeterReading.QUERY_FIND_ALL_IDS_BY_USAGE_POINT_ID,
-                query = "SELECT reading.id FROM MeterReading reading WHERE reading.usagePoint.id = :usagePointId"),
+                query = "SELECT reading FROM MeterReading reading WHERE reading.usagePoint.id = :usagePointId"),
         @NamedQuery(name = MeterReading.QUERY_FIND_ALL_IDS,
-                query = "SELECT meterReading.id FROM MeterReading meterReading"),
-        @NamedQuery(name = MeterReading.QUERY_FIND_ALL_IDS_FILTER, query = "SELECT meterReading.id FROM MeterReading meterReading where meterReading.published >=:publishedMin AND meterReading.published <=:publishedMax AND meterReading.updated >=:updatedMin and meterReading.updated <=:updatedMax"),
-        @NamedQuery(name = MeterReading.QUERY_FIND_ALL_IDS_BY_XPATH_2, query = "SELECT DISTINCT m.id FROM UsagePoint u, MeterReading m WHERE u.retailCustomer.id = :o1Id AND m.usagePoint.id = :o2Id"),
-        @NamedQuery(name = MeterReading.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT m.id FROM  UsagePoint u, MeterReading m WHERE u.retailCustomer.id = :o1Id AND m.usagePoint.id = :o2Id AND m.id = :o3Id")
+                query = "SELECT meterReading FROM MeterReading meterReading"),
+        @NamedQuery(name = MeterReading.QUERY_FIND_ALL_IDS_FILTER, query = "SELECT meterReading FROM MeterReading meterReading where meterReading.published >=:publishedMin AND meterReading.published <=:publishedMax AND meterReading.updated >=:updatedMin and meterReading.updated <=:updatedMax"),
+        @NamedQuery(name = MeterReading.QUERY_FIND_ALL_IDS_BY_XPATH_2, query = "SELECT DISTINCT m FROM UsagePoint u, MeterReading m WHERE u.retailCustomer.id = :o1Id AND m.usagePoint.id = :o2Id"),
+        @NamedQuery(name = MeterReading.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT m FROM  UsagePoint u, MeterReading m WHERE u.retailCustomer.id = :o1Id AND m.usagePoint.id = :o2Id AND m.id = :o3Id")
 
 })
 

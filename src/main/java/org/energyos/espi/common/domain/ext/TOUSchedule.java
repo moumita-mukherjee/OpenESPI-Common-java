@@ -136,7 +136,7 @@ public class TOUSchedule {
 	}
 
 	public boolean matches(Date date) {
-		Calendar cal = DateTimeUtils.getCalendarInstance();
+		Calendar cal = DateTimeUtils.getLocalCalendarInstance();
 		// First match dates
 		cal.setTime(date);
 		cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -144,7 +144,11 @@ public class TOUSchedule {
 		cal.set(Calendar.SECOND, 0);
 		cal.set(Calendar.MILLISECOND, 0);
 
-		if (cal.getTime().after(endDate) || cal.getTime().before(effDate)) return false;
+		Date utcstartCalendar = DateTimeUtils.toUtc(getEffDate());
+		Date utcendCalendar = DateTimeUtils.toUtcDayEnd(getEndDate());
+		
+		//System.err.println(" cal.getTime()"+cal.getTime() + "utcendCalendar "+ utcendCalendar +" utcstartCalendar "+utcstartCalendar);
+		if (cal.getTime().after(utcendCalendar) || cal.getTime().before(utcstartCalendar)) return false;
 
 		// Let's treat weekend and holiday as one case
 		if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
@@ -177,7 +181,7 @@ public class TOUSchedule {
 		} else {
 			match = h >= effh && h < endh;
 		}
-		System.err.println(match +" "+ effHour + "--"+endHour +" effh " + effh+ " endh "+endh + " H " + h+" date "+date);		
+		//System.err.println(match +" "+ effHour + "--"+endHour +" effh " + effh+ " endh "+endh + " H " + h+" date "+date);		
 
 
 		return match;

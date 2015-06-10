@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.energyos.espi.common.domain.Authorization;
+import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.Subscription;
 import org.energyos.espi.common.models.atom.EntryType;
 import org.energyos.espi.common.utils.EntryTypeIterator;
@@ -17,7 +18,7 @@ public interface AuthorizationService {
 	 * @param authorization
 	 * @return List<Long> a list of all authorizationIds that are visible from the input authorization
 	 */
-	public List<Long> findAllIdsByApplicationInformationId(Long applicationInformationId);
+	public List<IdentifiedObject> findAllIdsByApplicationInformationId(Long applicationInformationId);
 
 	public Authorization createAuthorization(Subscription subscription,
 			String accessToken);

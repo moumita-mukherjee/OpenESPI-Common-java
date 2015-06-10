@@ -32,6 +32,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -102,11 +103,11 @@ import org.hibernate.annotations.LazyCollectionOption;
 		@NamedQuery(name = UsagePoint.QUERY_FIND_BY_RELATED_HREF, query = "SELECT point FROM UsagePoint point join point.relatedLinks link WHERE link.href = :href"),
 		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_RELATED, query = "SELECT timeConfiguration FROM TimeConfiguration timeConfiguration WHERE timeConfiguration.selfLink.href in (:relatedLinkHrefs)"),
 		@NamedQuery(name = UsagePoint.QUERY_FIND_BY_URI, query = "SELECT point FROM UsagePoint point WHERE point.uri = :uri"),
-		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS_FOR_RETAIL_CUSTOMER, query = "SELECT point.id from UsagePoint point where point.retailCustomer.id = :retailCustomerId"),
-		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS, query = "SELECT point.id from UsagePoint point"),
-		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS_FILTER, query = "SELECT point.id from UsagePoint point where point.published >=:publishedMin AND point.published <=:publishedMax AND point.updated >=:updatedMin and point.updated <=:updatedMax"),
-		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS_BY_XPATH_1, query = "SELECT DISTINCT u.id FROM UsagePoint u WHERE u.retailCustomer.id = :o1Id"),
-		@NamedQuery(name = UsagePoint.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT u.id FROM UsagePoint u WHERE u.retailCustomer.id = :o1Id AND u.id = :o2Id")
+		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS_FOR_RETAIL_CUSTOMER, query = "SELECT point from UsagePoint point where point.retailCustomer.id = :retailCustomerId"),
+		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS, query = "SELECT point from UsagePoint point"),
+		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS_FILTER, query = "SELECT point from UsagePoint point where point.published >=:publishedMin AND point.published <=:publishedMax AND point.updated >=:updatedMin and point.updated <=:updatedMax"),
+		@NamedQuery(name = UsagePoint.QUERY_FIND_ALL_IDS_BY_XPATH_1, query = "SELECT DISTINCT u FROM UsagePoint u WHERE u.retailCustomer.id = :o1Id"),
+		@NamedQuery(name = UsagePoint.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT u FROM UsagePoint u WHERE u.retailCustomer.id = :o1Id AND u.id = :o2Id")
 
 })
 
@@ -152,13 +153,15 @@ public class UsagePoint
 	private List<MeterReading> meterReadings = new ArrayList<>();
 
 	@XmlTransient
-	@OneToMany(mappedBy = "usagePoint", cascade = { CascadeType.ALL }, orphanRemoval = true)
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@Transient
+	//DJ @OneToMany(mappedBy = "usagePoint", cascade = { CascadeType.ALL }, orphanRemoval = true)
+	//DJ @LazyCollection(LazyCollectionOption.FALSE)
 	private List<ElectricPowerUsageSummary> electricPowerUsageSummaries = new ArrayList<>();
 
 	@XmlTransient
-	@OneToMany(mappedBy = "usagePoint", cascade = { CascadeType.ALL }, orphanRemoval = true)
-	@LazyCollection(LazyCollectionOption.FALSE)
+	@Transient
+	//DJ@OneToMany(mappedBy = "usagePoint", cascade = { CascadeType.ALL }, orphanRemoval = true)
+	//DJ@LazyCollection(LazyCollectionOption.FALSE)
 	private List<ElectricPowerQualitySummary> electricPowerQualitySummaries = new ArrayList<>();
 
 	@XmlTransient
@@ -198,7 +201,7 @@ public class UsagePoint
 	}
 
 	@XmlTransient
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "retail_customer_id")
 	protected RetailCustomer retailCustomer;
 

@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.MeterReading;
-import org.energyos.espi.common.domain.UsagePoint;
 import org.energyos.espi.common.models.atom.EntryType;
 import org.energyos.espi.common.repositories.MeterReadingRepository;
 import org.energyos.espi.common.service.ImportService;
@@ -116,8 +116,8 @@ public class MeterReadingServiceImpl implements MeterReadingService {
 			Long meterReadingId) {
 		EntryType result = null;
 		try {
-			List<Long> allIds = new ArrayList<Long>();
-			allIds.add(meterReadingId);
+			List<IdentifiedObject> allIds = new ArrayList<IdentifiedObject>();
+			allIds.add(new IdentifiedObject(meterReadingId));
 			result = (new EntryTypeIterator(resourceService, allIds, MeterReading.class)).nextEntry(MeterReading.class);
 		} catch (Exception e) {
 			// TODO need a log file entry as we are going to return a null if

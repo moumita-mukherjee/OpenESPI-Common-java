@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "holidays")
 @NamedQueries(value = {
-		@NamedQuery(name = Holiday.QUERY_FIND_ALL, query = "SELECT hol FROM Holiday hol")		
+		@NamedQuery(name = Holiday.QUERY_FIND_ALL, query = "SELECT hol FROM Holiday hol order by hol.holidayDate ASC")		
 })
 public class Holiday {
 	private static final long serialVersionUID = 8868869332997087911L;

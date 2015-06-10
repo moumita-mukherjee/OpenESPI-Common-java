@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "supply_contracts")
-@NamedQueries(value = { @NamedQuery(name = SupplyContract.QUERY_FIND_BY_SERVICE, query = "SELECT sc FROM SupplyContract sc where sc.customerId =:customerId and sc.selfHref = :selfHref and sc.effDate <= :startDate and  sc.endDate >= :endDate") })
+@NamedQueries(value = { @NamedQuery(name = SupplyContract.QUERY_FIND_BY_SERVICE, query = "SELECT sc FROM SupplyContract sc where sc.customerId =:customerId and sc.selfHref = :selfHref") })
 public class SupplyContract {
 
 	public static final String QUERY_FIND_BY_SERVICE = "SupplyContract.findByService";
@@ -87,5 +87,15 @@ public class SupplyContract {
 	public boolean isLhSupply () {
 		return "LH_SUPPLY".equals(name);
 	}
+    public String toString() {
+    	StringBuffer sb = new StringBuffer();
+    	sb.append(" contractId"+contractId);
+    	sb.append(" name"+name);
+    	sb.append(" selfHref"+selfHref);
+    	sb.append(" effDate"+effDate);
+    	sb.append(" endDate"+endDate);
+    	return sb.toString();
+    }
+
 
 }

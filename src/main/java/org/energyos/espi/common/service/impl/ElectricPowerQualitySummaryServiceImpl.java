@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.energyos.espi.common.domain.ElectricPowerQualitySummary;
+import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.UsagePoint;
 import org.energyos.espi.common.models.atom.EntryType;
 import org.energyos.espi.common.repositories.ElectricPowerQualitySummaryRepository;
@@ -95,8 +96,8 @@ public class ElectricPowerQualitySummaryServiceImpl implements ElectricPowerQual
 		EntryType result = null;
 		try {
 			// TODO - this is sub-optimal (but defers the need to understand creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
-			temp.add(electricPowerQualitySummaryId);
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
+			temp.add(new IdentifiedObject(electricPowerQualitySummaryId));
 			result = (new EntryTypeIterator(resourceService, temp, ElectricPowerQualitySummary.class)).nextEntry(ElectricPowerQualitySummary.class);
 		} catch (Exception e) {
 			// TODO need a log file entry as we are going to return a null if
@@ -111,7 +112,7 @@ public class ElectricPowerQualitySummaryServiceImpl implements ElectricPowerQual
 		EntryTypeIterator result = null;
 		try {
 			// TODO - this is sub-optimal (but defers the need to understand creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 			temp = resourceService.findAllIds(ElectricPowerQualitySummary.class);
 			result = (new EntryTypeIterator(resourceService, temp, ElectricPowerQualitySummary.class));
 		} catch (Exception e) {

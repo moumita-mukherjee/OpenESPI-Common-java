@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.RetailCustomer;
 import org.energyos.espi.common.domain.Subscription;
 import org.energyos.espi.common.domain.UsagePoint;
@@ -74,11 +75,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		// TODO - scope this to only a selected (proper) subset of the
 		// usagePoints as passed
 		// through from the UX or a restful call.
-		List<Long> upIds = resourceService.findAllIdsByXPath(subscription
+		List<IdentifiedObject> upIds = resourceService.findAllIdsByXPath(subscription
 				.getRetailCustomer().getId(), UsagePoint.class);
-		Iterator<Long> it = upIds.iterator();
+		Iterator<IdentifiedObject> it = upIds.iterator();
 		while (it.hasNext()) {
-			UsagePoint usagePoint = resourceService.findById(it.next(),
+			UsagePoint usagePoint = resourceService.findById(it.next().getId(),
 					UsagePoint.class);
 			subscription.getUsagePoints().add(usagePoint);
 		}
@@ -97,8 +98,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	public EntryTypeIterator findEntriesByHashedId(String hashedId) {
 		Subscription subscription = subscriptionRepository
 				.findByHashedId(hashedId);
-		List<Long> subscriptionIds = new ArrayList<Long>();
-		subscriptionIds.add(subscription.getId());
+		List<IdentifiedObject> subscriptionIds = new ArrayList<IdentifiedObject>();
+		subscriptionIds.add(subscription);
 		return new EntryTypeIterator(resourceService, subscriptionIds,
 				Subscription.class);
 	}
@@ -108,8 +109,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	public EntryType findEntryType(Long retailCustomerId, Long subscriptionId) {
 		EntryType result = null;
 		try {
-			List<Long> allIds = new ArrayList<Long>();
-			allIds.add(subscriptionId);
+			List<IdentifiedObject> allIds = new ArrayList<IdentifiedObject>();
+			allIds.add(new IdentifiedObject(subscriptionId));
 			result = (new EntryTypeIterator(resourceService, allIds,
 					Subscription.class)).nextEntry(Subscription.class);
 		} catch (Exception e) {
@@ -148,12 +149,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	}
 
 	@Override
-	public List<Long> findUsagePointIds(Long subscriptionId) {
+	public List<IdentifiedObject> findUsagePointIds(Long subscriptionId) {
 
-		List<Long> result = new ArrayList<Long>();
+		List<IdentifiedObject> result = new ArrayList<IdentifiedObject>();
 		Subscription subscription = findById(subscriptionId);
 		for (UsagePoint up : subscription.getUsagePoints()) {
-			result.add(up.getId());
+			result.add(up);
 		}
 		return result;
 	}
@@ -251,11 +252,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		// TODO - scope this to only a selected (proper) subset of the
 		// usagePoints as passed
 		// through from the UX or a restful call.
-		List<Long> upIds = resourceService
+		List<IdentifiedObject> upIds = resourceService
 				.findAllIdsByXPath(subscription.getRetailCustomer().getId(), UsagePoint.class);
-		Iterator<Long> it = upIds.iterator();
+		Iterator<IdentifiedObject> it = upIds.iterator();
 		while (it.hasNext()) {
-			Long upid = it.next();
+			Long upid = it.next().getId();
 			if (usagePointId == null || usagePointId == 0 || usagePointId.longValue() == upid.longValue()) {
 				UsagePoint usagePoint = resourceService.findById(upid, UsagePoint.class);
 				subscription.getUsagePoints().add(usagePoint);

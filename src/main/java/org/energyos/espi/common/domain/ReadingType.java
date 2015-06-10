@@ -26,6 +26,7 @@ package org.energyos.espi.common.domain;
 
 import java.util.List;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -104,6 +105,7 @@ import org.energyos.espi.common.models.atom.adapters.ReadingTypeAdapter;
         "argument"
 })
 @Entity
+@Cacheable(true)
 @Table(name = "reading_types", uniqueConstraints = { @UniqueConstraint(columnNames = { "uuid" }) })
 @XmlJavaTypeAdapter(ReadingTypeAdapter.class)
 @NamedQueries(value = {
@@ -112,11 +114,11 @@ import org.energyos.espi.common.models.atom.adapters.ReadingTypeAdapter;
         @NamedQuery(name = ReadingType.QUERY_FIND_BY_UUID,
                 query = "SELECT readingType FROM ReadingType readingType WHERE readingType.uuid = :uuid"),
         @NamedQuery(name = ReadingType.QUERY_FIND_ALL_IDS_BY_USAGE_POINT_ID,
-                query = "SELECT meterReading.readingType.id FROM MeterReading meterReading WHERE meterReading.usagePoint.id = :usagePointId"),
+                query = "SELECT meterReading.readingType FROM MeterReading meterReading WHERE meterReading.usagePoint.id = :usagePointId"),
         @NamedQuery(name = ReadingType.QUERY_FIND_ALL_IDS,
-                query = "SELECT readingType.id FROM ReadingType readingType"),
-		@NamedQuery(name = ReadingType.QUERY_FIND_ALL_IDS_BY_XPATH_0, query = "SELECT DISTINCT r.id FROM ReadingType r"),
-		@NamedQuery(name = ReadingType.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT r.id FROM ReadingType r WHERE r.id = :o1Id")
+                query = "SELECT readingType FROM ReadingType readingType"),
+		@NamedQuery(name = ReadingType.QUERY_FIND_ALL_IDS_BY_XPATH_0, query = "SELECT DISTINCT r FROM ReadingType r"),
+		@NamedQuery(name = ReadingType.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT r FROM ReadingType r WHERE r.id = :o1Id")
 
 })
 public class ReadingType

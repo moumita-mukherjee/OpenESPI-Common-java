@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.energyos.espi.common.domain.Authorization;
+import org.energyos.espi.common.domain.IdentifiedObject;
 
 public interface AuthorizationRepository {
 
@@ -27,7 +28,7 @@ public interface AuthorizationRepository {
 
     List<Authorization> findAllByRetailCustomerId(Long retailCustomerId);
     
-    List<Long> findAllIdsByApplicationInformationId(Long applicationInformationId);
+    List<IdentifiedObject> findAllIdsByApplicationInformationId(Long applicationInformationId);
 
     Authorization findByState(String state);
     
@@ -37,11 +38,11 @@ public interface AuthorizationRepository {
 
     Authorization findById(Long authorizationId);
 
-    List<Long> findAllIds(Long retailCustomerId);
+    List<IdentifiedObject> findAllIds(Long retailCustomerId);
 
     Authorization findByUUID(UUID uuid);
 
-    List<Long> findAllIds();
+    List<IdentifiedObject> findAllIds();
     
     void deleteById(Long id);
 

@@ -89,6 +89,10 @@ public class IdentifiedObject extends Resource implements Linkable, Serializable
 	public IdentifiedObject() {
 		super();
 	}
+	public IdentifiedObject(Long id) {
+		super();
+		this.id=id;
+	}
     @XmlTransient
 	private static final long serialVersionUID = -5263186855332223773L;
 

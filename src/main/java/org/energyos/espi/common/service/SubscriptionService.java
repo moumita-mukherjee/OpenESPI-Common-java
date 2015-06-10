@@ -18,10 +18,10 @@ package org.energyos.espi.common.service;
 
 import java.util.List;
 
+import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.Subscription;
 import org.energyos.espi.common.domain.UsagePoint;
 import org.energyos.espi.common.models.atom.EntryType;
-import org.energyos.espi.common.repositories.SubscriptionRepository;
 import org.energyos.espi.common.utils.EntryTypeIterator;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
@@ -43,7 +43,7 @@ public interface SubscriptionService {
 
 	public Subscription findById(Long subscriptionId);
 
-	public List<Long> findUsagePointIds(Long subscriptionId);
+	public List<IdentifiedObject> findUsagePointIds(Long subscriptionId);
 
 	public Subscription findByAuthorizationId(Long id);
 

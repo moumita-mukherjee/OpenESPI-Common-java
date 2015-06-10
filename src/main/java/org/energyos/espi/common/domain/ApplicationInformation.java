@@ -27,6 +27,7 @@ package org.energyos.espi.common.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -158,6 +159,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 	    "dataCustodianScopeSelectionScreenURI"
 	})
 @Entity
+@Cacheable(true)
 @Table(name = "application_information")
 @XmlJavaTypeAdapter(ApplicationInformationAdapter.class)
 @NamedQueries(value = {

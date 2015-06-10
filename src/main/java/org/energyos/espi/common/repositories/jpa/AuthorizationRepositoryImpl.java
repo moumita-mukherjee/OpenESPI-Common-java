@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.energyos.espi.common.domain.Authorization;
+import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.repositories.AuthorizationRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,7 @@ public class AuthorizationRepositoryImpl implements AuthorizationRepository {
 
     @SuppressWarnings("unchecked")
 	@Override
-    public List<Long> findAllIdsByApplicationInformationId(Long applicationInformationId) {
+    public List<IdentifiedObject> findAllIdsByApplicationInformationId(Long applicationInformationId) {
       	return em.createNamedQuery(Authorization.QUERY_FIND_ALL_IDS_BY_APPLICATION_INFORMATION_ID)
       			.setParameter("applicationInformationId", applicationInformationId)
       			.getResultList();
@@ -74,13 +75,13 @@ public class AuthorizationRepositoryImpl implements AuthorizationRepository {
 	}
 
 	@Override
-	public List<Long> findAllIds() {
+	public List<IdentifiedObject> findAllIds() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Long> findAllIds(Long retailCustomerId) {
+	public List<IdentifiedObject> findAllIds(Long retailCustomerId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

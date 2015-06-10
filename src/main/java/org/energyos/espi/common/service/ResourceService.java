@@ -72,8 +72,8 @@ public interface ResourceService {
 	 * Returns a list the IDs of all of the locally unique ESPI resources of type clazz
 	 * 
 	 */
-	<T extends IdentifiedObject> List<Long> findAllIds(Class<T> clazz);
-	<T extends IdentifiedObject> List<Long> findAllIds(Class<T> clazz,ExportFilter exportFilter);
+	<T extends IdentifiedObject> List<IdentifiedObject> findAllIds(Class<T> clazz);
+	<T extends IdentifiedObject> List<IdentifiedObject> findAllIds(Class<T> clazz,ExportFilter exportFilter);
 
 	/**
 	 * @param usagePointId
@@ -83,7 +83,7 @@ public interface ResourceService {
 	 * Returns a list of IDs for all of the resources of type clazz that are associated with 
 	 * the given usagePointId
 	 */
-	<T extends IdentifiedObject> List<Long> findAllIdsByUsagePointId(Long usagePointId,AtomPeriod ap, Class<T> clazz);
+	<T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByUsagePointId(Long usagePointId,AtomPeriod ap, Class<T> clazz);
 	
 	/**
 	 * One of the XPath navigators. Class1/mm/Class2/nn/Class3/pp where the input parameters
@@ -92,7 +92,7 @@ public interface ResourceService {
 	 * @param clazz
 	 * @return
 	 */
-	<T extends IdentifiedObject> List<Long> findAllIdsByXPath(Class<T> clazz);
+	<T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByXPath(Class<T> clazz);
 	
 	/**
 	 * One of the XPath navigators. Class1/mm/Class2/nn/Class3/pp where the input parameters
@@ -102,7 +102,7 @@ public interface ResourceService {
 	 * @param clazz 
 	 * @return
 	 */
-	<T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1, Class<T> clazz);
+	<T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByXPath(Long id1, Class<T> clazz);
 	
 	/**
 	 * One of the XPath navigators. Class1/mm/Class2/nn/Class3/pp where the input parameters
@@ -113,7 +113,7 @@ public interface ResourceService {
 	 * @param clazz
 	 * @return a List of Long's == resourceIds of the resultant search
 	 */
-	<T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1, Long id2, Class<T> clazz);
+	<T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByXPath(Long id1, Long id2, Class<T> clazz);
 	
 	/**
 	 * One of the XPath navigators. Class1/mm/Class2/nn/Class3/pp where the input parameters
@@ -125,14 +125,14 @@ public interface ResourceService {
 	 * @param clazz
 	 * @return a List of Long's == resourceIds of the resultant search
 	 */
-	<T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1, Long id2, Long id3, Class<T> clazz,ExportFilter exportFilter);
+	<T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByXPath(Long id1, Long id2, Long id3, Class<T> clazz,ExportFilter exportFilter);
 
 	/**
 	 * @param id1
 	 * @param clazz
 	 * @return a List of Long's == resourceIds of the resultant search
 	 */
-	<T extends IdentifiedObject> Long findIdByXPath(Long id1, Class<T> clazz);
+	<T extends IdentifiedObject> IdentifiedObject findIdByXPath(Long id1, Class<T> clazz);
 	
 	/**
 	 * @param id1
@@ -140,7 +140,7 @@ public interface ResourceService {
 	 * @param clazz
 	 * @return a List of Long's == resourceIds of the resultant search
 	 */
-	<T extends IdentifiedObject> Long findIdByXPath(Long id1, Long id2, Class<T> clazz);
+	<T extends IdentifiedObject> IdentifiedObject findIdByXPath(Long id1, Long id2, Class<T> clazz);
 	
 	/**
 	 * @param id1
@@ -149,7 +149,7 @@ public interface ResourceService {
 	 * @param clazz
 	 * @return a List of Long's == resourceIds of the resultant search
 	 */
-	<T extends IdentifiedObject> Long findIdByXPath(Long id1, Long id2, Long id3, Class<T> clazz);
+	<T extends IdentifiedObject> IdentifiedObject findIdByXPath(Long id1, Long id2, Long id3, Class<T> clazz);
 
 	/**
 	 * @param id1
@@ -159,7 +159,7 @@ public interface ResourceService {
 	 * @param clazz
 	 * @return a List of Long's == resourceIds of the resultant search
 	 */
-	<T extends IdentifiedObject> Long findIdByXPath(Long id1, Long id2, Long id3, Long id4, Class<T> clazz);
+	<T extends IdentifiedObject> IdentifiedObject findIdByXPath(Long id1, Long id2, Long id3, Long id4, Class<T> clazz);
 
 	/**
 	 * @param clazz
@@ -174,7 +174,7 @@ public interface ResourceService {
 	 * @param clazz
 	 * @return
 	 */
-	<T extends IdentifiedObject> EntryTypeIterator findEntryTypeIterator(List<Long> ids, Class<T> clazz);
+	<T extends IdentifiedObject> EntryTypeIterator findEntryTypeIterator(List<IdentifiedObject> ids, Class<T> clazz);
 
 	/**
 	 * @param id1
@@ -235,7 +235,7 @@ public interface ResourceService {
 	<T extends IdentifiedObject> T merge(IdentifiedObject existingResource);
 	
 	/* LH customization starts here */
-	<T extends IdentifiedObject> List<Long> findAllIdsByUsagePointId(Long id, Class<T> clazz);
+	<T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByUsagePointId(Long id, Class<T> clazz);
 	
 	List<IntervalBlock>  findAllByMeterReadingId(Long id,AtomPeriod ap);
 	

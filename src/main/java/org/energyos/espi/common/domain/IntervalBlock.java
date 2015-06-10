@@ -93,12 +93,12 @@ import org.hibernate.annotations.LazyCollectionOption;
         @NamedQuery(name = IntervalBlock.QUERY_FIND_BY_UUID,
                 query = "SELECT block FROM IntervalBlock block WHERE block.uuid = :uuid"),
         @NamedQuery(name = IntervalBlock.QUERY_FIND_ALL_IDS_BY_USAGE_POINT_ID,
-                query = "SELECT block.id FROM IntervalBlock block where block.meterReading.usagePoint.id = :usagePointId"),
-		@NamedQuery(name = IntervalBlock.QUERY_FIND_ALL_IDS_BY_USAGE_POINT_ID_PERIOD, query = "SELECT block.id FROM IntervalBlock block where block.meterReading.usagePoint.id = :usagePointId AND block.published >=:publishedMin AND block.published <=:publishedMax AND block.updated >=:updatedMin and block.updated <=:updatedMax AND block.interval.start >=:usageMin and block.interval.start < :usageMax"),
+                query = "SELECT block FROM IntervalBlock block where block.meterReading.usagePoint.id = :usagePointId"),
+		@NamedQuery(name = IntervalBlock.QUERY_FIND_ALL_IDS_BY_USAGE_POINT_ID_PERIOD, query = "SELECT block FROM IntervalBlock block where block.meterReading.usagePoint.id = :usagePointId AND block.published >=:publishedMin AND block.published <=:publishedMax AND block.updated >=:updatedMin and block.updated <=:updatedMax AND block.interval.start >=:usageMin and block.interval.start < :usageMax"),
 		@NamedQuery(name = IntervalBlock.QUERY_FIND_ALL_IDS, 
-			query = "SELECT intervalBlock.id FROM IntervalBlock intervalBlock"),
-		@NamedQuery(name = IntervalBlock.QUERY_FIND_ALL_IDS_BY_XPATH_3, query = "SELECT DISTINCT i.id FROM UsagePoint u, MeterReading m, IntervalBlock i WHERE u.retailCustomer.id = :o1Id AND m.usagePoint.id = :o2Id AND i.meterReading.id = :o3Id"),
-		@NamedQuery(name = IntervalBlock.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT i.id FROM UsagePoint u, MeterReading m, IntervalBlock i WHERE u.retailCustomer.id = :o1Id AND m.usagePoint.id = :o2Id AND i.meterReading.id = :o3Id AND i.id = :o4Id"),
+			query = "SELECT intervalBlock FROM IntervalBlock intervalBlock"),
+		@NamedQuery(name = IntervalBlock.QUERY_FIND_ALL_IDS_BY_XPATH_3, query = "SELECT DISTINCT i FROM UsagePoint u, MeterReading m, IntervalBlock i WHERE u.retailCustomer.id = :o1Id AND m.usagePoint.id = :o2Id AND i.meterReading.id = :o3Id"),
+		@NamedQuery(name = IntervalBlock.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT i FROM UsagePoint u, MeterReading m, IntervalBlock i WHERE u.retailCustomer.id = :o1Id AND m.usagePoint.id = :o2Id AND i.meterReading.id = :o3Id AND i.id = :o4Id"),
 		@NamedQuery(name = IntervalBlock.QUERY_FIND_BY_PERIOD, query = "SELECT block FROM IntervalBlock block where block.meterReading.id = :meterReadingId and block.interval.start >= :fromTime and  block.interval.start < :toTime"),
 
 })

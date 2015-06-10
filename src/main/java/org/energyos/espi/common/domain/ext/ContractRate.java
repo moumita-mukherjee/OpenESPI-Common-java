@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "contract_rates")
 @NamedQueries(value = {
-		@NamedQuery(name = ContractRate.QUERY_FIND_BY_SERVICE, query = "SELECT cr FROM ContractRate cr where cr.customerId =:customerId and cr.selfHref = :selfHref and cr.effDate <= :startDate and  cr.endDate >= :endDate")		
+		@NamedQuery(name = ContractRate.QUERY_FIND_BY_SERVICE, query = "SELECT cr FROM ContractRate cr where cr.customerId =:customerId and cr.selfHref = :selfHref")		
 })
 public class ContractRate
 {

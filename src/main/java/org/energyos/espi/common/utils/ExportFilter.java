@@ -22,6 +22,7 @@ public class ExportFilter {
 	private AtomPeriod filterPeriod = new AtomPeriod();
 	private boolean subscriptionReq=false;
 	private int maxResults=1000;
+	private int startIndex=0;
 
 	public boolean isSubscriptionReq() {
 		return subscriptionReq;
@@ -44,6 +45,11 @@ public class ExportFilter {
 		if (hasParam("max-results")) {
 			if (!(params.get("max-results").equals("All"))) {
 				maxResults= Integer.valueOf(params.get("max-results").trim());									
+			}
+		}
+		if (hasParam("start-index")) {
+			if (!(params.get("start-index").equals("All"))) {
+				startIndex= Integer.valueOf(params.get("start-index").trim());									
 			}
 		}
 
@@ -135,7 +141,7 @@ public class ExportFilter {
 
 		if (hasParam("start-index")) {
 			if (++matchedCounter < Integer.valueOf(params.get("start-index").trim())) {
-				return false;
+				//return false;
 
 			}
 		}
@@ -244,4 +250,13 @@ public class ExportFilter {
 	public void setMaxResults(int maxResults) {
 		this.maxResults = maxResults;
 	}
+
+	public int getStartIndex() {
+		return startIndex;
+	}
+
+	public void setStartIndex(int startIndex) {
+		this.startIndex = startIndex;
+	}
+	
 }

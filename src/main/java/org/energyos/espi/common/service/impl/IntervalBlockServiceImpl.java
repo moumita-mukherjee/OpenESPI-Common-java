@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.energyos.espi.common.domain.AtomPeriod;
+import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.IntervalBlock;
 import org.energyos.espi.common.domain.MeterReading;
 import org.energyos.espi.common.models.atom.EntryType;
@@ -106,7 +106,7 @@ public class IntervalBlockServiceImpl implements IntervalBlockService {
 		EntryTypeIterator result = null;
 		try {
 			// TODO - this is sub-optimal (but defers the need to understand creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 			temp = resourceService.findAllIds(IntervalBlock.class);
 			result = (new EntryTypeIterator(resourceService, temp, IntervalBlock.class));
 		} catch (Exception e) {
@@ -123,8 +123,8 @@ public class IntervalBlockServiceImpl implements IntervalBlockService {
 		EntryType result = null;
 		try {
 			// TODO - this is sub-optimal (but defers the need to understan creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
-			temp.add(intervalBlockId);
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
+			temp.add(new IdentifiedObject(intervalBlockId));
 			result = (new EntryTypeIterator(resourceService, temp, IntervalBlock.class)).nextEntry(IntervalBlock.class);
 		} catch (Exception e) {
 			// TODO need a log file entry as we are going to return a null if

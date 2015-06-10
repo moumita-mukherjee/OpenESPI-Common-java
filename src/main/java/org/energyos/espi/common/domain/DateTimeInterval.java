@@ -114,7 +114,8 @@ public class DateTimeInterval
         this.start = value;
     }
     public Date getDate(TimeZone zone) {
-    	Calendar cal=Calendar.getInstance(TimeZone.getTimeZone("EST"));
+    	//Calendar cal=Calendar.getInstance(TimeZone.getTimeZone("EST"));
+    	Calendar cal=Calendar.getInstance();
     	cal.setTimeInMillis(start.longValue()*1000L);
     	cal.setTimeZone(zone);
     	return cal.getTime();

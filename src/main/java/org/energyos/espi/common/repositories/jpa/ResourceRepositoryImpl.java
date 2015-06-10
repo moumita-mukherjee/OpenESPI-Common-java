@@ -244,7 +244,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends IdentifiedObject> List<Long> findAllIds(Class<T> clazz) {
+	public <T extends IdentifiedObject> List<IdentifiedObject> findAllIds(Class<T> clazz) {
 		try {
 			String queryFindById = (String) clazz.getDeclaredField(
 					"QUERY_FIND_ALL_IDS").get(String.class);
@@ -259,15 +259,15 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends IdentifiedObject> List<Long> findAllIds(Class<T> clazz,ExportFilter exportFilter) {
+	public <T extends IdentifiedObject> List<IdentifiedObject> findAllIds(Class<T> clazz,ExportFilter exportFilter) {
 		try {
 			String queryFindById = (String) clazz.getDeclaredField(
 					"QUERY_FIND_ALL_IDS_FILTER").get(String.class);
 			
-			System.err.print("exportFilter.getFilterPeriod()="+exportFilter.getFilterPeriod());
+			System.err.print("exportFilter.getFilterPeriod()="+exportFilter.getStartIndex() + " "+exportFilter.getMaxResults()+ " "+exportFilter.getFilterPeriod());
 			return em.createNamedQuery(queryFindById).setParameter("publishedMin", exportFilter.getFilterPeriod().getPublishedMin())
 					.setParameter("publishedMax", exportFilter.getFilterPeriod().getPublishedMax()).setParameter("updatedMin", exportFilter.getFilterPeriod().getUpdatedMin())
-					.setParameter("updatedMax", exportFilter.getFilterPeriod().getUpdatedMax()).setMaxResults(exportFilter.getMaxResults()).getResultList();
+					.setParameter("updatedMax", exportFilter.getFilterPeriod().getUpdatedMax()).setFirstResult(exportFilter.getStartIndex()).setMaxResults(exportFilter.getMaxResults()).getResultList();
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			System.err.printf("**** FindAllIds Exception: %s - %s\n",
 					clazz.toString(), e.toString());
@@ -277,7 +277,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
     @SuppressWarnings("unchecked")
 	@Override
-	public <T extends IdentifiedObject> List<Long> findAllIdsByUsagePointId(
+	public <T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByUsagePointId(
 			Long usagePointId, Class<T> clazz) {
         try {
 			String queryFindAllIdsByUsagePointId = (String) clazz
@@ -304,7 +304,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
     
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends IdentifiedObject> List<Long> findAllIdsByXPath(
+	public <T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByXPath(
 			Class<T> clazz) {
         try {
 			String findAllIdsByXPath = (String) clazz.getDeclaredField(
@@ -319,7 +319,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1,
+	public <T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByXPath(Long id1,
 			Class<T> clazz) {
         try {
 			String findAllIdsByXPath = (String) clazz.getDeclaredField(
@@ -335,7 +335,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1,
+	public <T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByXPath(Long id1,
 			Long id2, Class<T> clazz) {
 	        try {
 			String findAllIdsByXPath = (String) clazz.getDeclaredField(
@@ -350,7 +350,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1,
+	public <T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByXPath(Long id1,
 			Long id2, Long id3, Class<T> clazz,ExportFilter exportFilter) {
         try {
 			String findAllIdsByXPath = (String) clazz.getDeclaredField(
@@ -367,35 +367,35 @@ class ResourceRepositoryImpl implements ResourceRepository {
 	// Member XPath Accessors
 	//
 	@Override
-	public <T extends IdentifiedObject> Long findIdByXPath(Long id1,
+	public <T extends IdentifiedObject> IdentifiedObject findIdByXPath(Long id1,
 			Class<T> clazz) {
         try {
 			String findIdByXPath = (String) clazz.getDeclaredField(
 					"QUERY_FIND_ID_BY_XPATH").get(String.class);
 			Query query = em.createNamedQuery(findIdByXPath).setParameter(
 					"o1Id", id1);
-            return (Long) query.getSingleResult();
+            return (IdentifiedObject) query.getSingleResult();
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
 	}
 
 	@Override
-	public <T extends IdentifiedObject> Long findIdByXPath(Long id1, Long id2,
+	public <T extends IdentifiedObject> IdentifiedObject findIdByXPath(Long id1, Long id2,
 			Class<T> clazz) {
         try {
 			String findIdByXPath = (String) clazz.getDeclaredField(
 					"QUERY_FIND_ID_BY_XPATH").get(String.class);
             Query query = em.createNamedQuery(findIdByXPath)
 					.setParameter("o1Id", id1).setParameter("o2Id", id2);
-            return (Long) query.getSingleResult();
+            return (IdentifiedObject) query.getSingleResult();
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
 	}
 
 	@Override
-	public <T extends IdentifiedObject> Long findIdByXPath(Long id1, Long id2,
+	public <T extends IdentifiedObject> IdentifiedObject findIdByXPath(Long id1, Long id2,
 			Long id3, Class<T> clazz) {
         try {
 			String findIdByXPath = (String) clazz.getDeclaredField(
@@ -403,14 +403,14 @@ class ResourceRepositoryImpl implements ResourceRepository {
             Query query = em.createNamedQuery(findIdByXPath)
 					.setParameter("o1Id", id1).setParameter("o2Id", id2)
             		.setParameter("o3Id", id3);
-            return (Long) query.getSingleResult();
+            return (IdentifiedObject) query.getSingleResult();
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
 	}
 	
 	@Override
-	public <T extends IdentifiedObject> Long findIdByXPath(Long id1, Long id2,
+	public <T extends IdentifiedObject> IdentifiedObject findIdByXPath(Long id1, Long id2,
 			Long id3, Long id4, Class<T> clazz) {
         try {
 			String findIdByXPath = (String) clazz.getDeclaredField(
@@ -418,7 +418,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
             Query query = em.createNamedQuery(findIdByXPath)
 					.setParameter("o1Id", id1).setParameter("o2Id", id2)
 					.setParameter("o3Id", id3).setParameter("o4Id", id4);
-            return (Long) query.getSingleResult();
+            return (IdentifiedObject) query.getSingleResult();
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -474,18 +474,18 @@ class ResourceRepositoryImpl implements ResourceRepository {
    	@Override
 	public <T extends IdentifiedObject> void deleteByXPathId(Long id1,
 			Long id2, Class<T> clazz) {
-		Long id = findIdByXPath(id1, id2, clazz);
+   		IdentifiedObject id = findIdByXPath(id1, id2, clazz);
 		if (id != null) {
-			deleteById(id, clazz);
+			deleteById(id.getId(), clazz);
 		}
 	}
 
 	@Override
 	public <T extends IdentifiedObject> void deleteByXPathId(Long id1,
 			Long id2, Long id3, Class<T> clazz) {
-		Long id = findIdByXPath(id1, id2, id3, clazz);
+		IdentifiedObject id = findIdByXPath(id1, id2, id3, clazz);
 		if (id != null) {
-			deleteById(id, clazz);
+			deleteById(id.getId(), clazz);
 		}
 		
 	}
@@ -493,9 +493,9 @@ class ResourceRepositoryImpl implements ResourceRepository {
 	@Override
 	public <T extends IdentifiedObject> void deleteByXPathId(Long id1,
 			Long id2, Long id3, Long id4, Class<T> clazz) {
-		Long id = findIdByXPath(id1, id2, id3, id4, clazz);
+		IdentifiedObject id = findIdByXPath(id1, id2, id3, id4, clazz);
 		if (id != null) {
-			deleteById(id, clazz);
+			deleteById(id.getId(), clazz);
 		}
 		
 	}
@@ -509,7 +509,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
 	/* LH customization starts here */
 	@SuppressWarnings("unchecked")
 	@Override
-    public <T extends IdentifiedObject> List<Long> findAllIdsByUsagePointId(Long usagePointId,AtomPeriod ap, Class<T> clazz) {
+    public <T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByUsagePointId(Long usagePointId,AtomPeriod ap, Class<T> clazz) {
         try {
             String queryFindAllIdsByUsagePointId = (String) clazz.getDeclaredField("QUERY_FIND_ALL_IDS_BY_USAGE_POINT_ID_PERIOD").get(String.class);
 

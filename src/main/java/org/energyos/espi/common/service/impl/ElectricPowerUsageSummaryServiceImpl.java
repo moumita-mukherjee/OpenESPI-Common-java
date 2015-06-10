@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.energyos.espi.common.domain.ElectricPowerUsageSummary;
+import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.UsagePoint;
 import org.energyos.espi.common.models.atom.EntryType;
 import org.energyos.espi.common.repositories.ElectricPowerUsageSummaryRepository;
@@ -93,7 +94,7 @@ public class ElectricPowerUsageSummaryServiceImpl implements ElectricPowerUsageS
 		EntryTypeIterator result = null;
 		try {
 			// TODO - this is sub-optimal (but defers the need to understan creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 			temp = resourceService.findAllIds(ElectricPowerUsageSummary.class);
 			result = (new EntryTypeIterator(resourceService, temp, ElectricPowerUsageSummary.class));
 		} catch (Exception e) {
@@ -110,8 +111,8 @@ public class ElectricPowerUsageSummaryServiceImpl implements ElectricPowerUsageS
 		EntryType result = null;
 		try {
 			// TODO - this is sub-optimal (but defers the need to understan creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
-			temp.add(electricPowerUsageSummaryId);
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
+			temp.add(new IdentifiedObject(electricPowerUsageSummaryId));
 			result = (new EntryTypeIterator(resourceService, temp, ElectricPowerUsageSummary.class)).nextEntry(ElectricPowerUsageSummary.class);
 		} catch (Exception e) {
 			// TODO need a log file entry as we are going to return a null if

@@ -173,17 +173,17 @@ public class ResourceServiceImpl implements ResourceService {
 	}
 
 	@Override
-	public <T extends IdentifiedObject> List<Long> findAllIds(Class<T> clazz) {
+	public <T extends IdentifiedObject> List<IdentifiedObject> findAllIds(Class<T> clazz) {
 		return repository.findAllIds(clazz);
 	}
 	@Override
-	public <T extends IdentifiedObject> List<Long> findAllIds(Class<T> clazz,ExportFilter exportFilter) {
+	public <T extends IdentifiedObject> List<IdentifiedObject> findAllIds(Class<T> clazz,ExportFilter exportFilter) {
 		return repository.findAllIds(clazz,exportFilter);
 	}
 
 
     @Override
-    public <T extends IdentifiedObject> List<Long> findAllIdsByUsagePointId(Long id, Class<T> clazz) {
+    public <T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByUsagePointId(Long id, Class<T> clazz) {
         return repository.findAllIdsByUsagePointId(id, clazz);
     }
 
@@ -191,48 +191,48 @@ public class ResourceServiceImpl implements ResourceService {
     //
     
 	@Override
-	public <T extends IdentifiedObject> List<Long> findAllIdsByXPath(Class<T> clazz) {
+	public <T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByXPath(Class<T> clazz) {
 		return repository.findAllIdsByXPath(clazz);
 	}
 
 	@Override
-	public <T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1,
+	public <T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByXPath(Long id1,
 			Class<T> clazz) {
 		return repository.findAllIdsByXPath(id1, clazz);
 	}
 
 	@Override
-	public <T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1,
+	public <T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByXPath(Long id1,
 			Long id2, Class<T> clazz) {
 		return repository.findAllIdsByXPath(id1, id2, clazz);
 	}
 
 	@Override
-	public <T extends IdentifiedObject> List<Long> findAllIdsByXPath(Long id1,
+	public <T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByXPath(Long id1,
 			Long id2, Long id3, Class<T> clazz,ExportFilter exportFilter) {
 		return repository.findAllIdsByXPath(id1, id2, id3, clazz,exportFilter);
 	}
 
 	@Override
-	public <T extends IdentifiedObject> Long findIdByXPath(Long id1,
+	public <T extends IdentifiedObject> IdentifiedObject findIdByXPath(Long id1,
 			Class<T> clazz) {
 		return repository.findIdByXPath(id1, clazz);
 	}
 
 	@Override
-	public <T extends IdentifiedObject> Long findIdByXPath(Long id1, Long id2,
+	public <T extends IdentifiedObject> IdentifiedObject findIdByXPath(Long id1, Long id2,
 			Class<T> clazz) {
 		return repository.findIdByXPath(id1, id2, clazz);
 	}
 
 	@Override
-	public <T extends IdentifiedObject> Long findIdByXPath(Long id1, Long id2,
+	public <T extends IdentifiedObject> IdentifiedObject findIdByXPath(Long id1, Long id2,
 			Long id3, Class<T> clazz) {
 		return repository.findIdByXPath(id1, id2, id3, clazz);
 	}
 
 	@Override
-	public <T extends IdentifiedObject> Long findIdByXPath(Long id1, Long id2,
+	public <T extends IdentifiedObject> IdentifiedObject findIdByXPath(Long id1, Long id2,
 			Long id3, Long id4, Class<T> clazz) {
 		return repository.findIdByXPath(id1, id2, id3, id4, clazz);
 	}
@@ -242,20 +242,20 @@ public class ResourceServiceImpl implements ResourceService {
 	}
 	@Override
 	public <T extends IdentifiedObject> EntryTypeIterator findEntryTypeIterator(Class<T> clazz) {
-		List<Long> idList = repository.findAllIds(clazz);
+		List<IdentifiedObject> idList = repository.findAllIds(clazz);
 		return findEntryTypeIterator(idList, clazz);
 	}
 
 
 	@Override
 	public <T extends IdentifiedObject> EntryTypeIterator findEntryTypeIterator(Class<T> clazz,ExportFilter exportFilter) {
-		List<Long> idList = repository.findAllIds(clazz,exportFilter);
+		List<IdentifiedObject> idList = repository.findAllIds(clazz,exportFilter);
 		return findEntryTypeIterator(idList, clazz);
 	}
 
 	@Override
-	public <T extends IdentifiedObject> EntryTypeIterator findEntryTypeIterator(List<Long> ids, Class<T> clazz) {
-		List<Long> idList = ids;
+	public <T extends IdentifiedObject> EntryTypeIterator findEntryTypeIterator(List<IdentifiedObject> ids, Class<T> clazz) {
+		List<IdentifiedObject> idList = ids;
 		EntryTypeIterator result = null;
 		try {
 			result = (new EntryTypeIterator(this, idList, clazz));
@@ -269,8 +269,8 @@ public class ResourceServiceImpl implements ResourceService {
 	public <T extends IdentifiedObject> EntryType findEntryType(long id1, Class<T> clazz) {
 		EntryType result = null;
 		try {
-			List<Long> temp = new ArrayList<Long>();
-			temp.add(id1);
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
+			temp.add(new IdentifiedObject(id1));
 			result = (new EntryTypeIterator(this, temp, clazz)).nextEntry(clazz);
 		} catch (Exception e) {
 			result = null;
@@ -358,7 +358,7 @@ public class ResourceServiceImpl implements ResourceService {
 
 	/* LH customization starts here */
 	@Override
-	public <T extends IdentifiedObject> List<Long> findAllIdsByUsagePointId(Long id,AtomPeriod ap, Class<T> clazz) {
+	public <T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByUsagePointId(Long id,AtomPeriod ap, Class<T> clazz) {
 		return repository.findAllIdsByUsagePointId(id, clazz);
 	}
 		

@@ -421,6 +421,7 @@ public class ExportServiceImpl implements ExportService {
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public void exportIntervalBlocks_Root(Long subscriptionId, OutputStream stream, ExportFilter exportFilter)
 			throws Exception {
 
@@ -443,6 +444,7 @@ public class ExportServiceImpl implements ExportService {
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public void exportIntervalBlocks(Long subscriptionId, Long retailCustomerId, Long usagePointId,
 			Long meterReadingId, OutputStream stream, ExportFilter exportFilter) throws Exception {
 		String hrefFragment = "/Subscription/" + subscriptionId
@@ -458,6 +460,7 @@ public class ExportServiceImpl implements ExportService {
 
 	// - ROOT form
 	@Override
+	@Transactional(readOnly=true)
 	public void exportMeterReadings_Root(Long subscriptionId, ServletOutputStream stream, ExportFilter exportFilter)
 			throws Exception {
 
@@ -466,6 +469,7 @@ public class ExportServiceImpl implements ExportService {
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public void exportMeterReading_Root(Long subscriptionId, long meterReadingId, ServletOutputStream stream,
 			ExportFilter exportFilter) throws Exception {
 		MeterReading meterReading = resourceService.findById(meterReadingId, MeterReading.class);
@@ -478,6 +482,7 @@ public class ExportServiceImpl implements ExportService {
 
 	// - XPath
 	@Override
+	@Transactional(readOnly=true)
 	public void exportMeterReading(Long subscriptionId, Long retailCustomerId, Long usagePointId, Long meterReadingId,
 			OutputStream stream, ExportFilter exportFilter) throws Exception {
 		String hrefFragment = "/Subscription/" + subscriptionId
@@ -491,6 +496,7 @@ public class ExportServiceImpl implements ExportService {
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public void exportMeterReadings(Long subscriptionId, Long retailCustomerId, Long usagePointId, OutputStream stream,
 			ExportFilter exportFilter) throws Exception {
 		String hrefFragment = "/Subscription/" + subscriptionId
@@ -619,6 +625,7 @@ public class ExportServiceImpl implements ExportService {
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public void exportUsagePoints_Root(Long subscriptionId, OutputStream stream, ExportFilter exportFilter)
 			throws Exception {
 		exportRootForm("/UsagePoint", subscriptionId, stream, exportFilter, UsagePoint.class);
@@ -666,7 +673,7 @@ public class ExportServiceImpl implements ExportService {
 			throws Exception {
 		String hrefFragment = "/Batch/Subscription/" + subscriptionId;
 		// first find all the usagePointIds this subscription is related to
-		List<Long> usagePointIdList = subscriptionService
+		List<IdentifiedObject> usagePointIdList = subscriptionService
 				.findUsagePointIds(subscriptionId);
 		exportEntriesFull(subscriptionId, resourceService.findEntryTypeIterator(
 				usagePointIdList, UsagePoint.class), stream, exportFilter,
@@ -678,7 +685,7 @@ public class ExportServiceImpl implements ExportService {
 			OutputStream stream, ExportFilter exportFilter) throws Exception {
 		String hrefFragment = "/Batch/Subscription/" + subscriptionId + "/UsagePoint";
 		// first find all the usagePointIds this subscription is related to
-		List<Long> usagePointIdList = subscriptionService
+		List<IdentifiedObject> usagePointIdList = subscriptionService
 				.findUsagePointIds(subscriptionId);
 		exportEntriesFull(subscriptionId, resourceService.findEntryTypeIterator(
 				usagePointIdList, UsagePoint.class), stream, exportFilter,
@@ -689,11 +696,11 @@ public class ExportServiceImpl implements ExportService {
 	public void exportBatchSubscriptionUsagePoint(Long subscriptionId, Long usagePointId,
 			OutputStream stream, ExportFilter exportFilter) throws Exception {
 		String hrefFragment = "/Batch/Subscription/" + subscriptionId + "/UsagePoint/" + usagePointId;
-		List<Long> usagePointIdList = new ArrayList<Long> ();
-		List<Long> temp = subscriptionService
+		List<IdentifiedObject> usagePointIdList = new ArrayList<IdentifiedObject> ();
+		List<IdentifiedObject> temp = subscriptionService
 				.findUsagePointIds(subscriptionId);
 		if (temp.contains(usagePointId)) {
-		     usagePointIdList.add(usagePointId);
+		     usagePointIdList.add(new IdentifiedObject(usagePointId));
 		}
 		exportEntriesFull(subscriptionId, resourceService.findEntryTypeIterator(
 				usagePointIdList, UsagePoint.class), stream, exportFilter,
@@ -704,13 +711,13 @@ public class ExportServiceImpl implements ExportService {
 			ExportFilter exportFilter) throws Exception {
 
 		String hrefFragment = "/Batch/Bulk/" + bulkId;
-		List<Long> usagePoints = new ArrayList<Long> ();
+		List<IdentifiedObject> usagePoints = new ArrayList<IdentifiedObject> ();
 		List<Long> authorizations = authorizationService.findAllIdsByBulkId(thirdParty, bulkId);
 
 		for (Long authorizationId : authorizations) {
 			Subscription subscription = subscriptionService.findByAuthorizationId(authorizationId);
 			for (UsagePoint up : subscription.getUsagePoints()) {
-				usagePoints.add(up.getId());
+				usagePoints.add(up);
 			}
 
 		}
@@ -748,9 +755,11 @@ public class ExportServiceImpl implements ExportService {
 	// worker functions
 	//
 
+	private String dataCustodianResourceEndpoint=null;
 	private void buildHeader(OutputStream stream, String hrefFragment) throws Exception {
-
-		String dataCustodianResourceEndpoint = resourceService.findById(1L, ApplicationInformation.class).getDataCustodianResourceEndpoint();
+		if(dataCustodianResourceEndpoint==null) {
+			dataCustodianResourceEndpoint = applicationInformationService.findById(1L).getDataCustodianResourceEndpoint();
+		}
 		
 		String selfRef = "<link href=\""
 				+ dataCustodianResourceEndpoint + hrefFragment
@@ -827,11 +836,10 @@ public class ExportServiceImpl implements ExportService {
 
 	@SuppressWarnings("unchecked")
 	private void exportRootForm_Internal(String workingFragment, Long subscriptionId, Long retailCustomerId,
-			Long usagePointId, Long meterReadingId, List<Long> resourceList, Class currentClass, Class targetClass,
+			Long usagePointId, Long meterReadingId, List<IdentifiedObject> resourceList, Class currentClass, Class targetClass,
 			OutputStream stream, ExportFilter exportFilter) throws Exception {
 
-		List<Long> nextResourceList = new ArrayList<Long>();
-
+		List<IdentifiedObject> nextResourceList = new ArrayList<IdentifiedObject>();
 		if (targetClass.equals(currentClass)) {
 			// we are at the end; build the final fragment and export this leaf
 			// of the tree
@@ -847,30 +855,31 @@ public class ExportServiceImpl implements ExportService {
 
 		} else {
 
-			for (Long id : resourceList) {
-
+			
+			for (IdentifiedObject id : resourceList) {				
 				if (currentClass.equals(UsagePoint.class)) {
-					usagePointId = id;
+					usagePointId = id.getId();
 					RetailCustomer retailCustomer = (resourceService.findById(usagePointId,  UsagePoint.class)).getRetailCustomer();
 					if (retailCustomer != null) {
 						retailCustomerId = retailCustomer.getId();
 					}
 					if (!(targetClass.equals(IntervalBlock.class))) {
                         // this covers /ElectricPowerUsageSummary /ElectricPowerQualitySummary and /MeterReading
-						nextResourceList = resourceService.findAllIdsByXPath(retailCustomerId, id, targetClass);
+						System.err.println("ExService:findAllIdsByXPath -> "+id);
+						nextResourceList = resourceService.findAllIdsByXPath(retailCustomerId, id.getId(), targetClass);
 						exportRootForm_Internal(workingFragment + "/UsagePoint/" + usagePointId, 
 								subscriptionId, retailCustomerId, usagePointId, meterReadingId, nextResourceList,
 								targetClass, targetClass, stream, exportFilter);
 
 					} else {
 						// this covers /IntervalBlock
-						for (Long id2 : resourceService.findAllIdsByXPath(retailCustomerId, id, MeterReading.class)) {
+						for (IdentifiedObject id2 : resourceService.findAllIdsByXPath(retailCustomerId, id.getId(), MeterReading.class)) {
 
 							nextResourceList = resourceService
-									.findAllIdsByXPath(retailCustomerId, usagePointId, id2, IntervalBlock.class,exportFilter);
+									.findAllIdsByXPath(retailCustomerId, usagePointId, id2.getId(), IntervalBlock.class,exportFilter);
 							exportRootForm_Internal(
-									workingFragment + "/MeterReading/" +id2,
-									subscriptionId, retailCustomerId, usagePointId, id2, nextResourceList,
+									workingFragment + "/MeterReading/" +id2.getId(),
+									subscriptionId, retailCustomerId, usagePointId, id2.getId(), nextResourceList,
 									IntervalBlock.class, targetClass, stream, exportFilter);
 						}
 					}
@@ -893,6 +902,7 @@ public class ExportServiceImpl implements ExportService {
 			if (exportFilter != null) {
 				entries.setExportFilter(exportFilter);
 			}
+			System.err.println("entries "+entries);
 			while (entries.hasNext()) {
 				try {
 					EntryType entry = entries.nextEntry(resourceClass);
@@ -900,6 +910,7 @@ public class ExportServiceImpl implements ExportService {
 					exportEntry(subscriptionId, entry, stream, exportFilter, hrefFragment + "/"
 							+ entry.getContent().getContentId(resourceClass));
 				} catch (Exception e) {
+					e.printStackTrace(System.err);
 					System.err.printf("exportEntries_Root: The requested collection contains no resources: %s: %s\n",
 							hrefFragment, resourceClass.getSimpleName());
 
@@ -955,8 +966,9 @@ public class ExportServiceImpl implements ExportService {
 	private void exportEntry(Long subscriptionId, EntryType entry,
 			OutputStream stream, ExportFilter exportFilter, String hrefFragment)
 			throws Exception {
-
-		String dataCustodianResourceEndpoint = (resourceService.findById(1L, ApplicationInformation.class)).getDataCustodianResourceEndpoint();
+		if(dataCustodianResourceEndpoint==null) {
+			dataCustodianResourceEndpoint =(applicationInformationService.findById(1L)).getDataCustodianResourceEndpoint();
+		}
 		
 		AtomMarshallerListener uriListener = new AtomMarshallerListener(
 				dataCustodianResourceEndpoint + hrefFragment);
@@ -993,6 +1005,7 @@ public class ExportServiceImpl implements ExportService {
 				exportEntryFull(subscriptionId, entry, stream,
 						exportFilter, hrefFragment);
 			} catch (Exception e) {
+				e.printStackTrace(System.err);
 				System.err.printf("exportEntriesInternal: The requested collection contains no resources: %s\n", hrefFragment);
 
 			}
@@ -1044,7 +1057,9 @@ public class ExportServiceImpl implements ExportService {
 	private void exportEntryFull(Long subscriptionId, EntryType entry, OutputStream stream, ExportFilter exportFilter,
 			String hrefFragment) throws Exception {
 
-		String dataCustodianResourceEndpoint = resourceService.findById(1L, ApplicationInformation.class).getDataCustodianResourceEndpoint();
+		if(dataCustodianResourceEndpoint==null) {
+			dataCustodianResourceEndpoint = applicationInformationService.findById(1L).getDataCustodianResourceEndpoint();
+		}
 
 		// setup a listener so that the adapters may later be fed the fragment;
 		//
@@ -1074,7 +1089,7 @@ public class ExportServiceImpl implements ExportService {
 	private EntryType findEntryTypeXPath(Long subscriptionId, Long id1, Long id2, Long id3,
 			Long id4, @SuppressWarnings("rawtypes") Class clazz) {
 		EntryType result = null;
-		List<Long> temp = new ArrayList<Long>();
+		List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 		Subscription subscription = null;
 
 		try {
@@ -1111,7 +1126,7 @@ public class ExportServiceImpl implements ExportService {
 			}
 			result = null;
 		} catch (Exception e) {
-			System.err.printf("**** Error in Query: %s\n", e.toString());
+			System.err.printf("**** Error in Query 1224: %s\n", e.toString());
 			result = null;
 		}
 		if (temp != null) {
@@ -1127,7 +1142,7 @@ public class ExportServiceImpl implements ExportService {
 	private EntryTypeIterator findEntryTypeIteratorXPath(Long subscriptionId,
 			Long id1, Long id2, Long id3, Class clazz,ExportFilter exportFilter) {
 		EntryTypeIterator result = null;
-		List<Long> temp = new ArrayList<Long>();
+		List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 		Subscription subscription = null;
 		boolean valid = false;
 
@@ -1184,7 +1199,7 @@ public class ExportServiceImpl implements ExportService {
 							// clazz);
 							// we just want the UsagePoints in the Subscription
 							for (UsagePoint up : subscription.getUsagePoints()) {
-								temp.add(up.getId());
+								temp.add(up);
 							}
 						} else {
 							// otherwise, just get all the RetailCustomers
@@ -1198,7 +1213,7 @@ public class ExportServiceImpl implements ExportService {
 			result = (new EntryTypeIterator(resourceService, temp, clazz));
 
 		} catch (Exception e) {
-			System.err.printf("**** Error in Query: %s\n", e.toString());
+			System.err.printf("**** Error in Query 1211: %s\n", e.toString());
 			result = null;
 		}
 		return result;

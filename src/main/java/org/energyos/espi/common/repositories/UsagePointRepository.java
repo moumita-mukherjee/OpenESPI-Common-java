@@ -46,8 +46,8 @@ public interface UsagePointRepository {
 
     IdentifiedObject findByRelatedHref(String href);
 
-    List<Long> findAllIdsForRetailCustomer(Long retailCustomerId);
+    List<IdentifiedObject> findAllIdsForRetailCustomer(Long retailCustomerId);
 
-	List<Long> findAllIds();
+	List<IdentifiedObject> findAllIds();
 
 }

@@ -24,6 +24,7 @@
 
 package org.energyos.espi.common.domain;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -72,6 +73,7 @@ import org.energyos.espi.common.models.atom.adapters.TimeConfigurationAdapter;
 @XmlJavaTypeAdapter(TimeConfigurationAdapter.class)
 @XmlRootElement(name = "LocalTimeParameters")
 @Entity
+@Cacheable(true)
 @Table(name = "time_configurations", uniqueConstraints = {@UniqueConstraint(columnNames={"uuid"})})
 @NamedQueries(value = {
         @NamedQuery(name = TimeConfiguration.QUERY_FIND_BY_ID,
@@ -79,11 +81,11 @@ import org.energyos.espi.common.models.atom.adapters.TimeConfigurationAdapter;
         @NamedQuery(name = TimeConfiguration.QUERY_FIND_BY_UUID,
                 query = "SELECT config FROM TimeConfiguration config WHERE config.uuid = :uuid"),
         @NamedQuery(name = TimeConfiguration.QUERY_FIND_ALL_IDS_BY_USAGE_POINT_ID,
-                query = "SELECT usagePoint.localTimeParameters.id FROM UsagePoint usagePoint WHERE usagePoint.id = :usagePointId"),
+                query = "SELECT usagePoint.localTimeParameters FROM UsagePoint usagePoint WHERE usagePoint.id = :usagePointId"),
         @NamedQuery(name = TimeConfiguration.QUERY_FIND_ALL_IDS,
-                query = "SELECT timeConfiguration.id FROM TimeConfiguration timeConfiguration"),
-        @NamedQuery(name = TimeConfiguration.QUERY_FIND_ALL_IDS_BY_XPATH_0, query = "SELECT DISTINCT t.id FROM TimeConfiguration t"),
-        @NamedQuery(name = TimeConfiguration.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT t.id FROM TimeConfiguration t WHERE t.id = :o1Id")
+                query = "SELECT timeConfiguration FROM TimeConfiguration timeConfiguration"),
+        @NamedQuery(name = TimeConfiguration.QUERY_FIND_ALL_IDS_BY_XPATH_0, query = "SELECT DISTINCT t FROM TimeConfiguration t"),
+        @NamedQuery(name = TimeConfiguration.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT t FROM TimeConfiguration t WHERE t.id = :o1Id")
 
 })
 public class TimeConfiguration extends IdentifiedObject {

@@ -26,7 +26,7 @@ public class EntryTypeIterator {
 	private Logger log = LoggerFactory.getLogger(EntryTypeIterator.class);
 	private EntryBuilder builder;
 
-    private Iterator<Long> resourceIds;
+    private Iterator<IdentifiedObject> resourceIds;
     @SuppressWarnings("rawtypes")
 
 	private Iterator<Pair<Long, Class>> childIds = new ArrayList<Pair<Long, Class>>().iterator();
@@ -38,7 +38,7 @@ public class EntryTypeIterator {
     
     private Long subscriptionId;
 
-	public EntryTypeIterator(ResourceService resourceService, List<Long> ids, EntryBuilder builder) {
+	public EntryTypeIterator(ResourceService resourceService, List<IdentifiedObject> ids, EntryBuilder builder) {
 		this.resourceService = resourceService;
 		this.resourceIds = ids.iterator();
 		this.builder = builder;
@@ -46,8 +46,8 @@ public class EntryTypeIterator {
 
 	@SuppressWarnings("rawtypes")
 	// TODO: fix the EntryTypeIterator Typing System
-	public EntryTypeIterator(ResourceService resourceService, List<Long> ids, Class clazz) {
-		System.err.println(" EntryTypeIterator "+clazz + " -- "+ids);
+	public EntryTypeIterator(ResourceService resourceService, List<IdentifiedObject> ids, Class clazz) {
+		System.err.println(" EntryTypeIterator "+clazz );
 		this.resourceService = resourceService;
 		this.resourceIds = ids.iterator();
 		builder = new EntryBuilder();
@@ -77,7 +77,7 @@ public class EntryTypeIterator {
 			}
 		} else {
 			log.warn("Root class " + rootClass);
-			resource = resourceService.findById(resourceIds.next(), rootClass);
+			resource = resourceService.findById(resourceIds.next().getId(), rootClass);
 
 			updateChildIds(resource.getId());
 		}
@@ -90,8 +90,12 @@ public class EntryTypeIterator {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     // TODO: fix the EntryTypeIterator Typing System
 	public EntryType nextEntry(Class resourceClass)  {
-        IdentifiedObject resource;
-        resource = resourceService.findById(resourceIds.next(), resourceClass);
+    	
+        IdentifiedObject resource=resourceIds.next();
+        //if uuid is not null then object already been loaded in current request...so do not need reloading
+        if(resource.getUUID() ==null) {
+        	resource = resourceService.findById(resource.getId(), resourceClass);
+        }
         return builder.buildEntry(resource);
     }
 
@@ -103,8 +107,8 @@ public class EntryTypeIterator {
 		List<Pair<Long, Class>> pairs = new ArrayList<>();
 		try {
 
-			for (Long id : resourceService.findAllIdsByUsagePointId(usagePointId, TimeConfiguration.class)) {
-				pairs.add(new ImmutablePair<Long, Class>(id, TimeConfiguration.class));
+			for (IdentifiedObject id : resourceService.findAllIdsByUsagePointId(usagePointId, TimeConfiguration.class)) {
+				pairs.add(new ImmutablePair<Long, Class>(id.getId(), TimeConfiguration.class));
 			}
 
 		} catch (EmptyResultDataAccessException ignore) {
@@ -112,8 +116,8 @@ public class EntryTypeIterator {
 		}
 		try {
 
-			for (Long id : resourceService.findAllIdsByUsagePointId(usagePointId, MeterReading.class)) {
-				pairs.add(new ImmutablePair<Long, Class>(id, MeterReading.class));
+			for (IdentifiedObject id : resourceService.findAllIdsByUsagePointId(usagePointId, MeterReading.class)) {
+				pairs.add(new ImmutablePair<Long, Class>(id.getId(), MeterReading.class));
 			}
 
 		} catch (EmptyResultDataAccessException ignore) {
@@ -159,23 +163,23 @@ public class EntryTypeIterator {
 		}
 
 		try {
-			for (Long id : resourceService.findAllIdsByUsagePointId(usagePointId, ElectricPowerUsageSummary.class)) {
-				pairs.add(new ImmutablePair<Long, Class>(id, ElectricPowerUsageSummary.class));
+			for (IdentifiedObject id : resourceService.findAllIdsByUsagePointId(usagePointId, ElectricPowerUsageSummary.class)) {
+				pairs.add(new ImmutablePair<Long, Class>(id.getId(), ElectricPowerUsageSummary.class));
 			}
 		} catch (EmptyResultDataAccessException ignore) {
 
 		}
 		try {
-			for (Long id : resourceService.findAllIdsByUsagePointId(usagePointId, ElectricPowerQualitySummary.class)) {
-				pairs.add(new ImmutablePair<Long, Class>(id, ElectricPowerQualitySummary.class));
+			for (IdentifiedObject id : resourceService.findAllIdsByUsagePointId(usagePointId, ElectricPowerQualitySummary.class)) {
+				pairs.add(new ImmutablePair<Long, Class>(id.getId(), ElectricPowerQualitySummary.class));
 			}
 
 		} catch (EmptyResultDataAccessException ignore) {
 
 		}
 		try {
-			for (Long id : resourceService.findAllIdsByUsagePointId(usagePointId, ReadingType.class)) {
-				pairs.add(new ImmutablePair<Long, Class>(id, ReadingType.class));
+			for (IdentifiedObject id : resourceService.findAllIdsByUsagePointId(usagePointId, ReadingType.class)) {
+				pairs.add(new ImmutablePair<Long, Class>(id.getId(), ReadingType.class));
 			}
 
 		} catch (EmptyResultDataAccessException ignore) {

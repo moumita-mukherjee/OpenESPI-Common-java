@@ -27,6 +27,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.energyos.espi.common.domain.ApplicationInformation;
 import org.energyos.espi.common.domain.Authorization;
 import org.energyos.espi.common.domain.BatchList;
+import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.RetailCustomer;
 import org.energyos.espi.common.domain.Subscription;
 import org.energyos.espi.common.service.AuthorizationService;
@@ -128,13 +129,13 @@ public class NotificationServiceImpl implements NotificationService {
 	@Override
 	public void notifyAllNeed() {
 	
-		List <Long> authList = resourceService.findAllIds(Authorization.class);
+		List <IdentifiedObject> authList = resourceService.findAllIds(Authorization.class);
 		
 		Map<Long, BatchList> notifyList = new HashMap<Long, BatchList> ();
 		
-		for (Long id : authList) {
+		for (IdentifiedObject id : authList) {
 			
-			Authorization authorization = resourceService.findById(id, Authorization.class);
+			Authorization authorization = resourceService.findById(id.getId(), Authorization.class);
 			
 			String tempResourceUri = authorization.getResourceURI();
 			
@@ -150,7 +151,7 @@ public class NotificationServiceImpl implements NotificationService {
 				
 				// if this is the first time we have seen this third party, add it to the notification list.
 			    if (!(notifyList.containsKey(thirdParty))) {
-				    notifyList.put(id, new BatchList ());
+				    notifyList.put(id.getId(), new BatchList ());
 			    }
 			    
 			    // and now add the appropriate resource URIs to the batchList of this third party

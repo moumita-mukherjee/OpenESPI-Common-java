@@ -1,5 +1,6 @@
 package org.energyos.espi.common.domain;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
@@ -9,6 +10,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @Embeddable
+@Cacheable(true)
 public class ApplicationInformationScope {
 
 	@Column(name = "scope")

@@ -17,7 +17,12 @@ public class DateTimeUtils
     public static final TimeZone LH_TIME_ZONE = TimeZone.getTimeZone("America/New_York");
     
    
-    
+    public static Date  minDate() {
+    	return new Date(1910-1900,0,0);
+	}
+    public static Date  maxDate() {
+    	return new Date(3900-1900,0,0);
+	}
     /**
      * Returns LH local calendar 
      * 
@@ -104,7 +109,11 @@ public class DateTimeUtils
         return cal.getTime();
     }
     
-    
+    public static Calendar getLocalCalendarInstance()
+    {
+        Calendar cal = Calendar.getInstance(LH_TIME_ZONE);
+        return cal;
+    }
     
     public static Calendar getCalendarInstance(TimeZone zone)
     {
@@ -114,7 +123,7 @@ public class DateTimeUtils
     
     public static Calendar getCalendarInstance()
     {
-        Calendar cal = Calendar.getInstance(LH_TIME_ZONE);
+        Calendar cal = Calendar.getInstance();
         return cal;
     }
     /**
@@ -125,7 +134,7 @@ public class DateTimeUtils
      */
     public static Calendar getCalendarInstance(Date date)
     {
-        Calendar cal = getCalendarInstance();
+        Calendar cal = getCalendarInstance(LH_TIME_ZONE);
         cal.setTime(date);
         return cal;
     }
@@ -212,7 +221,28 @@ public class DateTimeUtils
                 cal1.get(Calendar.MONTH) <= cal2.get(Calendar.MONTH) &&
                 cal1.get(Calendar.DAY_OF_YEAR) <= cal2.get(Calendar.DAY_OF_YEAR));
     }
-    
+ 
+    public static Date toUtc(Date d) {
+    	Calendar cal=Calendar.getInstance(TimeZone.getTimeZone("UTC"));    	
+    	cal.setTimeInMillis(d.getTime()-LH_TIME_ZONE.getOffset(d.getTime()));
+    	return cal.getTime();
+    	
+    }
+    public static Date toUtcDayEnd(Date d) {
+    	Calendar cal=Calendar.getInstance(TimeZone.getTimeZone("UTC"));    	
+    	cal.setTimeInMillis(d.getTime()-LH_TIME_ZONE.getOffset(d.getTime()));
+    	cal.add(Calendar.DAY_OF_MONTH, 1);
+    	cal.add(Calendar.MINUTE, -1);
+    	
+    	//cal.set(Calendar.HOUR_OF_DAY, 23);
+        //cal.set(Calendar.MINUTE, 59);
+        //cal.set(Calendar.SECOND, 59);
+    	return cal.getTime();
+    	
+    }
+    public static void main(String [] args) {
+    	System.out.println(LH_TIME_ZONE.getOffset(1367280000000L));
+    }
     /**
      * Convert to local date/time without milliseconds
      * 

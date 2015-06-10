@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.MeterReading;
 import org.energyos.espi.common.domain.ReadingType;
 import org.energyos.espi.common.models.atom.EntryType;
@@ -89,7 +90,7 @@ public class ReadingTypeServiceImpl implements ReadingTypeService {
 		EntryTypeIterator result = null;
 		try {
 			// TODO - this is sub-optimal (but defers the need to understand creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 			temp = resourceService.findAllIds(ReadingType.class);
 			result = (new EntryTypeIterator(resourceService, temp, ReadingType.class));
 		} catch (Exception e) {
@@ -104,8 +105,8 @@ public class ReadingTypeServiceImpl implements ReadingTypeService {
 	public EntryType findEntryType(Long retailCustomerId, Long usagePointId, Long meterReadingId, Long readingTypeId) {
 		EntryType result = null;
 		try {
-			List<Long> allIds = new ArrayList<Long>();
-			allIds.add(readingTypeId);
+			List<IdentifiedObject> allIds = new ArrayList<IdentifiedObject>();
+			allIds.add(new IdentifiedObject(readingTypeId));
 			result = (new EntryTypeIterator(resourceService, allIds, ReadingType.class)).nextEntry(ReadingType.class);
 		} catch (Exception e) {
 			// TODO need a log file entry as we are going to return a null if
