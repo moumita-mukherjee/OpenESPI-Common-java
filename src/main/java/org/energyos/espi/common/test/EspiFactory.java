@@ -329,7 +329,7 @@ public class EspiFactory {
 
         authorization.setAccessToken("accessToken" + System.currentTimeMillis());
         authorization.setAuthorizationURI("http://DataCustodian" + System.currentTimeMillis() + ".example.com");
-        authorization.setSubscriptionURI(Routes.getDataCustodianRESTSubscriptionGetURL(newRandomString()));
+        authorization.setResourceURI(Routes.getDataCustodianRESTSubscriptionGetURL(newRandomString()));
         authorization.setThirdParty("thirdParty" + System.currentTimeMillis());
         authorization.setState("state" + UUID.randomUUID());
         authorization.setRetailCustomer(retailCustomer);
@@ -356,8 +356,8 @@ public class EspiFactory {
         applicationInformation.setAuthorizationServerTokenEndpoint("http://example.com:8080/ThirdParty/oauth/token");
         applicationInformation.setRedirectUri("http://example.com:8080/ThirdParty/espi/1_1/OAuthCallBack");
         applicationInformation.setClientSecret("Secret" + newRandomString());
-        applicationInformation.getScope().add(new ApplicationInformationScope("FB=4_5_15;IntervalDuration=3600;BlockDuration=monthly;HistoryLength=13"));
-        applicationInformation.getScope().add(new ApplicationInformationScope("FB=4_5_16;IntervalDuration=3600;BlockDuration=monthly;HistoryLength=13"));
+        applicationInformation.getScope().add("FB=4_5_15;IntervalDuration=3600;BlockDuration=monthly;HistoryLength=13");
+        applicationInformation.getScope().add("FB=4_5_16;IntervalDuration=3600;BlockDuration=monthly;HistoryLength=13");
 
         return applicationInformation;
     }

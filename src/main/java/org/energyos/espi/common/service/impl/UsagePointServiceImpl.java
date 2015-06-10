@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.MeterReading;
 import org.energyos.espi.common.domain.RetailCustomer;
 import org.energyos.espi.common.domain.Subscription;
@@ -42,8 +43,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sun.syndication.io.FeedException;
 
 @Service
-@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
-		javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
+@Transactional (rollbackFor= {javax.xml.bind.JAXBException.class}, 
+                noRollbackFor = {javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
+
 public class UsagePointServiceImpl implements UsagePointService {
 	private Logger log = LoggerFactory.getLogger(UsagePointService.class);
 	@Autowired
@@ -65,6 +67,7 @@ public class UsagePointServiceImpl implements UsagePointService {
 	public ImportService getImportService() {
 		return importService;
 	}
+	
 	public void setRepository(UsagePointRepository usagePointRepository) {
 		this.usagePointRepository = usagePointRepository;
 	}
@@ -72,6 +75,7 @@ public class UsagePointServiceImpl implements UsagePointService {
 	public UsagePointRepository getRepository() {
 		return usagePointRepository;
 	}
+	
 	public void setResourceService(ResourceService resourceService) {
 		this.resourceService = resourceService;
 	}
@@ -79,6 +83,7 @@ public class UsagePointServiceImpl implements UsagePointService {
 	public ResourceService getResourceService() {
 		return resourceService;
 	}
+	
 	@Override
 	public List<UsagePoint> findAllByRetailCustomer(RetailCustomer customer) {
 		List<UsagePoint> list = usagePointRepository.findAllByRetailCustomerId(customer.getId());
@@ -154,8 +159,9 @@ public class UsagePointServiceImpl implements UsagePointService {
 	}
 
 	@Override
-	public List<Long> findAllIdsForRetailCustomer(Long retailCustomerId) {
-		return usagePointRepository.findAllIdsForRetailCustomer(retailCustomerId);
+	public List<IdentifiedObject> findAllIdsForRetailCustomer(Long retailCustomerId) {
+		return usagePointRepository
+				.findAllIdsForRetailCustomer(retailCustomerId);
 	}
 
 	@Override
@@ -208,8 +214,8 @@ public class UsagePointServiceImpl implements UsagePointService {
 		try {
 			// TODO - this is sub-optimal (but defers the need to understand
 			// creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
-			temp.add(usagePointId);
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
+			temp.add(new IdentifiedObject(usagePointId));
 			findAllIdsForRetailCustomer(retailCustomerId);
 			result = (new EntryTypeIterator(resourceService, temp, UsagePoint.class)).next();
 		} catch (Exception e) {
@@ -227,7 +233,7 @@ public class UsagePointServiceImpl implements UsagePointService {
 		try {
 			// TODO - this is sub-optimal (but defers the need to understand
 			// creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 			temp = usagePointRepository.findAllIds();
 			
 			
@@ -247,7 +253,7 @@ public class UsagePointServiceImpl implements UsagePointService {
 		try {
 			// TODO - this is sub-optimal (but defers the need to understan
 			// creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 			temp = usagePointRepository.findAllIds();
 			result = (new EntryTypeIterator(resourceService, temp, UsagePoint.class)).nextEntry(UsagePoint.class);
 		} catch (Exception e) {
@@ -262,8 +268,9 @@ public class UsagePointServiceImpl implements UsagePointService {
 	public EntryTypeIterator findEntryTypeIterator(Long retailCustomerId) {
 		EntryTypeIterator result = null;
 		try {
-			List<Long> allIdsForRetailCustomer = findAllIdsForRetailCustomer(retailCustomerId);
-			result = new EntryTypeIterator(resourceService, allIdsForRetailCustomer, UsagePoint.class);
+			List<IdentifiedObject> allIdsForRetailCustomer = findAllIdsForRetailCustomer(retailCustomerId);
+			result = new EntryTypeIterator(resourceService,
+					allIdsForRetailCustomer, UsagePoint.class);
 		} catch (Exception e) {
 			log.warn("Exception:",e);			
 			// TODO need a log file entry as we are going to return a null if
@@ -277,8 +284,8 @@ public class UsagePointServiceImpl implements UsagePointService {
 	@Override
 	public EntryTypeIterator findEntryTypeIterator(Long retailCustomerId, Long usagePointId) {
 		EntryTypeIterator result = null;
-		List<Long> temp = new ArrayList<Long>();
-		temp.add(usagePointId);
+		List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
+		temp.add(new IdentifiedObject(usagePointId));
 		try {
 			// make the call to insure it is a valid usagePointId
 			resourceService.findIdByXPath(retailCustomerId, usagePointId, UsagePoint.class);

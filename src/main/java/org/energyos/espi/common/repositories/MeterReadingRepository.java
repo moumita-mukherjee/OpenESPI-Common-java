@@ -29,12 +29,12 @@ public interface MeterReadingRepository {
 
 	public List<Long> findAllIds();
 
-	public MeterReading findById(Long meterReadingId);
+    public MeterReading findById(Long meterReadingId);
 
-	public MeterReading findByLink(String link);
-
-	public MeterReading findByUUID(UUID uuid);
+    public MeterReading findByUUID(UUID uuid);
 
 	public void persist(MeterReading meterReading);
-
+	
+	/* LH customization starts here */
+	public MeterReading findByLink(String link);
 }

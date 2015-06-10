@@ -155,8 +155,8 @@ public class UsagePointRepositoryImpl implements UsagePointRepository {
 
     @SuppressWarnings("unchecked")
 	@Override
-    public List<Long> findAllIdsForRetailCustomer(Long retailCustomerId) {
-        return (List<Long>)this.em.createNamedQuery(UsagePoint.QUERY_FIND_ALL_IDS_FOR_RETAIL_CUSTOMER)
+    public List<IdentifiedObject> findAllIdsForRetailCustomer(Long retailCustomerId) {
+        return (List<IdentifiedObject>)this.em.createNamedQuery(UsagePoint.QUERY_FIND_ALL_IDS_FOR_RETAIL_CUSTOMER)
                 .setParameter("retailCustomerId", retailCustomerId)
                 .getResultList();
     }
@@ -176,8 +176,8 @@ public class UsagePointRepositoryImpl implements UsagePointRepository {
     }
     @SuppressWarnings("unchecked")
     @Override
-    public List<Long> findAllIds() {
-            return (List<Long>)this.em.createNamedQuery(UsagePoint.QUERY_FIND_ALL_IDS)
+    public List<IdentifiedObject> findAllIds() {
+            return (List<IdentifiedObject>)this.em.createNamedQuery(UsagePoint.QUERY_FIND_ALL_IDS)
                     .getResultList();
         }
 		

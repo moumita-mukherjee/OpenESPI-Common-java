@@ -53,9 +53,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 		@NamedQuery(name = RetailCustomer.QUERY_FIND_BY_LINK, query = "SELECT customer FROM RetailCustomer customer WHERE customer.selfLink.href = :link"),
         @NamedQuery(name = RetailCustomer.QUERY_FIND_ALL, query = "SELECT customer FROM RetailCustomer customer"),
         @NamedQuery(name = RetailCustomer.QUERY_FIND_BY_USERNAME, query = "SELECT customer FROM RetailCustomer customer WHERE customer.username = :username"),
-        @NamedQuery(name = RetailCustomer.QUERY_FIND_ALL_IDS, query = "SELECT retailCustomer.id FROM RetailCustomer retailCustomer"),
-        @NamedQuery(name = RetailCustomer.QUERY_FIND_ALL_IDS_BY_XPATH_0, query = "SELECT DISTINCT r.id FROM RetailCustomer r"),
-        @NamedQuery(name = RetailCustomer.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT r.id FROM RetailCustomer r WHERE r.id = :o1Id")
+        @NamedQuery(name = RetailCustomer.QUERY_FIND_ALL_IDS, query = "SELECT retailCustomer FROM RetailCustomer retailCustomer"),
+        @NamedQuery(name = RetailCustomer.QUERY_FIND_ALL_IDS_BY_XPATH_0, query = "SELECT DISTINCT r FROM RetailCustomer r"),
+        @NamedQuery(name = RetailCustomer.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT r FROM RetailCustomer r WHERE r.id = :o1Id")
       
 })
 
@@ -108,7 +108,6 @@ public class RetailCustomer extends IdentifiedObject implements UserDetails, Pri
     @Column(name = "role")
     @NotEmpty
     protected String role = ROLE_USER;
-    
 
     public Long getId() {
         return id;

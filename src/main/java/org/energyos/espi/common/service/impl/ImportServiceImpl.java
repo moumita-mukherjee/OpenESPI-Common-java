@@ -60,50 +60,43 @@ import org.xml.sax.XMLReader;
 @Service
 public class ImportServiceImpl implements ImportService {	
 	private Logger log = LoggerFactory.getLogger(ImportServiceImpl.class);
-	
-	@Autowired
-	@Qualifier("atomMarshaller")
-	private Jaxb2Marshaller marshaller;
-
-	@Autowired
-	private AuthorizationService authorizationService;
-
-	@Autowired
-	private SubscriptionService subscriptionService;
-
-	@Autowired
-	private UsagePointService usagePointService;
-
-	@Autowired
-	private RetailCustomerService retailCustomerService;
-
-	@Autowired
-	private ResourceService resourceService;
-
-	@Autowired
-	private EntryProcessorService entryProcessorService;
-
-	@Autowired
-	private MeterReadingService meterReadingService;
-
-	@Autowired
-	private IntervalBlockService intervalBlockService;
-
-	// this is a list of the UsagePointIds referenced during
-	// this import
-	private List<EntryType> entries;
-
-	// Min Updated <== used on time scoping the subscriptions
-	//
-	private XMLGregorianCalendar minUpdated = null;
-
-	// Max Updated <== used on time scoping the subscriptions
-	//
-	private XMLGregorianCalendar maxUpdated = null;
-
-	@Override
-	public List<EntryType> getEntries() {
-		List<EntryType> result = entries;
+    @Autowired
+    @Qualifier("atomMarshaller")
+    private Jaxb2Marshaller marshaller;
+    
+    @Autowired
+    private AuthorizationService authorizationService; 
+    
+    @Autowired
+    private SubscriptionService subscriptionService;
+    
+    @Autowired
+    private UsagePointService usagePointService;
+    
+    @Autowired
+    private RetailCustomerService retailCustomerService;
+    
+    @Autowired
+    private ResourceService resourceService;
+    
+    @Autowired
+    private EntryProcessorService entryProcessorService;
+    
+    // this is a list of the UsagePointIds referenced during
+    // this import
+    private List<EntryType> entries;
+    
+    // Min Updated <== used on time scoping the subscriptions
+    //
+    private XMLGregorianCalendar minUpdated = null;
+    
+    // Max Updated <== used on time scoping the subscriptions
+    //
+    private XMLGregorianCalendar maxUpdated = null;
+    
+    @Override
+    public List <EntryType> getEntries() {
+    	List<EntryType> result = entries;
 		//DJ entries = null;
 		return result;
 	}
@@ -263,27 +256,18 @@ public class ImportServiceImpl implements ImportService {
 			log.warn("Exception in import data :"+ex.getMessage());
 			log.debug("Exception in import data :",ex);			
 		}
-	}
+    }
+        
+    public void setJaxb2Marshaller(Jaxb2Marshaller marshaller) {
+        this.marshaller = marshaller;
+   }
 
-	public void setMeterReadingService(MeterReadingService meterReadingService) {
-		this.meterReadingService = meterReadingService;
-	}
-
-	public void setIntervalBlockService(IntervalBlockService intervalBlockService) {
-		this.intervalBlockService = intervalBlockService;
-	}
-
-	public void setJaxb2Marshaller(Jaxb2Marshaller marshaller) {
-		this.marshaller = marshaller;
-	}
-
-	public Jaxb2Marshaller getJaxb2Marshaller() {
-		return this.marshaller;
-	}
-
-	public void setAuthorizationService(AuthorizationService authorizationService) {
-		this.authorizationService = authorizationService;
-	}
+   public Jaxb2Marshaller getJaxb2Marshaller () {
+       return this.marshaller;
+   }
+   public void setAuthorizationService(AuthorizationService authorizationService) {
+        this.authorizationService = authorizationService; 
+   }
 
 	public AuthorizationService getAuthorizationService() {
 		return this.authorizationService;
@@ -328,5 +312,21 @@ public class ImportServiceImpl implements ImportService {
 	public EntryProcessorService getEntryProcessorService() {
 		return this.entryProcessorService;
 	}
+
+	/* LH customization starts here */	
+	@Autowired
+	private MeterReadingService meterReadingService;
+
+	@Autowired
+	private IntervalBlockService intervalBlockService;
+	
+		public void setMeterReadingService(MeterReadingService meterReadingService) {
+		this.meterReadingService = meterReadingService;
+	}
+
+	public void setIntervalBlockService(IntervalBlockService intervalBlockService) {
+		this.intervalBlockService = intervalBlockService;
+	}
+
 
 }

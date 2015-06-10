@@ -26,6 +26,7 @@ package org.energyos.espi.common.domain;
 
 import java.util.List;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -83,22 +84,46 @@ import org.energyos.espi.common.models.atom.adapters.ReadingTypeAdapter;
  */
 @XmlRootElement(name = "ReadingType")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ReadingType", propOrder = { "accumulationBehaviour", "commodity", "consumptionTier", "currency",
-		"dataQualifier", "defaultQuality", "flowDirection", "intervalLength", "kind", "phase", "powerOfTenMultiplier",
-		"timeAttribute", "tou", "uom", "cpp", "interharmonic", "measuringPeriod", "argument" })
+@XmlType(name = "ReadingType", propOrder = {
+        "accumulationBehaviour",
+        "commodity",
+        "consumptionTier",
+        "currency",
+        "dataQualifier",
+        "defaultQuality",
+        "flowDirection",
+        "intervalLength",
+        "kind",
+        "phase",
+        "powerOfTenMultiplier",
+        "timeAttribute",
+        "tou",
+        "uom",
+        "cpp",
+        "interharmonic",
+        "measuringPeriod",
+        "argument"
+})
 @Entity
+@Cacheable(true)
 @Table(name = "reading_types", uniqueConstraints = { @UniqueConstraint(columnNames = { "uuid" }) })
 @XmlJavaTypeAdapter(ReadingTypeAdapter.class)
 @NamedQueries(value = {
-		@NamedQuery(name = ReadingType.QUERY_FIND_BY_ID, query = "SELECT readingType FROM ReadingType readingType WHERE readingType.id = :id"),
-		@NamedQuery(name = ReadingType.QUERY_FIND_BY_UUID, query = "SELECT readingType FROM ReadingType readingType WHERE readingType.uuid = :uuid"),
-		@NamedQuery(name = ReadingType.QUERY_FIND_ALL_IDS_BY_USAGE_POINT_ID, query = "SELECT meterReading.readingType.id FROM MeterReading meterReading WHERE meterReading.usagePoint.id = :usagePointId"),
-		@NamedQuery(name = ReadingType.QUERY_FIND_ALL_IDS, query = "SELECT readingType.id FROM ReadingType readingType"),
-		@NamedQuery(name = ReadingType.QUERY_FIND_ALL_IDS_BY_XPATH_0, query = "SELECT DISTINCT r.id FROM ReadingType r"),
-		@NamedQuery(name = ReadingType.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT r.id FROM ReadingType r WHERE r.id = :o1Id")
+        @NamedQuery(name = ReadingType.QUERY_FIND_BY_ID,
+                query = "SELECT readingType FROM ReadingType readingType WHERE readingType.id = :id"),
+        @NamedQuery(name = ReadingType.QUERY_FIND_BY_UUID,
+                query = "SELECT readingType FROM ReadingType readingType WHERE readingType.uuid = :uuid"),
+        @NamedQuery(name = ReadingType.QUERY_FIND_ALL_IDS_BY_USAGE_POINT_ID,
+                query = "SELECT meterReading.readingType FROM MeterReading meterReading WHERE meterReading.usagePoint.id = :usagePointId"),
+        @NamedQuery(name = ReadingType.QUERY_FIND_ALL_IDS,
+                query = "SELECT readingType FROM ReadingType readingType"),
+		@NamedQuery(name = ReadingType.QUERY_FIND_ALL_IDS_BY_XPATH_0, query = "SELECT DISTINCT r FROM ReadingType r"),
+		@NamedQuery(name = ReadingType.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT r FROM ReadingType r WHERE r.id = :o1Id")
 
 })
-public class ReadingType extends IdentifiedObject {
+public class ReadingType
+        extends IdentifiedObject
+{
 
 	public static final String QUERY_FIND_BY_ID = "ReadingType.findById";
 	public static final String QUERY_FIND_BY_UUID = "ReadingType.findByUUID";
@@ -133,22 +158,23 @@ public class ReadingType extends IdentifiedObject {
 	@Embedded
 	protected ReadingInterharmonic interharmonic;
 
-	// public void setMeterReading(MeterReading meterReading) {
-	// this.meterReading = meterReading;
-	// }
-
-	// public MeterReading getMeterReading() {
-	// return this.meterReading;
-	// }
-
-	/**
-	 * Gets the value of the accumulationBehaviour property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getAccumulationBehaviour() {
-		return accumulationBehaviour;
-	}
+    //public void setMeterReading(MeterReading meterReading) {
+    //	this.meterReading = meterReading;
+    //}
+    
+    //public MeterReading getMeterReading() {
+    //	return this.meterReading;
+    //}
+    
+    /**
+     * Gets the value of the accumulationBehaviour property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getAccumulationBehaviour() {
+        return accumulationBehaviour;
+    }
 
 	/**
 	 * Sets the value of the accumulationBehaviour property.
@@ -160,14 +186,15 @@ public class ReadingType extends IdentifiedObject {
 		this.accumulationBehaviour = value;
 	}
 
-	/**
-	 * Gets the value of the commodity property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getCommodity() {
-		return commodity;
-	}
+    /**
+     * Gets the value of the commodity property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getCommodity() {
+        return commodity;
+    }
 
 	/**
 	 * Sets the value of the commodity property.
@@ -179,14 +206,15 @@ public class ReadingType extends IdentifiedObject {
 		this.commodity = value;
 	}
 
-	/**
-	 * Gets the value of the dataQualifier property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getDataQualifier() {
-		return dataQualifier;
-	}
+    /**
+     * Gets the value of the dataQualifier property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getDataQualifier() {
+        return dataQualifier;
+    }
 
 	/**
 	 * Sets the value of the dataQualifier property.
@@ -198,14 +226,15 @@ public class ReadingType extends IdentifiedObject {
 		this.dataQualifier = value;
 	}
 
-	/**
-	 * Gets the value of the flowDirection property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getFlowDirection() {
-		return flowDirection;
-	}
+    /**
+     * Gets the value of the flowDirection property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getFlowDirection() {
+        return flowDirection;
+    }
 
 	/**
 	 * Sets the value of the flowDirection property.
@@ -217,14 +246,15 @@ public class ReadingType extends IdentifiedObject {
 		this.flowDirection = value;
 	}
 
-	/**
-	 * Gets the value of the intervalLength property.
-	 * 
-	 * @return possible object is {@link Long }
-	 */
-	public Long getIntervalLength() {
-		return intervalLength;
-	}
+    /**
+     * Gets the value of the intervalLength property.
+     *
+     * @return possible object is
+     *         {@link Long }
+     */
+    public Long getIntervalLength() {
+        return intervalLength;
+    }
 
 	/**
 	 * Sets the value of the intervalLength property.
@@ -236,14 +266,15 @@ public class ReadingType extends IdentifiedObject {
 		this.intervalLength = value;
 	}
 
-	/**
-	 * Gets the value of the kind property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getKind() {
-		return kind;
-	}
+    /**
+     * Gets the value of the kind property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getKind() {
+        return kind;
+    }
 
 	/**
 	 * Sets the value of the kind property.
@@ -255,14 +286,15 @@ public class ReadingType extends IdentifiedObject {
 		this.kind = value;
 	}
 
-	/**
-	 * Gets the value of the phase property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getPhase() {
-		return phase;
-	}
+    /**
+     * Gets the value of the phase property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getPhase() {
+        return phase;
+    }
 
 	/**
 	 * Sets the value of the phase property.
@@ -274,14 +306,15 @@ public class ReadingType extends IdentifiedObject {
 		this.phase = value;
 	}
 
-	/**
-	 * Gets the value of the powerOfTenMultiplier property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getPowerOfTenMultiplier() {
-		return powerOfTenMultiplier;
-	}
+    /**
+     * Gets the value of the powerOfTenMultiplier property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getPowerOfTenMultiplier() {
+        return powerOfTenMultiplier;
+    }
 
 	/**
 	 * Sets the value of the powerOfTenMultiplier property.
@@ -293,14 +326,15 @@ public class ReadingType extends IdentifiedObject {
 		this.powerOfTenMultiplier = value;
 	}
 
-	/**
-	 * Gets the value of the timeAttribute property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getTimeAttribute() {
-		return timeAttribute;
-	}
+    /**
+     * Gets the value of the timeAttribute property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getTimeAttribute() {
+        return timeAttribute;
+    }
 
 	/**
 	 * Sets the value of the timeAttribute property.
@@ -312,14 +346,15 @@ public class ReadingType extends IdentifiedObject {
 		this.timeAttribute = value;
 	}
 
-	/**
-	 * Gets the value of the uom property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getUom() {
-		return uom;
-	}
+    /**
+     * Gets the value of the uom property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getUom() {
+        return uom;
+    }
 
 	/**
 	 * Sets the value of the uom property.
@@ -331,14 +366,15 @@ public class ReadingType extends IdentifiedObject {
 		this.uom = value;
 	}
 
-	/**
-	 * Gets the value of the consumptionTier property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getConsumptionTier() {
-		return consumptionTier;
-	}
+    /**
+     * Gets the value of the consumptionTier property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getConsumptionTier() {
+        return consumptionTier;
+    }
 
 	/**
 	 * Sets the value of the consumptionTier property.
@@ -350,14 +386,15 @@ public class ReadingType extends IdentifiedObject {
 		this.consumptionTier = value;
 	}
 
-	/**
-	 * Gets the value of the cpp property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getCpp() {
-		return cpp;
-	}
+    /**
+     * Gets the value of the cpp property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getCpp() {
+        return cpp;
+    }
 
 	/**
 	 * Sets the value of the cpp property.
@@ -369,14 +406,15 @@ public class ReadingType extends IdentifiedObject {
 		this.cpp = value;
 	}
 
-	/**
-	 * Gets the value of the currency property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getCurrency() {
-		return currency;
-	}
+    /**
+     * Gets the value of the currency property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getCurrency() {
+        return currency;
+    }
 
 	/**
 	 * Sets the value of the currency property.
@@ -388,14 +426,15 @@ public class ReadingType extends IdentifiedObject {
 		this.currency = value;
 	}
 
-	/**
-	 * Gets the value of the interharmonic property.
-	 * 
-	 * @return possible object is {@link ReadingInterharmonic }
-	 */
-	public ReadingInterharmonic getInterharmonic() {
-		return interharmonic;
-	}
+    /**
+     * Gets the value of the interharmonic property.
+     *
+     * @return possible object is
+     *         {@link ReadingInterharmonic }
+     */
+    public ReadingInterharmonic getInterharmonic() {
+        return interharmonic;
+    }
 
 	/**
 	 * Sets the value of the interharmonic property.
@@ -410,7 +449,8 @@ public class ReadingType extends IdentifiedObject {
 	/**
 	 * Gets the value of the measuringPeriod property.
 	 * 
-	 * @return possible object is {@link String }
+     * @return possible object is
+     *         {@link String }
 	 */
 	public String getMeasuringPeriod() {
 		return measuringPeriod;
@@ -419,21 +459,22 @@ public class ReadingType extends IdentifiedObject {
 	/**
 	 * Sets the value of the measuringPeriod property.
 	 * 
-	 * @param value
-	 *            allowed object is {@link String }
+     * @param value allowed object is
+     *              {@link String }
 	 */
 	public void setMeasuringPeriod(String value) {
 		this.measuringPeriod = value;
 	}
 
-	/**
-	 * Gets the value of the tou property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getTou() {
-		return tou;
-	}
+    /**
+     * Gets the value of the tou property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getTou() {
+        return tou;
+    }
 
 	/**
 	 * Sets the value of the tou property.
@@ -445,14 +486,15 @@ public class ReadingType extends IdentifiedObject {
 		this.tou = value;
 	}
 
-	/**
-	 * Gets the value of the defaultQuality property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getDefaultQuality() {
-		return defaultQuality;
-	}
+    /**
+     * Gets the value of the defaultQuality property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getDefaultQuality() {
+        return defaultQuality;
+    }
 
 	/**
 	 * Sets the value of the defaultQuality property.
@@ -464,14 +506,15 @@ public class ReadingType extends IdentifiedObject {
 		this.defaultQuality = value;
 	}
 
-	/**
-	 * Gets the value of the argument property.
-	 * 
-	 * @return possible object is {@link RationalNumber }
-	 */
-	public RationalNumber getArgument() {
-		return argument;
-	}
+    /**
+     * Gets the value of the argument property.
+     *
+     * @return possible object is
+     *         {@link RationalNumber }
+     */
+    public RationalNumber getArgument() {
+        return argument;
+    }
 
 	/**
 	 * Sets the value of the argument property.
@@ -483,11 +526,34 @@ public class ReadingType extends IdentifiedObject {
 		this.argument = value;
 	}
 
-	@Override
-	public String getParentQuery() {
-		return MeterReading.QUERY_FIND_BY_RELATED_HREF;
-	}
-
+    @Override
+    public String getParentQuery() {
+        return MeterReading.QUERY_FIND_BY_RELATED_HREF;
+    }
+    
+    @Override
+    public void merge(IdentifiedObject resource) {
+    	super.merge(resource);
+    	this.accumulationBehaviour = ((ReadingType)resource).accumulationBehaviour;
+    	this.argument = ((ReadingType)resource).argument;
+    	this.commodity = ((ReadingType)resource).commodity;
+    	this.consumptionTier = ((ReadingType)resource).consumptionTier;
+    	this.cpp = ((ReadingType)resource).cpp;
+    	this.currency = ((ReadingType)resource).currency;
+    	this.dataQualifier = ((ReadingType)resource).dataQualifier;
+    	this.defaultQuality = ((ReadingType)resource).defaultQuality;
+    	this.flowDirection = ((ReadingType)resource).flowDirection;
+    	this.interharmonic = ((ReadingType)resource).interharmonic;
+    	this.intervalLength = ((ReadingType)resource).intervalLength;
+    	this.kind = ((ReadingType)resource).kind;
+    	this.measuringPeriod = ((ReadingType)resource).measuringPeriod;
+    	this.phase = ((ReadingType)resource).phase;
+    	this.powerOfTenMultiplier = ((ReadingType)resource).powerOfTenMultiplier;
+    	this.timeAttribute = ((ReadingType)resource).timeAttribute;
+    	this.tou = ((ReadingType)resource).tou;
+    	this.uom = ((ReadingType)resource).uom;
+    }
+	/* LH customization starts here */
 	public int getMultiplier() {
 		try {
 			return (int) Math.pow(10, Integer.parseInt(powerOfTenMultiplier));
@@ -495,28 +561,5 @@ public class ReadingType extends IdentifiedObject {
 
 		}
 		return 1;
-	}
-
-	@Override
-	public void merge(IdentifiedObject resource) {
-		super.merge(resource);
-		this.accumulationBehaviour = ((ReadingType) resource).accumulationBehaviour;
-		this.argument = ((ReadingType) resource).argument;
-		this.commodity = ((ReadingType) resource).commodity;
-		this.consumptionTier = ((ReadingType) resource).consumptionTier;
-		this.cpp = ((ReadingType) resource).cpp;
-		this.currency = ((ReadingType) resource).currency;
-		this.dataQualifier = ((ReadingType) resource).dataQualifier;
-		this.defaultQuality = ((ReadingType) resource).defaultQuality;
-		this.flowDirection = ((ReadingType) resource).flowDirection;
-		this.interharmonic = ((ReadingType) resource).interharmonic;
-		this.intervalLength = ((ReadingType) resource).intervalLength;
-		this.kind = ((ReadingType) resource).kind;
-		this.measuringPeriod = ((ReadingType) resource).measuringPeriod;
-		this.phase = ((ReadingType) resource).phase;
-		this.powerOfTenMultiplier = ((ReadingType) resource).powerOfTenMultiplier;
-		this.timeAttribute = ((ReadingType) resource).timeAttribute;
-		this.tou = ((ReadingType) resource).tou;
-		this.uom = ((ReadingType) resource).uom;
 	}
 }

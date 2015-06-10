@@ -17,52 +17,35 @@
 package org.energyos.espi.common.service;
 
 import java.io.InputStream;
-import java.util.List;
 import java.util.UUID;
 
 import org.energyos.espi.common.domain.MeterReading;
-import org.energyos.espi.common.domain.UsagePoint;
 import org.energyos.espi.common.models.atom.EntryType;
 import org.energyos.espi.common.repositories.MeterReadingRepository;
-import org.energyos.espi.common.utils.EntryTypeIterator;
 
+/**
+ * MeterReading Service
+ * 
+ * @author jat1
+ *
+ */
 public interface MeterReadingService {
-	// TODO: likely deprecated
 
-	MeterReading findByUUID(UUID uuid);
-
-	List<MeterReading> findAllByUsagePoint(UsagePoint usagePoint);
-
-	String feedFor(List<MeterReading> meterReadings);
-
-	String entryFor(MeterReading meterReading);
-
-	void associateByUUID(UsagePoint usagePoint, UUID uuid);
-
-	public void persist(MeterReading meterReading);
-
-	// accessor services
-	
 	public void setMeterReadingRepository(MeterReadingRepository meterReadingRepository);
 	
 	public MeterReading findById(Long retailCustomerId, Long usagePointId, Long meterReadingId);
+
+	public MeterReading importResource(InputStream stream);
+	
+	/* LH customization starts here */
+	MeterReading findByUUID(UUID uuid);
 	
 	public MeterReading findById(long meterReadingId);
-	
 
 	public MeterReading findByLink(String link);
+		
+	public void persist(MeterReading meterReading);
 	
-	public EntryTypeIterator findEntryTypeIterator(Long retailCustomerId, Long usagePointId);
-
-	public EntryType findEntryType(Long retailCustomerId, Long usagePointId, Long meterReadingId);
-	
-	public EntryTypeIterator findEntryTypeIterator();
-	
-	public EntryType findEntryType(Long meterReadingId);
-
-	public void delete(MeterReading meterReading);
-
-	// import-exportResource services
-	public MeterReading importResource(InputStream stream);
+	public EntryType findEntryType(Long retailCustomerId, Long usagePointId,Long meterReadingId);
 
 }

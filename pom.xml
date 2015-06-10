@@ -5,7 +5,7 @@
 
     <groupId>org.energyos</groupId>
     <artifactId>Common</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2-RC1</version>
     <packaging>jar</packaging>
 
 	<name>Common</name>
@@ -59,7 +59,7 @@
 
     <properties>
         <!-- Spring -->
-        <spring.version>4.0.3.RELEASE</spring.version>
+        <spring.version>4.0.6.RELEASE</spring.version>
         <spring.security.version>3.2.3.RELEASE</spring.security.version>
         <spring-security-oauth.version>2.0.2.RELEASE</spring-security-oauth.version>
 
@@ -74,7 +74,6 @@
 		<ehcache.version>2.6.6</ehcache.version>
 		<hsqldb.version>2.3.0</hsqldb.version>
 		<mysql.version>5.1.18</mysql.version>
-		<postgres.version>9.1-901.jdbc4</postgres.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -335,19 +334,16 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.12.4</version>
-				<configuration>
-					<includes>
-						<include>**/*Tests.java</include>
-					</includes>
-				</configuration>
-			</plugin>
-
-
-		</plugins>
-
-	</build>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12.4</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Tests.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

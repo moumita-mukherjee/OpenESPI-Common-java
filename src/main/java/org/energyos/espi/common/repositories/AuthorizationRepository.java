@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.energyos.espi.common.domain.Authorization;
+import org.energyos.espi.common.domain.IdentifiedObject;
 
 public interface AuthorizationRepository {
 
@@ -27,27 +28,23 @@ public interface AuthorizationRepository {
 
     List<Authorization> findAllByRetailCustomerId(Long retailCustomerId);
     
-    List<Authorization> findAllActiveByRetailCustomerId(Long retailCustomerId);
+    List<IdentifiedObject> findAllIdsByApplicationInformationId(Long applicationInformationId);
 
     Authorization findByState(String state);
     
     Authorization findByScope(String scope, Long retailCustomerId);
-    
-    Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope );
 
     void merge(Authorization authorization);
 
     Authorization findById(Long authorizationId);
 
-    List<Long> findAllIds(Long retailCustomerId);
+    List<IdentifiedObject> findAllIds(Long retailCustomerId);
 
     Authorization findByUUID(UUID uuid);
 
-    List<Long> findAllIds();
+    List<IdentifiedObject> findAllIds();
     
     void deleteById(Long id);
-    
-    void delete(Authorization authorization);
 
     void createOrReplaceByUUID(Authorization authorization);
     
@@ -56,5 +53,13 @@ public interface AuthorizationRepository {
 	Authorization findByRefreshToken(String refreshToken);
 	
 	public List<Long> findAllIdsByBulkId(String thirdParty, Long bulkId);
-    
+	
+	/* LH customization starts here */
+	Authorization findByApplicationInformationId(Long applicationInformationId,String scope);
+	
+    List<Authorization> findAllActiveByRetailCustomerId(Long retailCustomerId);
+	
+    void delete(Authorization authorization);    
+	
+	Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope );
 }

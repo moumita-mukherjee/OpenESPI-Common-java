@@ -24,6 +24,7 @@ import java.util.UUID;
 import javax.persistence.NoResultException;
 
 import org.energyos.espi.common.domain.Authorization;
+import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.Subscription;
 import org.energyos.espi.common.domain.UsagePoint;
 import org.energyos.espi.common.models.atom.EntryType;
@@ -56,10 +57,10 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		return authorizationRepository.findAllByRetailCustomerId(retailCustomerId);
 	}
 
-	@Override
-	public List<Authorization> findAllActiveByRetailCustomerId(Long retailCustomerId) {
-		return authorizationRepository.findAllActiveByRetailCustomerId(retailCustomerId);
-	}
+    @Override
+    public List<IdentifiedObject> findAllIdsByApplicationInformationId(Long applicationInformationId) {	
+    	return authorizationRepository.findAllIdsByApplicationInformationId(applicationInformationId);
+    }
 
 	@Override
 	public Authorization findByUUID(UUID uuid) {
@@ -75,20 +76,15 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		return authorization;
 	}
 
-	@Override
-	public Authorization findByState(String state) {
-		return authorizationRepository.findByState(state);
-	}
-
-	@Override
-	public Authorization findByScope(String scope, Long retailCustomerId) {
-		return authorizationRepository.findByScope(scope, retailCustomerId);
-	}
-	
-	@Override
-	public Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope) {
-		return authorizationRepository.findByScope(retailCustomerId, applicationInformationId,scope);
-	}
+    @Override
+    public Authorization findByState(String state) {
+        return authorizationRepository.findByState(state);
+    }
+    
+    @Override
+    public Authorization findByScope(String scope, Long retailCustomerId) {
+    	return authorizationRepository.findByScope(scope, retailCustomerId);
+    }
 
 	@Override
 	public List<Authorization> findAll() {
@@ -101,12 +97,11 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public Authorization findByURI(String uri) {
-		UsagePoint usagePoint = usagePointRepository.findByURI(uri);
-		return usagePoint.getSubscription().getAuthorization();
-	}
+    @Override
+    public Authorization findByURI(String uri) {
+        UsagePoint usagePoint = usagePointRepository.findByURI(uri);
+        return usagePoint.getSubscription().getAuthorization();
+    }
 
 	@Override
 	public String feedFor(List<Authorization> authorizations) {
@@ -138,9 +133,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		try {
 			// TODO - this is sub-optimal (but defers the need to understand
 			// creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 			Authorization authorization = authorizationRepository.findById(authorizationId);
-			temp.add(authorization.getId());
+			temp.add(authorization);
 			result = (new EntryTypeIterator(resourceService, temp, Authorization.class)).nextEntry(Authorization.class);
 		} catch (Exception e) {
 			// TODO need a log file entry as we are going to return a null if
@@ -156,7 +151,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		try {
 			// TODO - this is sub-optimal (but defers the need to understan
 			// creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 			temp = authorizationRepository.findAllIds(retailCustomerId);
 			result = (new EntryTypeIterator(resourceService, temp, Authorization.class));
 		} catch (Exception e) {
@@ -173,9 +168,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		try {
 			// TODO - this is sub-optimal (but defers the need to understan
 			// creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 			Authorization authorization = authorizationRepository.findById(authorizationId);
-			temp.add(authorization.getId());
+			temp.add(authorization);
 			result = (new EntryTypeIterator(resourceService, temp, Authorization.class)).next();
 		} catch (Exception e) {
 			// TODO need a log file entry as we are going to return a null if
@@ -191,7 +186,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		try {
 			// TODO - this is sub-optimal (but defers the need to understan
 			// creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 			temp = authorizationRepository.findAllIds();
 			result = (new EntryTypeIterator(resourceService, temp, Authorization.class));
 		} catch (Exception e) {
@@ -237,6 +232,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	@Override
 	public Authorization findByAccessToken(String accessToken) {		
 		return authorizationRepository.findByAccessToken(accessToken);
+
 	}
 
 	@Override
@@ -253,31 +249,42 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		this.authorizationRepository = authorizationRepository;
 	}
 
-	public AuthorizationRepository getAuthorizationRepository() {
-		return this.authorizationRepository;
-	}
+   public AuthorizationRepository getAuthorizationRepository () {
+        return this.authorizationRepository;
+   }
+   public void setUsagePointRepository(UsagePointRepository usagePointRepository) {
+        this.usagePointRepository = usagePointRepository;
+   }
 
-	public void setUsagePointRepository(UsagePointRepository usagePointRepository) {
-		this.usagePointRepository = usagePointRepository;
-	}
+   public UsagePointRepository getUsagePointRepository () {
+        return this.usagePointRepository;
+   }
+   public void setResourceService(ResourceService resourceService) {
+        this.resourceService = resourceService;
+   }
 
-	public UsagePointRepository getUsagePointRepository() {
-		return this.usagePointRepository;
-	}
+   public ResourceService getResourceService () {
+        return this.resourceService;
+   }
+   public void setImportService(ImportService importService) {
+        this.importService = importService;
+   }
 
-	public void setResourceService(ResourceService resourceService) {
-		this.resourceService = resourceService;
+   public ImportService getImportService () {
+        return this.importService;
+   }
+   /* LH customization starts here */
+   public Authorization findByApplicationInformationId(Long applicationInformationId,String scope) {
+	   return authorizationRepository.findByApplicationInformationId(applicationInformationId,scope);
+   }
+   	@Override
+	public List<Authorization> findAllActiveByRetailCustomerId(Long retailCustomerId) {
+		return authorizationRepository.findAllActiveByRetailCustomerId(retailCustomerId);
 	}
-
-	public ResourceService getResourceService() {
-		return this.resourceService;
+	
+	@Override
+	public Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope) {
+		return authorizationRepository.findByScope(retailCustomerId, applicationInformationId,scope);
 	}
-
-	public void setImportService(ImportService importService) {
-		this.importService = importService;
-	}
-
-	public ImportService getImportService() {
-		return this.importService;
-	}
+   
 }

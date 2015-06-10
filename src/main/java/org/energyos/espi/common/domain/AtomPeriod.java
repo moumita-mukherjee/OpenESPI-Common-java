@@ -23,20 +23,20 @@
 
 package org.energyos.espi.common.domain;
 
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class AtomPeriod {
 
-	private static Date mindate=new Date(2000-1900,0,1);
+	private static GregorianCalendar mindate=new GregorianCalendar(2000,0,1);
+	private static GregorianCalendar maxdate=new GregorianCalendar(9999,0,1);
 	public AtomPeriod() {
 		super();
-		updatedMin = new Date(mindate.getTime());
-		//updatedMin.set(2000, 0, 1);
-		updatedMax = new Date();
+		updatedMin = new GregorianCalendar(mindate.get(Calendar.YEAR),mindate.get(Calendar.MONTH),mindate.get(Calendar.DAY_OF_MONTH));
+		updatedMax = new GregorianCalendar(maxdate.get(Calendar.YEAR),maxdate.get(Calendar.MONTH),maxdate.get(Calendar.DAY_OF_MONTH));
 
-		publishedMin = new Date(mindate.getTime());
-		//publishedMin.set(2000, 0, 1);
-		publishedMax = new Date();
+		publishedMin = new GregorianCalendar(mindate.get(Calendar.YEAR),mindate.get(Calendar.MONTH),mindate.get(Calendar.DAY_OF_MONTH));
+		publishedMax = new GregorianCalendar(maxdate.get(Calendar.YEAR),maxdate.get(Calendar.MONTH),maxdate.get(Calendar.DAY_OF_MONTH));
 	}
 
 	public boolean isFilterOnPublished() {
@@ -49,11 +49,11 @@ public class AtomPeriod {
 		return usageMin>0;
 	}
 
-	private Date updatedMin = null;
-	private Date updatedMax = null;
+	private GregorianCalendar updatedMin = null;
+	private GregorianCalendar updatedMax = null;
 
-	private Date publishedMin = null;
-	private Date publishedMax = null;
+	private GregorianCalendar publishedMin = null;
+	private GregorianCalendar publishedMax = null;
 	
 	private long usageMin=0;
 	private long usageMax=Long.MAX_VALUE;
@@ -74,43 +74,43 @@ public class AtomPeriod {
 		this.usageMax = usageMax;
 	}
 
-	public Date getUpdatedMin() {
+	public GregorianCalendar getUpdatedMin() {
 		return updatedMin;
 	}
 
-	public void setUpdatedMin(Date updatedMin) {
+	public void setUpdatedMin(GregorianCalendar updatedMin) {
 		this.updatedMin = updatedMin;
 	}
 
-	public Date getUpdatedMax() {
+	public GregorianCalendar getUpdatedMax() {
 		return updatedMax;
 	}
 
-	public void setUpdatedMax(Date updatedMax) {
+	public void setUpdatedMax(GregorianCalendar updatedMax) {
 		this.updatedMax = updatedMax;
 	}
 
-	public Date getPublishedMin() {
+	public GregorianCalendar getPublishedMin() {
 		return publishedMin;
 	}
 
-	public void setPublishedMin(Date publishedMin) {
+	public void setPublishedMin(GregorianCalendar publishedMin) {
 		this.publishedMin = publishedMin;
 	}
 
-	public Date getPublishedMax() {
+	public GregorianCalendar getPublishedMax() {
 		return publishedMax;
 	}
 
-	public void setPublishedMax(Date publishedMax) {
+	public void setPublishedMax(GregorianCalendar publishedMax) {
 		this.publishedMax = publishedMax;
 	}
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append(" updated-min "+updatedMin.getTime() + " "+updatedMin );
-		sb.append(" updated-max "+updatedMax.getTime() + " "+updatedMax );
-		sb.append(" published-min "+publishedMin.getTime() + " "+publishedMin );
-		sb.append(" published-max "+publishedMax.getTime() + " "+publishedMax );
+		sb.append(" updated-min "+updatedMin.getTime() );
+		sb.append(" updated-max "+updatedMax.getTime() );
+		sb.append(" published-min "+publishedMin.getTime()  );
+		sb.append(" published-max "+publishedMax.getTime()  );
 		sb.append(" usage-min "+usageMin);
 		sb.append(" usage-max "+usageMax);
 		sb.append(" isFilterOnPublished "+isFilterOnPublished());

@@ -66,6 +66,9 @@ CREATE TABLE `interval_readings` (
   `start` bigint(20) DEFAULT NULL,
   `value` bigint(20) DEFAULT NULL,
   `interval_block_id` bigint(20) DEFAULT NULL,
+  `consumptionTier` bigint(20) DEFAULT NULL,
+  `tou` bigint(20) DEFAULT NULL,
+  `cpp` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_982b1bcd359b47fcb5823a43d21` (`interval_block_id`),
   CONSTRAINT `FK_982b1bcd359b47fcb5823a43d21` FOREIGN KEY (`interval_block_id`) REFERENCES `interval_blocks` (`id`)
@@ -354,7 +357,6 @@ CREATE TABLE `authorizations` (
   `scope` varchar(255) DEFAULT NULL,
   `state` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
-  `subscriptionURI` varchar(255) DEFAULT NULL,
   `third_party` varchar(255) DEFAULT NULL,
   `tokenType` int(11) DEFAULT NULL,
   `application_information_id` bigint(20) DEFAULT NULL,
@@ -365,8 +367,7 @@ CREATE TABLE `authorizations` (
   KEY `FK_a4fccef421a14e0ead5c1b9753d` (`retail_customer_id`),
   KEY `FK_subscriptionkey` (`subscription_id`),
   CONSTRAINT `FK_a4fccef421a14e0ead5c1b9753d` FOREIGN KEY (`retail_customer_id`) REFERENCES `retail_customers` (`id`),
-  CONSTRAINT `FK_d0761ae9d2dd44c49867ac4ec4b` FOREIGN KEY (`application_information_id`) REFERENCES `application_information` (`id`),
-  CONSTRAINT `FK_subscriptionkey` FOREIGN KEY (`subscription_id`) REFERENCES `subscriptions` (`id`)
+  CONSTRAINT `FK_d0761ae9d2dd44c49867ac4ec4b` FOREIGN KEY (`application_information_id`) REFERENCES `application_information` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -414,8 +415,7 @@ CREATE TABLE `subscriptions` (
   KEY `FK_a68a2938cbc142c3b82f57cb4b1` (`authorization_id`),
   KEY `FK_e38a940ce8ed4d8983d1d5dac6e` (`retail_customer_id`),
   CONSTRAINT `FK_e38a940ce8ed4d8983d1d5dac6e` FOREIGN KEY (`retail_customer_id`) REFERENCES `retail_customers` (`id`),
-  CONSTRAINT `FK_a027c87418ce4d7abbde7ee5eec` FOREIGN KEY (`applicationInformation_id`) REFERENCES `application_information` (`id`),
-  CONSTRAINT `FK_a68a2938cbc142c3b82f57cb4b1` FOREIGN KEY (`authorization_id`) REFERENCES `authorizations` (`id`)
+  CONSTRAINT `FK_a027c87418ce4d7abbde7ee5eec` FOREIGN KEY (`applicationInformation_id`) REFERENCES `application_information` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -536,7 +536,7 @@ DROP TABLE IF EXISTS `retail_customers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `retail_customers` (
-  `id` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) DEFAULT NULL,
   `published` datetime DEFAULT NULL,
   `self_link_href` varchar(255) DEFAULT NULL,
@@ -629,6 +629,7 @@ CREATE TABLE `application_information` (
   `thirdPartyUserPortalScreenURI` varchar(255) DEFAULT NULL,
   `tokenEndpointAuthMethod` varchar(255) DEFAULT NULL,
   `tosUri` varchar(255) DEFAULT NULL,
+  `dataCustodianScopeSelectionScreenURI` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
