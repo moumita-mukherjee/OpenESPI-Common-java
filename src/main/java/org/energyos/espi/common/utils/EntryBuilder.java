@@ -24,14 +24,14 @@ import org.energyos.espi.common.models.atom.LinkType;
 
 public class EntryBuilder {
 
-	private Hashtable<IdentifiedObject,EntryType> map= new Hashtable<IdentifiedObject,EntryType>();
     private EntryType entry;
 
     private EntryType build(IdentifiedObject reource) {
-        entry = new EntryType();              
-    	buildMetadata(reource);
-    	buildContent(reource);
-        
+        entry = new EntryType();
+
+        buildMetadata(reource);
+        buildContent(reource);
+
         return entry;
     }
 
@@ -74,4 +74,6 @@ public class EntryBuilder {
             entry.getLinks().add(new LinkType(link.getRel(),link.getHref()));
         }
     }
+	/* LH customization starts here */
+	private Hashtable<IdentifiedObject,EntryType> map= new Hashtable<IdentifiedObject,EntryType>();	
 }

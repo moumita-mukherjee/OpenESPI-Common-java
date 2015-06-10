@@ -3,8 +3,8 @@
 	<!-- 
 ==========================================================================
  Schema: espiDerived.xsd
-    Version: 0.7.20140529
-     Author: Ron Pasquarelli & Marty Burns (Hypertek for NIST), John Teeter (for NIST), Don Coffin (Remi Networks)
+    Version: 0.7.20140924     
+    Author: Ron Pasquarelli & Marty Burns (Hypertek for NIST), John Teeter (for NIST), Don Coffin (Remi Networks)
 ========================================================================== 
 
 This product includes software developed within the EnergyOS Initiative
@@ -68,188 +68,186 @@ self link to this resource</xs:documentation>
 				<xs:sequence>
 					<xs:element name="dataCustodianId" type="String64" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Contains the identifier for the Data Custodian.</xs:documentation>
+							<xs:documentation>Contains the identifier for the Data Custodian. (e.g. "Sandbox Data Custodian")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="dataCustodianApplicationStatus" type="DataCustodianApplicationStatus" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>A code indicating the current status of the application. This value is provided by Data Custodian, cannot be modified by Third Party.</xs:documentation>
+							<xs:documentation>A code indicating the current status of the application. This value is provided by Data Custodian, cannot be modified by Third Party. (e.g. "2" => production)</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="thirdPartyApplicationDescription" type="String256" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>A description of the application.</xs:documentation>
+							<xs:documentation>A description of the application. (e.g. "Third Party Application Description is added as provided by each TP")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="thirdPartyApplicationStatus" type="ThirdPartyApplicatonStatus" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>A code indicating the current status of the application.</xs:documentation>
+							<xs:documentation>A code indicating the current status of the application. (e.g. "1" => Development</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="thirdPartyApplicationType" type="ThirdPartyApplicationType" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>A code indicating the type of the application.</xs:documentation>
+							<xs:documentation>A code indicating the type of the application. (e.g. "1" => Web)</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="thirdPartyApplicationUse" type="ThirdPartyApplicationUse" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>A code indicating the expected use of the application.</xs:documentation>
+							<xs:documentation>A code indicating the expected use of the application. (e.g. "1" => EnergyManagement)</xs:documentation>
 						</xs:annotation>
 					</xs:element>
-					<!-- There is no such thing as a thirdPartyDefaultBatchResource with OAuth 2.0
-					<xs:element name="thirdPartyDefaultBatchResource" type="xs:anyURI" minOccurs="0">
-						<xs:annotation>
-							<xs:documentation>The default endpoint for asynchronous delivery of Batch data using push.</xs:documentation>
-						</xs:annotation>
-					</xs:element>
-					 -->
 					<xs:element name="thirdPartyPhone" type="String32" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>The phone number of the organization to which access will be granted. (For debugging - not to be shared with customers)</xs:documentation>
+							<xs:documentation>The phone number of the organization to which access will be granted. (For debugging - not to be shared with customers). (e.g. "+1 800 673-6377")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="authorizationServerUri" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Contains the URI link to the authorization endpoint associated with this authorization.</xs:documentation>
+							<xs:documentation>Contains the base URI link to the authorization server. (e.g. "https://services.greenbuttondata.org/DataCustodian")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="thirdPartyNotifyUri" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>URI used to notify ThirdParty that subscribed information is available.</xs:documentation>
+							<xs:documentation>URI used to notify ThirdParty that subscribed information is available. (e.g. "https://services.greenbuttondata.org/ThirdParty/espi/1_1/Notification")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<!--Johns adds-->
 					<xs:element name="authorizationServerAuthorizationEndpoint" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>An OAuth 2.0 URI used by the client to obtain authorization from the resource owner via user-agent redirection. {AuthorizationServer}{AuthorizationPath}</xs:documentation>
+							<xs:documentation>An OAuth 2.0 URI used by the client to obtain authorization from the resource owner via user-agent redirection - {AuthorizationServer}{AuthorizationPath}. (e.g.  "https://services.greenbuttondata.org/DataCustodian/oauth/authorize" </xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="authorizationServerRegistrationEndpoint" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>A URI used by the client to register a Third Party with a Data Custodian via its {AuthorizationServer}{AuthorizationServer}{RegistrationPath}</xs:documentation>
+							<xs:documentation>A URI used by the client to register a Third Party with a Data Custodian via its {AuthorizationServer}{AuthorizationServer}{RegistrationPath}. (e.g. "https://services.greenbuttondata.org/DataCustodian/espi/1_1/register")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="authorizationServerTokenEndpoint" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>An OAuth 2.0 URL used by the client to exchange an authorization grant for an access token, typically with client authentication.</xs:documentation>
+							<xs:documentation>An OAuth 2.0 URL used by the client to exchange an authorization grant for an access token, typically with client authentication. (e.g. "https://services.greenbuttondata.org/DataCustodian/oauth/token")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="dataCustodianBulkRequestURI" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>{DataCustodianBulkRequestURI}  URI of DataCustodian’s Bulk Request endpoint.  The value is provided by the Data Custodian and cannot be modified by the ThirdParty.  The field MUST be a valid URI.</xs:documentation>
+							<xs:documentation>{DataCustodianBulkRequestURI}  URI of DataCustodian’s Bulk Request endpoint.  The value is provided by the Data Custodian and cannot be modified by the ThirdParty. (e.g. "https://services.greenbuttondata.org/DataCustodian/espi/1_1/resource/Batch/Bulk/{BulkID}" => bulkID from BR={bulkId} from Scope)</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="dataCustodianResourceEndpoint" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>{ResourceServer}{ResourcePath}</xs:documentation>
+							<xs:documentation>{ResourceServer}{ResourcePath}. (e.g. "https://services.greenbuttondata.org/DataCustodian/espi/1_1/resource")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="thirdPartyScopeSelectionScreenURI" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>URI of the Scope Selection Screen used by the Retail Customer to select the characteristics of the Green Button data to be shared with the ThirdParty.  The field MUST be a valid URI.</xs:documentation>
+							<xs:documentation>URI of the Scope Selection Screen used by the Retail Customer to select the characteristics of the Green Button data to be shared with the ThirdParty.  (e.g. "https://services.greenbuttondata.org/ThirdParty/espi/1_1/RetailCustomer/ScopeSelection")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="thirdPartyUserPortalScreenURI" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>URI of a Third Party’s web page the Retail Customer user-agent is returned to after authorizing the Third Party access to the Retail Customer’s energy usage information (EUI).  The value of this field MUST be a valid web page.</xs:documentation>
+							<xs:documentation>URI of a Third Party’s web page for use with Green Button Connect My Data (e.g. "https://services.greenbuttondata.org/ThirdParty/espi/1_1/home")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<!-- OAuth 2.0 fields -->
 					<xs:element name="client_secret" type="String512" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>A secret to be associated with this application, used to sign OAuth requests. This value is provided by Data Custodian (OAuth client_secret).</xs:documentation>
+							<xs:documentation>A secret to be associated with this application, used to sign OAuth requests. This value is provided by Data Custodian (OAuth client_secret). (e.g. "secret")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="logo_uri" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>The link to the logo image for the application. Size greater than 180 x 150 may be cropped or reduced (OAuth logo_uri).</xs:documentation>
+							<xs:documentation>The link to the logo image for the application. Size greater than 180 x 150 may be cropped or reduced (OAuth logo_uri). (e.g. "http://services.greenbuttondata.org/ThirdParty/favicon.png")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="client_name" type="String256" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>The name of the application to which access will be granted (OAuth client_name).</xs:documentation>
+							<xs:documentation>The name of the application to which access will be granted (OAuth client_name). (e.g. "Green Button ThirdParty")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="client_uri" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>The link to the main page of the application (OAuth client_uri).</xs:documentation>
+							<xs:documentation>The link to the main page of the application (OAuth client_uri). (e.g. "https://services.greenbuttondata.org/ThirdParty")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="redirect_uri" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>The default redirect back to the application after authorization grant (OAuth redirect uri).</xs:documentation>
+							<xs:documentation>The default redirect back to the application after authorization grant (OAuth redirect uri). (e.g. "https://services.greenbuttondata.org/ThirdParty/espi/1_1/OAuthCallBack")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="client_id" type="String64" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Contains the identifier for the Third Party (OAuth client_id).</xs:documentation>
+							<xs:documentation>Contains the identifier for the Third Party (OAuth client_id). (e.g. "ThirdParty Name")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="tos_uri" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>A URI that points to a human-readable Terms of Service document for the Third Party Application.  The Terms of Service usually describes a contractual relationship between the Retail Customer and the Third Party Application that the Retail Customer accepts when authorizing access to the Third Party Application.</xs:documentation>
+							<xs:documentation>A URI that points to a human-readable Terms of Service document for the Third Party Application.  The Terms of Service usually describes a contractual relationship between the Retail Customer and the Third Party Application that the Retail Customer accepts when authorizing access to the Third Party Application. (e.g. "http://services.greenbuttondata.org/ThirdParty/TermsOfService")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="policy_uri" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>A URI that points to a human-readable Policy document for the Third Party Application.  The policy usually describes how a Retail Customer's energy usage information will be used by the Third Party Application.</xs:documentation>
+							<xs:documentation>A URI that points to a human-readable Policy document for the Third Party Application.  The policy usually describes how a Retail Customer's energy usage information will be used by the Third Party Application. (e.g. "http://services.greenbuttondata.org/ThirdParty/UsagePolicy")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="software_id" type="String32" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>An identifier for the software that comprises the Third Party Application.  The software_id is asserted by the Third Party software and is intended to be shared between all copies of the Third Party software.  The value of this field MAY be a UUID [RFC4122].</xs:documentation>
+							<xs:documentation>An identifier for the software that comprises the Third Party Application.  The software_id is asserted by the Third Party software and is intended to be shared between all copies of the Third Party software.  The value of this field MAY be a UUID [RFC4122]. (e.g. "MyCoolGreenButtonAnalyzer")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="software_version" type="String32" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>A version identifier for the software that comprises a Third Party Application.  The value of this field is a string that is intended to be compared using string equality matching.  The value of the software_version SHOULD change on any update to the Third Party software.</xs:documentation>
+							<xs:documentation>A version identifier for the software that comprises a Third Party Application.  The value of this field is a string that is intended to be compared using string equality matching.  The value of the software_version SHOULD change on any update to the Third Party software. (e.g. "Version 1.00.00")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="client_id_issued_at" type="TimeType" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Time date stamp at which this client_id was issued. Note the schema data type is TimeType and the presentation in OAuth message flow is xs:dateTime and requires a conversion when accessed.</xs:documentation>
+							<xs:documentation>Time date stamp at which this client_id was issued. Note the schema data type is TimeType and the presentation in OAuth message flow is xs:dateTime and requires a conversion when accessed. (e.g. "1403190000" => 2014-06-19T15:00:00Z)</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="client_secret_expires_at" type="TimeType" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Date time at which this client_secret expires -- value of 0 means the client_secret never expires.</xs:documentation>
+							<xs:documentation>Date time at which this client_secret expires -- value of 0 means the client_secret never expires. (e.g. "0" => never expires)</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<!-- Additional OAuth 2.0 fields -->
 					<xs:element name="contacts" type="String256" minOccurs="0" maxOccurs="unbounded">
 						<xs:annotation>
-							<xs:documentation>Array of email addresses for people responsible for the Authorized Third Party Application.  These MAY be made available to Retail Customers for support requests for the Authorized Third Party application.  The Data Custodian Authorization Server MAY use the email addresses as identifiers for an Authorized Third Party application administrative page.</xs:documentation>
+							<xs:documentation>Array of email addresses for people responsible for the Authorized Third Party Application.  These MAY be made available to Retail Customers for support requests for the Authorized Third Party application.  The Data Custodian Authorization Server MAY use the email addresses as identifiers for an Authorized Third Party application administrative page. (e.g. "support@energyos.org")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="token_endpoint_auth_method" type="TokenEndPointMethod" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>(The authentication method used by the OAuth 2.0 Token Endpoint to authenticate the Third Party Application)</xs:documentation>
+							<xs:documentation>The authentication method used by the OAuth 2.0 Token Endpoint to authenticate the Third Party Application. (e.g. "client_secret_basic")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="scope" type="String256" minOccurs="0" maxOccurs="unbounded">
 						<xs:annotation>
-							<xs:documentation> Space separated list of scope values the Third Party Application may use when requesting access Tokens.</xs:documentation>
+							<xs:documentation> Space separated list of scope values the Third Party Application may use when requesting access Tokens. (e.g. "FB=1_3_4_5_8_13_18_19_31_34_35_39;IntervalDuration=900_3600;BlockDuration=Daily; HistoryLength= 34128000;SubscriptionFrequency=Daily; AccountCollection=5;BR=1;")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="grant_types" type="GrantType" minOccurs="0" maxOccurs="unbounded">
 						<xs:annotation>
-							<xs:documentation>Grant types this interface supports.</xs:documentation>
+							<xs:documentation>Grant types this interface supports. (e.g. "client_credentials, authorization_code, refresh_token" in separate tags</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="response_types" type="ResponseType" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>response types supported.</xs:documentation>
+							<xs:documentation>Response types supported. (e.g. "code")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="registration_client_uri" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>{ClientConfigurationURI} A URI used by a registered client to manage registration information.  This URI is returned by the AuthorizationServer in the “registration_client_uri” field of the client information response. {AuthorizationServerRegistrationEndpoint}/ApplicationInformation/{ApplicationInformationID}</xs:documentation>
+							<xs:documentation>{ClientConfigurationURI} A URI used by a registered client to manage registration information.  This URI is returned by the AuthorizationServer in the “registration_client_uri” field of the client information response. {AuthorizationServerRegistrationEndpoint}/ApplicationInformation/{ApplicationInformationID}. (e.g. "https://services.greenbuttondata.org/DataCustodian/espi/1_1/resource/ApplicationInformation/{ApplicationInformationID}/")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<!-- OAuth 2.0 fields END -->
 					<xs:element name="registration_access_token" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>A credential obtained during Third Party registration with the Data Custodian to enable access to the ApplicationInformation resource. This is persisted in the ApplicationInformation resource structure.</xs:documentation>
+							<xs:documentation>A credential obtained during Third Party registration with the Data Custodian to enable access to the ApplicationInformation resource. This is persisted in the ApplicationInformation resource structure. (e.g. "fe82518d-e325-404e-978c-c02f9339bccc")</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="dataCustodianScopeSelectionScreenURI" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The URI used by the Third Party to redirect the Retail Customer to the Data Custodian Scope Selection Screen (note that this will likely involve a dialog with the Retail Customer including a log in authentication process). (e.g. http://localhost:8080/DataCustodian/RetailCustomer/ScopeSelection)</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 				</xs:sequence>
@@ -272,72 +270,72 @@ Note: for privacy there is no identifier of the RetailCustomer in this structure
 				<xs:sequence>
 					<xs:element name="authorizedPeriod" type="DateTimeInterval" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Restricts access to requests or subscriptions within this date time interval.</xs:documentation>
+							<xs:documentation>Restricts access to requests or subscriptions within this date time interval. (e.g. "duration=31536000,start=1333252800")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="publishedPeriod" type="DateTimeInterval" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Restricts access to the objects within the associated resource that were published within this date time interval.</xs:documentation>
+							<xs:documentation>Restricts access to the objects within the associated resource that were published within this date time interval. (e.g. "duration=31536000" for most recent 365 days)</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="access_token" type="String512" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Contains the access token associated with this authorization. (OAuth contains access_token for RetailCustomer resources obtained through authorization code flow, registration_access_token obtained in the registration process, and an access_token obtained through  client credentials flow)</xs:documentation>
+							<xs:documentation>Contains the access token associated with this authorization. (OAuth contains access_token for RetailCustomer resources obtained through authorization code flow, registration_access_token obtained in the registration process, and an access_token obtained through  client credentials flow) (e.g. "AA886A7A-078D-4307-A3D9-AA036796DBC3")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="status" type="AuthorizationStatus" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>The status of this authorization.</xs:documentation>
+							<xs:documentation>The status of this authorization. (e.g. "1" => active)</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="expires_at" type="TimeType" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Expiration period for the accessToken</xs:documentation>
+							<xs:documentation>Expiration period for the accessToken. (e.g. "1403190000" for 2014-06-19T15:00:00Z)</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="grant_type" type="GrantType" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Type of grant being negotiated for.</xs:documentation>
+							<xs:documentation>Type of grant being negotiated for. (e.g. "authorization_code")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="refresh_token" type="String512" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Used to obtain a fresh access_token.</xs:documentation>
+							<xs:documentation>Used to obtain a fresh access_token. (e.g. "AA886A7A-078D-4307-A3D9-AA036796DBC4")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="scope" type="String256" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Negotiated scope of the authorization</xs:documentation>
+							<xs:documentation>Negotiated scope of the authorization. (e.g. "FB=1_3_4_5_13_14_15_1937_39;IntervalDuration=3600;BlockDuration=monthly;HistoryLength=94608000"</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="token_type" type="TokenType" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>type of token used</xs:documentation>
+							<xs:documentation>Type of token used. (e.g. "bearer")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="error" type="OAuthError" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>contains last error returned to ThirdParty</xs:documentation>
+							<xs:documentation>Contains last error returned to ThirdParty. (e.g. "server_error")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="error_description" type="String256" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>contains free text string describing last error returned to ThirdParty</xs:documentation>
+							<xs:documentation>Contains free text string describing last error returned to ThirdParty. (e.g. "No Service")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="error_uri" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>specific error URI for last returned error</xs:documentation>
+							<xs:documentation>Specific error URI for last returned error. (e.g. "na" if not supported)</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="resourceURI" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>resourceURI that represents the data set authorized. Can be used in a GET of the resource subscription.</xs:documentation>
+							<xs:documentation>resourceURI that represents the data set authorized. Can be used in a GET of the resource subscription. (e.g. "http://localhost:8080/DataCustodian/espi/1_1/resource/Batch/Subscription/1")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="authorizationURI" type="xs:anyURI" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>URI that can be used to update or delete this Authorization</xs:documentation>
+							<xs:documentation>URI that can be used to update or delete this Authorization. (e.g. "http://localhost:8080/DataCustodian/espi/1_1/resource/Authorization/1")</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 				</xs:sequence>
@@ -588,84 +586,84 @@ Value 0 in 'numerator' and 'denominator' means not applicable.</xs:documentation
 	</xs:complexType>
 	<xs:complexType name="ElectricPowerUsageSummary">
 		<xs:annotation>
-			<xs:documentation>Summary of usage for a billing period</xs:documentation>
+			<xs:documentation>[deprecated] Summary of usage for a billing period</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="IdentifiedObject">
 				<xs:sequence>
 					<xs:element name="billingPeriod" type="DateTimeInterval" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>The billing period to which the included measurements apply</xs:documentation>
+							<xs:documentation>The billing period to which the included measurements apply. May also be an off-bill arbitrary period.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="billLastPeriod" type="Int48" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>The amount of the bill for the previous billing period , in hundred-thousandths of the currency specified in the ReadingType for this reading (e.g., 840 = USD, US dollar).</xs:documentation>
+							<xs:documentation>The amount of the bill for the referenced billingPeriod  in hundred-thousandths of the currency specified in the ReadingType for this reading (e.g., 840 = USD, US dollar).</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="billToDate" type="Int48" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>The bill amount related to the billing period as of the date received, in hundred-thousandths of the currency specified in the ReadingType for this reading. (e.g., 840 = USD, US dollar).</xs:documentation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, the bill amount as of the date the summary is generated, in hundred-thousandths of the currency specified in the ReadingType for this reading. (e.g., 840 = USD, US dollar).</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="costAdditionalLastPeriod" type="Int48" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Additional charges from the last billing period, in hundred-thousandths of the currency specified in the ReadingType for this reading. (e.g., 840 = USD, US dollar).</xs:documentation>
+							<xs:documentation>Additional charges from the for the referenced billingPeriod, in hundred-thousandths of the currency specified in the ReadingType for this reading. (e.g., 840 = USD, US dollar).</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="costAdditionalDetailLastPeriod" type="LineItem" minOccurs="0" maxOccurs="unbounded">
 						<xs:annotation>
-							<xs:documentation>[extension] Additional charges from the last billing period which in total add up to costAdditionalLastPeriod</xs:documentation>
+							<xs:documentation>[extension] Additional charges from the for the referenced billingPeriod which in total add up to costAdditionalLastPeriod.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="currency" type="Currency" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>The ISO 4217 code indicating the currency applicable to the bill amounts in the summary. See list at http://tiny.cc/4217</xs:documentation>
+							<xs:documentation>The ISO 4217 code indicating the currency applicable to the bill amounts in the summary. </xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="overallConsumptionLastPeriod" type="SummaryMeasurement" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>[extension] The amount of energy consumed in the last billing period.</xs:documentation>
+							<xs:documentation>[extension] The amount of energy consumed in the lfor the referenced billingPeriod.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="currentBillingPeriodOverAllConsumption" type="SummaryMeasurement" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>The total consumption for the billing period</xs:documentation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, the total consumption for the billing period.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="currentDayLastYearNetConsumption" type="SummaryMeasurement" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>The amount of energy consumed one year ago interpreted as same day of week same week of year (see ISO 8601).</xs:documentation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, the amount of energy consumed one year ago interpreted as same day of week same week of year (see ISO 8601) based on the day of the statusTimeStamp.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="currentDayNetConsumption" type="SummaryMeasurement" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Net consumption for the current day (delivered - received)</xs:documentation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, net consumption for the current day (delivered - received) based on the day of the statusTimeStamp</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="currentDayOverallConsumption" type="SummaryMeasurement" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Overall energy consumption for the current day</xs:documentation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, overall energy consumption for the current day, based on the day of the statusTimeStamp.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="peakDemand" type="SummaryMeasurement" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Peak demand recorded for the current period</xs:documentation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, peak demand recorded for the current period.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="previousDayLastYearOverallConsumption" type="SummaryMeasurement" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>The amount of energy consumed on the previous day one year ago interpreted as same day of week same week of year (see ISO 8601).</xs:documentation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, the amount of energy consumed on the previous day one year ago interpreted as same day of week same week of year (see ISO 8601) based on the day of the statusTimestamp.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="previousDayNetConsumption" type="SummaryMeasurement" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>Net consumption for the previous day</xs:documentation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, net consumption for the previous day relative to the day of the statusTimestamp.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="previousDayOverallConsumption" type="SummaryMeasurement" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>The total consumption for the previous day</xs:documentation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, the total consumption for the previous day based on the day of the statusTimestamp.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="qualityOfReading" type="QualityOfReading" minOccurs="0">
@@ -675,7 +673,7 @@ Value 0 in 'numerator' and 'denominator' means not applicable.</xs:documentation
 					</xs:element>
 					<xs:element name="ratchetDemand" type="SummaryMeasurement" minOccurs="0">
 						<xs:annotation>
-							<xs:documentation>The current ratchet demand value for the ratchet demand period</xs:documentation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, the current ratchet demand value for the ratchet demand over the ratchetDemandPeriod.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 					<xs:element name="ratchetDemandPeriod" type="DateTimeInterval" minOccurs="0">
@@ -686,6 +684,122 @@ Value 0 in 'numerator' and 'denominator' means not applicable.</xs:documentation
 					<xs:element name="statusTimeStamp" type="TimeType">
 						<xs:annotation>
 							<xs:documentation>Date/Time status of this UsageSummary</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="commodity" type="CommodityKind" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>[extension] The commodity for this summary report</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="UsageSummary">
+		<xs:annotation>
+			<xs:documentation>[extension] Summary of usage for a billing period</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="IdentifiedObject">
+				<xs:sequence>
+					<xs:element name="billingPeriod" type="DateTimeInterval" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The billing period to which the included measurements apply. May also be an off-bill arbitrary period.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="billLastPeriod" type="Int48" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The amount of the bill for the referenced billingPeriod  in hundred-thousandths of the currency specified in the ReadingType for this reading (e.g., 840 = USD, US dollar).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="billToDate" type="Int48" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, the bill amount as of the date the summary is generated, in hundred-thousandths of the currency specified in the ReadingType for this reading. (e.g., 840 = USD, US dollar).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="costAdditionalLastPeriod" type="Int48" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Additional charges from the for the referenced billingPeriod, in hundred-thousandths of the currency specified in the ReadingType for this reading. (e.g., 840 = USD, US dollar).</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="costAdditionalDetailLastPeriod" type="LineItem" minOccurs="0" maxOccurs="unbounded">
+						<xs:annotation>
+							<xs:documentation>[extension] Additional charges from the for the referenced billingPeriod which in total add up to costAdditionalLastPeriod.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="currency" type="Currency" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The ISO 4217 code indicating the currency applicable to the bill amounts in the summary. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="overallConsumptionLastPeriod" type="SummaryMeasurement" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>[extension] The amount of energy consumed in the lfor the referenced billingPeriod.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="currentBillingPeriodOverAllConsumption" type="SummaryMeasurement" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, the total consumption for the billing period.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="currentDayLastYearNetConsumption" type="SummaryMeasurement" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, the amount of energy consumed one year ago interpreted as same day of week same week of year (see ISO 8601) based on the day of the statusTimeStamp.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="currentDayNetConsumption" type="SummaryMeasurement" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, net consumption for the current day (delivered - received) based on the day of the statusTimeStamp</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="currentDayOverallConsumption" type="SummaryMeasurement" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, overall energy consumption for the current day, based on the day of the statusTimeStamp.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="peakDemand" type="SummaryMeasurement" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, peak demand recorded for the current period.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="previousDayLastYearOverallConsumption" type="SummaryMeasurement" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, the amount of energy consumed on the previous day one year ago interpreted as same day of week same week of year (see ISO 8601) based on the day of the statusTimestamp.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="previousDayNetConsumption" type="SummaryMeasurement" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, net consumption for the previous day relative to the day of the statusTimestamp.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="previousDayOverallConsumption" type="SummaryMeasurement" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, the total consumption for the previous day based on the day of the statusTimestamp.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="qualityOfReading" type="QualityOfReading" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>Indication of the quality of the summary readings</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ratchetDemand" type="SummaryMeasurement" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>If the summary contains data from a current period beyond the end of the referenced billingPeriod, the current ratchet demand value for the ratchet demand over the ratchetDemandPeriod.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ratchetDemandPeriod" type="DateTimeInterval" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>The period over which the ratchet demand applies</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="statusTimeStamp" type="TimeType">
+						<xs:annotation>
+							<xs:documentation>Date/Time status of this UsageSummary</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="commodity" type="CommodityKind" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>[extension] The commodity for this summary report</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 				</xs:sequence>
@@ -751,6 +865,21 @@ Other EUI Types
 							<xs:documentation>[correction] Value in units specified by ReadingType</xs:documentation>
 						</xs:annotation>
 					</xs:element>
+					<xs:element name="consumptionTier" type="Int16" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>[extension] Code for consumption tier associated with reading.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="tou" type="Int16" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>[extension] Code for the TOU type of reading. </xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="cpp" type="Int16" minOccurs="0" maxOccurs="1">
+						<xs:annotation>
+							<xs:documentation>[extension] Critical peak period (CPP) bucket the reading value is attributed to. Value 0 means not applicable. Even though CPP is usually considered a specialized form of time of use 'tou', this attribute is defined explicitly for flexibility.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -812,6 +941,11 @@ Other EUI Types
 					<xs:element name="value" type="Int48" minOccurs="0">
 						<xs:annotation>
 							<xs:documentation>The value of the summary measurement.</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="readingTypeRef" type="xs:anyURI" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>[extension] Reference to a full ReadingType.</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 				</xs:sequence>
@@ -1096,10 +1230,31 @@ Additional Complex Types
 			<xs:documentation>[extension] Line item of detail for additional cost</xs:documentation>
 		</xs:annotation>
 		<xs:sequence>
-			<xs:element name="amount" type="Int48"/>
-			<xs:element name="rounding" type="Int48" minOccurs="0"/>
-			<xs:element name="dateTime" type="TimeType"/>
-			<xs:element name="note" type="String256"/>
+			<xs:element name="amount" type="Int48">
+				<xs:annotation>
+					<xs:documentation>Cost of line item.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rounding" type="Int48" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Rounded to nearest increment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="dateTime" type="TimeType">
+				<xs:annotation>
+					<xs:documentation>Significant date for line item.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="note" type="String256">
+				<xs:annotation>
+					<xs:documentation>Comment or description of line item.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="measurement" type="SummaryMeasurement" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>[extension] relevant measurment for line item.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<!--
@@ -2858,7 +3013,7 @@ Enumerations
 					<xs:enumeration value="19">
 						<xs:annotation>
 							<xs:appinfo>revenue-quality</xs:appinfo>
-							<xs:documentation>data that is valid for billing purposes</xs:documentation>
+							<xs:documentation>data that is valid and acceptable for billing purposes</xs:documentation>
 						</xs:annotation>
 					</xs:enumeration>
 				</xs:restriction>
@@ -4381,6 +4536,7 @@ Global Elements
 	<xs:element name="UsagePoint" type="UsagePoint"/>
 	<xs:element name="ElectricPowerQualitySummary" type="ElectricPowerQualitySummary"/>
 	<xs:element name="ElectricPowerUsageSummary" type="ElectricPowerUsageSummary"/>
+	<xs:element name="UsageSummary" type="UsageSummary"/>
 	<xs:element name="DateTimeInterval" type="DateTimeInterval"/>
 	<xs:element name="SummaryMeasurement" type="SummaryMeasurement"/>
 	<xs:element name="BatchItemInfo" type="BatchItemInfo"/>

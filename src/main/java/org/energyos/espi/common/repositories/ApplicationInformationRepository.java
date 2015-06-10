@@ -24,9 +24,10 @@ import org.energyos.espi.common.domain.ApplicationInformation;
 public interface ApplicationInformationRepository {
 
     public void deleteById(Long id);
+
     public List<ApplicationInformation> findByKind(String kind);
+
     public List<ApplicationInformation> findAll();
-    public List<ApplicationInformation> findAllThirdParties();
 
     public List<Long> findAllIds();
 
@@ -39,4 +40,7 @@ public interface ApplicationInformationRepository {
     public void persist(ApplicationInformation applicationInformation);
 
 	ApplicationInformation findByUUID(UUID uuid);
+	
+	/*LH customization starts here */	
+    public List<ApplicationInformation> findAllThirdParties();
 }

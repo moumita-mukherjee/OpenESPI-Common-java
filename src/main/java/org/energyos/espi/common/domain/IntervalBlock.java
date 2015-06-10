@@ -56,15 +56,13 @@ import org.energyos.espi.common.models.atom.adapters.IntervalBlockAdapter;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+
 /**
  * Time sequence of Readings of the same ReadingType.
  * <p/>
- * <p>
- * Java class for IntervalBlock complex type.
+ * <p>Java class for IntervalBlock complex type.
  * <p/>
- * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * <p/>
  * 
  * <pre>
@@ -81,24 +79,34 @@ import org.hibernate.annotations.LazyCollectionOption;
  * </pre>
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "IntervalBlock", propOrder = { "interval", "intervalReadings" })
+@XmlType(name = "IntervalBlock", propOrder = {
+        "interval",
+        "intervalReadings"
+})
 @Entity
 @Table(name = "interval_blocks", uniqueConstraints = { @UniqueConstraint(columnNames = { "uuid" }) })
 @NamedQueries(value = {
-		@NamedQuery(name = IntervalBlock.QUERY_ALL_BY_METER_READING_ID, query = "SELECT block FROM IntervalBlock block WHERE block.meterReading.id = :meterReadingId"),
-		@NamedQuery(name = IntervalBlock.QUERY_FIND_BY_ID, query = "SELECT block FROM IntervalBlock block WHERE block.id = :id"),
-		@NamedQuery(name = IntervalBlock.QUERY_FIND_BY_UUID, query = "SELECT block FROM IntervalBlock block WHERE block.uuid = :uuid"),
-		@NamedQuery(name = IntervalBlock.QUERY_FIND_ALL_IDS_BY_USAGE_POINT_ID, query = "SELECT block.id FROM IntervalBlock block where block.meterReading.usagePoint.id = :usagePointId"),
-		@NamedQuery(name = IntervalBlock.QUERY_FIND_ALL_IDS_BY_USAGE_POINT_ID_PERIOD, query = "SELECT block.id FROM IntervalBlock block where block.meterReading.usagePoint.id = :usagePointId AND block.published >=:publishedMin AND block.published <=:publishedMax AND block.updated >=:updatedMin and block.updated <=:updatedMax AND block.interval.start >=:usageMin and block.interval.start < :usageMax"),
-		@NamedQuery(name = IntervalBlock.QUERY_FIND_ALL_IDS, query = "SELECT intervalBlock.id FROM IntervalBlock intervalBlock"),
-		@NamedQuery(name = IntervalBlock.QUERY_FIND_ALL_IDS_BY_XPATH_3, query = "SELECT DISTINCT i.id FROM UsagePoint u, MeterReading m, IntervalBlock i WHERE u.retailCustomer.id = :o1Id AND m.usagePoint.id = :o2Id AND i.meterReading.id = :o3Id"),
-		@NamedQuery(name = IntervalBlock.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT i.id FROM UsagePoint u, MeterReading m, IntervalBlock i WHERE u.retailCustomer.id = :o1Id AND m.usagePoint.id = :o2Id AND i.meterReading.id = :o3Id AND i.id = :o4Id"),
+        @NamedQuery(name = IntervalBlock.QUERY_ALL_BY_METER_READING_ID,
+                query = "SELECT block FROM IntervalBlock block WHERE block.meterReading.id = :meterReadingId"),
+        @NamedQuery(name = IntervalBlock.QUERY_FIND_BY_ID,
+                query = "SELECT block FROM IntervalBlock block WHERE block.id = :id"),
+        @NamedQuery(name = IntervalBlock.QUERY_FIND_BY_UUID,
+                query = "SELECT block FROM IntervalBlock block WHERE block.uuid = :uuid"),
+        @NamedQuery(name = IntervalBlock.QUERY_FIND_ALL_IDS_BY_USAGE_POINT_ID,
+                query = "SELECT block FROM IntervalBlock block where block.meterReading.usagePoint.id = :usagePointId"),
+		@NamedQuery(name = IntervalBlock.QUERY_FIND_ALL_IDS_BY_USAGE_POINT_ID_PERIOD, query = "SELECT block FROM IntervalBlock block where block.meterReading.usagePoint.id = :usagePointId AND block.published >=:publishedMin AND block.published <=:publishedMax AND block.updated >=:updatedMin and block.updated <=:updatedMax AND block.interval.start >=:usageMin and block.interval.start < :usageMax"),
+		@NamedQuery(name = IntervalBlock.QUERY_FIND_ALL_IDS, 
+			query = "SELECT intervalBlock FROM IntervalBlock intervalBlock"),
+		@NamedQuery(name = IntervalBlock.QUERY_FIND_ALL_IDS_BY_XPATH_3, query = "SELECT DISTINCT i FROM UsagePoint u, MeterReading m, IntervalBlock i WHERE u.retailCustomer.id = :o1Id AND m.usagePoint.id = :o2Id AND i.meterReading.id = :o3Id"),
+		@NamedQuery(name = IntervalBlock.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT i FROM UsagePoint u, MeterReading m, IntervalBlock i WHERE u.retailCustomer.id = :o1Id AND m.usagePoint.id = :o2Id AND i.meterReading.id = :o3Id AND i.id = :o4Id"),
 		@NamedQuery(name = IntervalBlock.QUERY_FIND_BY_PERIOD, query = "SELECT block FROM IntervalBlock block where block.meterReading.id = :meterReadingId and block.interval.start >= :fromTime and  block.interval.start < :toTime"),
 
 })
 @XmlRootElement(name = "IntervalBlock")
 @XmlJavaTypeAdapter(IntervalBlockAdapter.class)
-public class IntervalBlock extends IdentifiedObject {
+public class IntervalBlock
+        extends IdentifiedObject
+{
 	public static final String QUERY_ALL_BY_METER_READING_ID = "IntervalBlock.findAllByMeterReadingId";
 	public static final String QUERY_FIND_BY_ID = "IntervalBlock.findById";
 	public static final String QUERY_FIND_BY_UUID = "IntervalBlock.findByUUID";
@@ -116,77 +124,68 @@ public class IntervalBlock extends IdentifiedObject {
 
 	@OneToMany(mappedBy = "intervalBlock", cascade = { CascadeType.ALL })
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@XmlElementRefs({ @XmlElementRef(name = "IntervalReading", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false), })
+    @XmlElementRefs({
+            @XmlElementRef(name = "IntervalReading", namespace = "http://naesb.org/espi", type = JAXBElement.class, required = false),
+    })
 	@XmlAnyElement(lax = true)
 	@OrderBy("timePeriod.start, timePeriod.duration asc")
 
 	protected List<IntervalReading> intervalReadings = new ArrayList<>();
 
-	@XmlTransient
-	@ManyToOne
-	@JoinColumn(name = "meter_reading_id")	
-	
-	protected MeterReading meterReading;
+    @XmlTransient
+    @ManyToOne
+    @JoinColumn(name = "meter_reading_id")
+    protected MeterReading meterReading;
 
-	@XmlTransient
-	@Transient
-	private Long meterReadingId;
+    /**
+     * Gets the value of the interval property.
+     *
+     * @return
+     *     possible object is
+     *     {@link DateTimeInterval }
+     *
+     */
+    public DateTimeInterval getInterval() {
+        return interval;
+    }
 
-	public Long getMeterReadingId() {
-		return meterReadingId;
-	}
+    /**
+     * Sets the value of the interval property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link DateTimeInterval }
+     *
+     */
+    public void setInterval(DateTimeInterval value) {
+        this.interval = value;
+    }
 
-	public void setMeterReadingId(Long meterReadingId) {
-		this.meterReadingId = meterReadingId;
-	}
-
-	/**
-	 * Gets the value of the interval property.
-	 * 
-	 * @return possible object is {@link DateTimeInterval }
-	 * 
-	 */
-	public DateTimeInterval getInterval() {
-		return interval;
-	}
-
-	/**
-	 * Sets the value of the interval property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link DateTimeInterval }
-	 * 
-	 */
-	public void setInterval(DateTimeInterval value) {
-		this.interval = value;
-	}
-
-	/**
-	 * Gets the value of the intervalReading property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the intervalReading property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getIntervalReading().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list
-	 * {@link IntervalReading }
-	 * 
-	 * 
-	 */
-	public List<IntervalReading> getIntervalReadings() {
-		return this.intervalReadings;
-	}
+    /**
+     * Gets the value of the intervalReading property.
+     *
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the intervalReading property.
+     *
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getIntervalReading().add(newItem);
+     * </pre>
+     *
+     *
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link IntervalReading }
+     *
+     *
+     */
+    public List<IntervalReading> getIntervalReadings() {
+        return this.intervalReadings;
+    }
 
 	public void setIntervalReadings(List<IntervalReading> intervalReadings) {
 		this.intervalReadings = intervalReadings;
@@ -241,6 +240,19 @@ public class IntervalBlock extends IdentifiedObject {
 		setMeterRedingDate();
 
 	}
+	
+	/* LH customization starts here */
+	@XmlTransient
+	@Transient
+	private Long meterReadingId;
+
+	public Long getMeterReadingId() {
+		return meterReadingId;
+	}
+
+	public void setMeterReadingId(Long meterReadingId) {
+		this.meterReadingId = meterReadingId;
+	}
 	public void setMeterRedingDate() {
 		if (this.meterReading != null) {
 			if (this.meterReading.getIntervalReadingFrom() == null
@@ -290,6 +302,8 @@ public class IntervalBlock extends IdentifiedObject {
 					if (eir.getTimePeriod().getStart().equals(nir.getTimePeriod().getStart())) {
 						// for old one, take new one
 						eir.setTimePeriod(nir.getTimePeriod());
+						eir.setValue(nir.getValue());
+						eir.setReadingQualities(nir.getReadingQualities());
 						match = true;
 						break;
 					}

@@ -43,7 +43,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 		@NamedQuery(name = User.QUERY_FIND_ALL, query = "SELECT user FROM User user"),
 		@NamedQuery(name = User.QUERY_FIND_BY_USERNAME, query = "SELECT user FROM User user WHERE user.username = :username") })
 public class User implements UserDetails, Principal {
-
+	private static final long serialVersionUID = -754707762659297980L;
 	public final static String QUERY_FIND_BY_ID = "Login.findById";
 	public final static String QUERY_FIND_ALL = "Login.findAll";
 	public final static String QUERY_FIND_BY_USERNAME = "Login.findByUsername";

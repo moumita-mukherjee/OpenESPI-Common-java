@@ -125,11 +125,11 @@ import org.hibernate.annotations.LazyCollectionOption;
         @NamedQuery(name = ElectricPowerUsageSummary.QUERY_FIND_BY_UUID,
                 query = "SELECT summary FROM ElectricPowerUsageSummary summary WHERE summary.uuid = :uuid"),
         @NamedQuery(name = ElectricPowerUsageSummary.QUERY_FIND_ALL_IDS_BY_USAGE_POINT_ID,
-                query = "SELECT summary.id FROM ElectricPowerUsageSummary summary WHERE summary.usagePoint.id = :usagePointId"),
+                query = "SELECT summary FROM ElectricPowerUsageSummary summary WHERE summary.usagePoint.id = :usagePointId"),
         @NamedQuery(name = ElectricPowerUsageSummary.QUERY_FIND_ALL_IDS,
-                query = "SELECT electricPowerUsageSummary.id FROM ElectricPowerUsageSummary electricPowerUsageSummary"),
-        @NamedQuery(name = ElectricPowerUsageSummary.QUERY_FIND_ALL_IDS_BY_XPATH_2, query = "SELECT e.id FROM UsagePoint u, ElectricPowerUsageSummary e WHERE u.retailCustomer.id = :o1Id AND  e.usagePoint.id = :o2Id"),
-        @NamedQuery(name = ElectricPowerUsageSummary.QUERY_FIND_ID_BY_XPATH, query = "SELECT e.id FROM UsagePoint u, ElectricPowerUsageSummary e WHERE u.retailCustomer.id = :o1Id AND e.usagePoint.id = :o2Id AND e.id = :o3Id")
+                query = "SELECT electricPowerUsageSummary FROM ElectricPowerUsageSummary electricPowerUsageSummary"),
+        @NamedQuery(name = ElectricPowerUsageSummary.QUERY_FIND_ALL_IDS_BY_XPATH_2, query = "SELECT e FROM UsagePoint u, ElectricPowerUsageSummary e WHERE u.retailCustomer.id = :o1Id AND  e.usagePoint.id = :o2Id"),
+        @NamedQuery(name = ElectricPowerUsageSummary.QUERY_FIND_ID_BY_XPATH, query = "SELECT e FROM UsagePoint u, ElectricPowerUsageSummary e WHERE u.retailCustomer.id = :o1Id AND e.usagePoint.id = :o2Id AND e.id = :o3Id")
 
 })
 public class ElectricPowerUsageSummary

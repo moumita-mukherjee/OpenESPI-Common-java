@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;simpleType name="TokenType">
  *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
- *     &lt;enumeration value="bearer"/>
+ *     &lt;enumeration value="Bearer"/>
  *   &lt;/restriction>
  * &lt;/simpleType>
  * </pre>
@@ -31,8 +31,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum TokenType {
 
-    @XmlEnumValue("bearer")
-    BEARER("bearer");
+    @XmlEnumValue("Bearer")
+    BEARER("Bearer");
     private final String value;
 
     TokenType(String v) {
@@ -44,12 +44,17 @@ public enum TokenType {
     }
 
     public static TokenType fromValue(String v) {
+    	// lower case the value to insure the OAuth2 representation of "bearer" is satisfied
+    	// ref: https://github.com/energyos/OpenESPI-ommon-java/issues/190
+    	
+    	if (v.equals("bearer")) v = "Bearer";
+    	
         for (TokenType c: TokenType.values()) {
             if (c.value.equals(v)) {
                 return c;
             }
         }
         throw new IllegalArgumentException(v);
-    }
+    }    
 
 }

@@ -69,6 +69,9 @@ import org.hibernate.annotations.LazyCollectionOption;
  *         &lt;element name="ReadingQuality" type="{http://naesb.org/espi}ReadingQuality" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="timePeriod" type="{http://naesb.org/espi}DateTimeInterval" minOccurs="0"/>
  *         &lt;element name="value" type="{http://naesb.org/espi}Int48" minOccurs="0"/>
+ *         &lt;element name="consumptionTier" type="{http://naesb.org/espi}Int16" minOccurs="0"/>
+ *         &lt;element name="tou" type="{http://naesb.org/espi}Int16" minOccurs="0"/>
+ *         &lt;element name="cpp" type="{http://naesb.org/espi}Int16" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -80,7 +83,10 @@ import org.hibernate.annotations.LazyCollectionOption;
         "cost",
         "readingQualities",
         "timePeriod",
-        "value"
+        "value",
+        "consumptionTier",
+        "tou",
+        "cpp"        
 })
 @Entity
 @Table(name = "interval_readings")
@@ -92,14 +98,6 @@ public class IntervalReading {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @XmlTransient
     protected Long id;
-
-    public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	protected Long cost;
 
@@ -113,10 +111,14 @@ public class IntervalReading {
 
     @Embedded
     protected DateTimeInterval timePeriod;
-    
 
     protected Long value;
 
+    protected Long consumptionTier;
+    protected Long tou;
+    protected Long cpp;
+
+    
     @XmlTransient
     @ManyToOne
     @JoinColumn(name = "interval_block_id")    
@@ -141,6 +143,26 @@ public class IntervalReading {
     public void setCost(Long value) {
         this.cost = value;
     }
+    
+    /**
+     * Gets the value of the cost property.
+     *
+     * @return possible object is
+     *         {@link Long }
+     */
+    public Long getTou() {
+        return tou;
+    }
+
+    /**
+     * Sets the value of the cost property.
+     *
+     * @param value allowed object is
+     * {@link Long }
+     */
+    public void setTou(Long tou) {
+        this.tou = tou;
+    }
 
     /**
      * Gets the value of the readingQuality property.
@@ -164,6 +186,15 @@ public class IntervalReading {
      */
     public List<ReadingQuality> getReadingQualities() {
         return this.readingQualities;
+    }
+    
+    public void setReadingQualities(List<ReadingQuality> rqs) {
+        this.readingQualities=rqs;
+        if(this.readingQualities!=null) {
+        	for(ReadingQuality rq:this.readingQualities) {
+        		rq.setIntervalReading(this);
+        	}
+        }
     }
 
     /**
@@ -218,4 +249,25 @@ public class IntervalReading {
         this.readingQualities.add(readingQuality);
         readingQuality.setIntervalReading(this);
     }
+	
+	/* LH customization starts here */
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	@XmlTransient
+	private String msg;
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+	
 }

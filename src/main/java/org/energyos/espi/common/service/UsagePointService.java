@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
+import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.RetailCustomer;
 import org.energyos.espi.common.domain.Subscription;
 import org.energyos.espi.common.domain.UsagePoint;
@@ -46,7 +47,7 @@ public interface UsagePointService {
 
 	void deleteByHashedId(String usagePointHashedId);
 
-	List<Long> findAllIdsForRetailCustomer(Long id);
+	List<IdentifiedObject> findAllIdsForRetailCustomer(Long id);
 
 	String feedFor(List<UsagePoint> usagePoints) throws FeedException;
 

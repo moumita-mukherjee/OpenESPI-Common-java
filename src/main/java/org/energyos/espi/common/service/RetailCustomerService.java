@@ -38,8 +38,6 @@ public interface RetailCustomerService extends UserDetailsService {
 	RetailCustomer findById(Long retailCustomerId);
 	
 	RetailCustomer findById(String retailCustomerId);
-	RetailCustomer findByLink(String link);
-	RetailCustomer findByUUID(UUID uuid);
 
 	public void add(RetailCustomer retailCustomer);
 
@@ -49,5 +47,9 @@ public interface RetailCustomerService extends UserDetailsService {
 	public RetailCustomer importResource(InputStream stream);
 
 	Subscription associateByUUID(Long retailCustomerId, UUID uuId);
+	
+	/* LH customization starts here */	
+	RetailCustomer findByLink(String link);
+	RetailCustomer findByUUID(UUID uuid);
 
 }

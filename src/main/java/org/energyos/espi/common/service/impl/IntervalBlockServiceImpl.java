@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.energyos.espi.common.domain.AtomPeriod;
+import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.IntervalBlock;
 import org.energyos.espi.common.domain.MeterReading;
 import org.energyos.espi.common.models.atom.EntryType;
@@ -30,6 +30,7 @@ import org.energyos.espi.common.service.ImportService;
 import org.energyos.espi.common.service.IntervalBlockService;
 import org.energyos.espi.common.service.ResourceService;
 import org.energyos.espi.common.utils.EntryTypeIterator;
+import org.energyos.espi.common.utils.ExportFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -98,19 +99,14 @@ public class IntervalBlockServiceImpl implements IntervalBlockService {
 	public void persist(IntervalBlock intervalBlock) {
 		intervalBlockRepository.persist(intervalBlock);
 	}
-	
-	@Override
-	public IntervalBlock merge(IntervalBlock intervalBlock) {
-		return intervalBlockRepository.merge(intervalBlock);
-	}
 
 	@Override
-	public EntryTypeIterator findEntryTypeIterator(Long retailCustomerId, Long usagePointId, Long meterReadingId) {
+	public EntryTypeIterator findEntryTypeIterator(Long retailCustomerId, Long usagePointId,
+			Long meterReadingId) {
 		EntryTypeIterator result = null;
 		try {
-			// TODO - this is sub-optimal (but defers the need to understand
-			// creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
+			// TODO - this is sub-optimal (but defers the need to understand creation of an EntryType
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
 			temp = resourceService.findAllIds(IntervalBlock.class);
 			result = (new EntryTypeIterator(resourceService, temp, IntervalBlock.class));
 		} catch (Exception e) {
@@ -122,13 +118,13 @@ public class IntervalBlockServiceImpl implements IntervalBlockService {
 	}
 
 	@Override
-	public EntryType findEntryType(Long retailCustomerId, Long usagePointId, Long meterReadingId, Long intervalBlockId) {
+	public EntryType findEntryType(Long retailCustomerId, Long usagePointId,
+			Long meterReadingId, Long intervalBlockId) {
 		EntryType result = null;
 		try {
-			// TODO - this is sub-optimal (but defers the need to understan
-			// creation of an EntryType
-			List<Long> temp = new ArrayList<Long>();
-			temp.add(intervalBlockId);
+			// TODO - this is sub-optimal (but defers the need to understan creation of an EntryType
+			List<IdentifiedObject> temp = new ArrayList<IdentifiedObject>();
+			temp.add(new IdentifiedObject(intervalBlockId));
 			result = (new EntryTypeIterator(resourceService, temp, IntervalBlock.class)).nextEntry(IntervalBlock.class);
 		} catch (Exception e) {
 			// TODO need a log file entry as we are going to return a null if
@@ -165,23 +161,7 @@ public class IntervalBlockServiceImpl implements IntervalBlockService {
 		intervalBlockRepository.findById(intervalBlockId);
 		return null;
 	}
-
-	@Override
-	public List<IntervalBlock> findIntervalBlocksByPeriod(Long meterReadingId, AtomPeriod ap) {
-		return intervalBlockRepository.findIntervalBlocksByPeriod(meterReadingId, ap);
-	}
-
-	@Override
-	public void flush() {
-
-		intervalBlockRepository.flush();
-	}
-
-	@Override
-	public IntervalBlock findByUUID(UUID uuid) {
-		System.out.println("service findByUUID ..."+intervalBlockRepository);
-		return intervalBlockRepository.findByUUID(uuid);
-	}
+   
 	public void setIntervalBlockRepository(IntervalBlockRepository intervalBlockRepository) {
         this.intervalBlockRepository = intervalBlockRepository;
    }
@@ -196,13 +176,33 @@ public class IntervalBlockServiceImpl implements IntervalBlockService {
    public ResourceService getResourceService () {
         return this.resourceService;
    }
-   
-	public void setImportService(ImportService importService) {
-		this.importService = importService;
-	}
+   public void setImportService(ImportService importService) {
+        this.importService = importService;
+   }
 
 	public ImportService getImportService() {
 		return this.importService;
+	}
+	/* LH customization starts here */
+	@Override
+	public IntervalBlock merge(IntervalBlock intervalBlock) {
+		return intervalBlockRepository.merge(intervalBlock);
+	}
+		@Override
+	public List<IntervalBlock> findIntervalBlocksByPeriod(Long meterReadingId, ExportFilter ap) {
+		return intervalBlockRepository.findIntervalBlocksByPeriod(meterReadingId, ap);
+	}
+
+	@Override
+	public void flush() {
+
+		intervalBlockRepository.flush();
+	}
+
+	@Override
+	public IntervalBlock findByUUID(UUID uuid) {
+		System.out.println("service findByUUID ..."+intervalBlockRepository);
+		return intervalBlockRepository.findByUUID(uuid);
 	}
 
 }

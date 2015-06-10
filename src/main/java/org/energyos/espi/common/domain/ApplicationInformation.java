@@ -21,13 +21,13 @@
 // Generated on: 2013.08.27 at 01:43:57 PM EDT 
 //
 
+
 package org.energyos.espi.common.domain;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -51,20 +51,14 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
- * [extension] Contains information about a Third Party Application requesting
- * access to the DataCustodian services. Information requested may include items
- * such as Organization Name, Website, Contact Info, Application Name,
- * Description, Icon, Type, default Notification and Callback endpoints, and may
- * also include agreement with terms of service.
+ * [extension] Contains information about a Third Party Application requesting access to the DataCustodian services. Information requested may include items such as Organization Name, Website, Contact Info, Application Name, Description, Icon, Type, default Notification and Callback endpoints, and may also include agreement with terms of service.
  * 
- * Atom Links: self link to this resource
+ * Atom Links:
+ * self link to this resource
  * 
- * <p>
- * Java class for ApplicationInformation complex type.
+ * <p>Java class for ApplicationInformation complex type.
  * 
- * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
  * &lt;complexType name="ApplicationInformation">
@@ -110,6 +104,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *         &lt;element name="response_types" type="{http://naesb.org/espi}ResponseType" minOccurs="0"/>
  *         &lt;element name="registration_client_uri" type="{http://www.w3.org/2001/XMLSchema}anyURI" minOccurs="0"/>
  *         &lt;element name="registration_access_token" type="{http://www.w3.org/2001/XMLSchema}anyType" minOccurs="0"/>
+ *         &lt;element name="dataCustodianScopeSelectionScreenURI" type="{http://www.w3.org/2001/XMLSchema}anyURI" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -119,19 +114,52 @@ import org.hibernate.validator.constraints.NotEmpty;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ApplicationInformation", propOrder = { "dataCustodianApplicationStatus",
-		"dataCustodianDefaultBatchResource", "dataCustodianDefaultSubscriptionResource",
-		"thirdPartyApplicationDescription", "thirdPartyApplicationStatus", "thirdPartyApplicationType",
-		"thirdPartyApplicationUse", "thirdPartyPhone", "authorizationServerUri", "thirdPartyNotifyUri",
-		"authorizationServerAuthorizationEndpoint", "authorizationServerRegistrationEndpoint",
-		"authorizationServerTokenEndpoint", "dataCustodianBulkRequestURI", "dataCustodianThirdPartySelectionScreenURI",
-		"dataCustodianResourceEndpoint", "thirdPartyDataCustodianSelectionScreenURI", "thirdPartyLoginScreenURI",
-		"thirdPartyScopeSelectionScreenURI", "thirdPartyUserPortalScreenURI", "clientSecret", "logoUri", "clientName",
-		"clientUri", "redirectUri", "clientId", "tosUri", "policyUri", "softwareId", "softwareVersion",
-		"clientIdIssuedAt", "clientSecretExpiresAt", "contacts", "tokenEndpointAuthMethod", "scope", "grantTypes",
-		"responseTypes", "registrationClientUri", "registrationAccessToken", "dataCustodianId",
-		"thirdPartyApplicationName" })
+@XmlType(name = "ApplicationInformation", propOrder = {
+	    "dataCustodianApplicationStatus",
+	    "dataCustodianDefaultBatchResource",
+	    "dataCustodianDefaultSubscriptionResource",
+	    "thirdPartyApplicationDescription",
+	    "thirdPartyApplicationStatus",
+	    "thirdPartyApplicationType",
+	    "thirdPartyApplicationUse",
+	    "thirdPartyPhone",
+	    "authorizationServerUri",
+	    "thirdPartyNotifyUri",
+	    "authorizationServerAuthorizationEndpoint",
+	    "authorizationServerRegistrationEndpoint",
+	    "authorizationServerTokenEndpoint",
+	    "dataCustodianBulkRequestURI",
+	    "dataCustodianThirdPartySelectionScreenURI",
+	    "dataCustodianResourceEndpoint",
+	    "thirdPartyDataCustodianSelectionScreenURI",
+	    "thirdPartyLoginScreenURI",
+	    "thirdPartyScopeSelectionScreenURI",
+	    "thirdPartyUserPortalScreenURI",
+	    "clientSecret",
+	    "logoUri",
+	    "clientName",
+	    "clientUri",
+	    "redirectUri",
+	    "clientId",
+	    "tosUri",
+	    "policyUri",
+	    "softwareId",
+	    "softwareVersion",
+	    "clientIdIssuedAt",
+	    "clientSecretExpiresAt",
+	    "contacts",
+	    "tokenEndpointAuthMethod",
+	    "scope",
+	    "grantTypes",
+	    "responseTypes",
+	    "registrationClientUri",
+	    "registrationAccessToken",
+	    "dataCustodianId",
+	    "thirdPartyApplicationName",
+	    "dataCustodianScopeSelectionScreenURI"
+	})
 @Entity
+@Cacheable(true)
 @Table(name = "application_information")
 @XmlJavaTypeAdapter(ApplicationInformationAdapter.class)
 @NamedQueries(value = {
@@ -145,124 +173,161 @@ import org.hibernate.validator.constraints.NotEmpty;
 		@NamedQuery(name = ApplicationInformation.QUERY_FIND_BY_KIND, query = "SELECT info FROM ApplicationInformation info WHERE info.kind = :kind")
 
 })
-public class ApplicationInformation extends IdentifiedObject {
+public class ApplicationInformation
+        extends IdentifiedObject {
 	/**
 	 * 
 	 */
-	// private static final long serialVersionUID = 1L;
 	public final static String QUERY_FIND_ALL = "ApplicationInformation.findAll";
 	public final static String QUERY_FIND_ALL_TP = "ApplicationInformation.findAllThirdParty";
 	public final static String QUERY_FIND_BY_UUID = "ApplicationInformation.findByUUID";
 	public static final String QUERY_FIND_BY_ID = "ApplicationInformation.findById";
 	public static final String QUERY_FIND_BY_CLIENT_ID = "ApplicationInformation.findByClientId";
 	public static final String QUERY_FIND_BY_DATA_CUSTODIAN_CLIENT_ID = "ApplicationInformation.findByDataCustodianClientId";
-	public static final String QUERY_FIND_ALL_IDS = "AppilcationInformation.findAllIds";
+	public static final String QUERY_FIND_ALL_IDS = "ApplicationInformation.findAllIds";
 	public static final String QUERY_FIND_BY_KIND = "ApplicationInformation.findByKind";
 
 	public ApplicationInformation() {
 		super();
 	}
-
-	@XmlTransient
-	/* @XmlElement(name = "kind") */
-	@Column(name = "kind")
-	protected String kind;
-	protected String dataCustodianApplicationStatus;
-	@XmlSchemaType(name = "anyURI")
-	protected String dataCustodianDefaultBatchResource;
-	@XmlSchemaType(name = "anyURI")
-	protected String dataCustodianDefaultSubscriptionResource;
-	protected String thirdPartyApplicationDescription;
-	protected String thirdPartyApplicationStatus;
-	protected String thirdPartyApplicationType;
-	protected String thirdPartyApplicationUse;
-	protected String thirdPartyPhone;
-	@XmlSchemaType(name = "anyURI")
-	protected String authorizationServerUri;
-	@XmlSchemaType(name = "anyURI")
-	protected String thirdPartyNotifyUri;
-	@XmlElement(name = "authorizationServerAuthorizationEndpoint")
-	@XmlSchemaType(name = "anyURI")
-	protected String authorizationServerAuthorizationEndpoint;
-	@XmlElement(name = "authorizationServerRegistrationEndpoint")
-	@XmlSchemaType(name = "anyURI")
-	protected String authorizationServerRegistrationEndpoint;
-	@XmlElement(name = "authorizationServerTokenEndpoint")
-	@XmlSchemaType(name = "anyURI")
-	protected String authorizationServerTokenEndpoint;
-	@XmlElement(name = "dataCustodianBulkRequestURI")
-	@XmlSchemaType(name = "anyURI")
-	protected String dataCustodianBulkRequestURI;
-	@XmlElement(name = "dataCustodianThirdPartySelectionScreenURI")
-	@XmlSchemaType(name = "anyURI")
-	protected String dataCustodianThirdPartySelectionScreenURI;
-	@XmlElement(name = "dataCustodianResourceEndpoint")
-	@XmlSchemaType(name = "anyURI")
-	protected String dataCustodianResourceEndpoint;
-	@XmlElement(name = "thirdPartyDataCustodianSelectionScreenURI")
-	@XmlSchemaType(name = "anyURI")
-	protected String thirdPartyDataCustodianSelectionScreenURI;
-	@XmlElement(name = "thirdPartyLoginScreenURI")
-	@XmlSchemaType(name = "anyURI")
-	protected String thirdPartyLoginScreenURI;
-	@XmlElement(name = "thirdPartyScopeSelectionScreenURI")
-	@XmlSchemaType(name = "anyURI")
-	protected String thirdPartyScopeSelectionScreenURI;
-	@XmlElement(name = "thirdPartyUserPortalScreenURI")
-	@XmlSchemaType(name = "anyURI")
-	protected String thirdPartyUserPortalScreenURI;
-	@XmlElement(name = "client_secret")
-	@NotEmpty
-	protected String clientSecret;
-	@XmlElement(name = "logo_uri")
-	@XmlSchemaType(name = "anyURI")
-	protected String logoUri;
-	@XmlElement(name = "client_name")
-	protected String clientName;
-	@XmlElement(name = "client_uri")
-	@XmlSchemaType(name = "anyURI")
-	protected String clientUri;
-	@XmlElement(name = "redirect_uri")
-	@XmlSchemaType(name = "anyURI")
-	protected String redirectUri;
-	@NotEmpty
-	@Size(min = 2, max = 64)
-	@XmlElement(name = "client_id")
-	protected String clientId;
-	@XmlElement(name = "tos_uri")
-	@XmlSchemaType(name = "anyURI")
-	protected String tosUri;
-	@XmlElement(name = "policy_uri")
-	@XmlSchemaType(name = "anyURI")
-	protected String policyUri;
-	@XmlElement(name = "software_id")
-	protected String softwareId;
-	@XmlElement(name = "software_version")
-	protected String softwareVersion;
-	@XmlElement(name = "client_id_issued_at")
-	protected Long clientIdIssuedAt;
-	@XmlElement(name = "client_secret_expires_at")
-	protected Long clientSecretExpiresAt;
-	protected ArrayList<String> contacts;
-	@XmlElement(name = "token_endpoint_auth_method")
-	protected String tokenEndpointAuthMethod;
-
-	// TODO Implement ApplicationInformaion.additionalInformation
-
-	// @XmlElement(name = "additional_information")
-	// Map<String, java.lang.Object> additionalInformation = null;
-
-	// @XmlTransient
-	@ElementCollection
-	@LazyCollection(LazyCollectionOption.FALSE)
-	@CollectionTable(name = "application_information_scopes", joinColumns = @JoinColumn(name = "application_information_id"))
-	@NotEmpty
-	private Set<ApplicationInformationScope> scope = new HashSet<ApplicationInformationScope>();
-
-	@XmlElement(name = "grant_types")
-	protected ArrayList<GrantType> grantTypes;
+    @XmlTransient
+    @Column( name = "kind")
+    protected String kind;
+    
+    @XmlSchemaType(name = "DataCustodianApplicationStatus")
+    protected String dataCustodianApplicationStatus;
+    
+    @XmlSchemaType(name = "anyURI")
+    protected String dataCustodianDefaultBatchResource;
+    
+    @XmlSchemaType(name = "anyURI")
+    protected String dataCustodianDefaultSubscriptionResource;
+    
+    protected String thirdPartyApplicationDescription;
+    
+    @XmlSchemaType(name = "ThirdPartyApplicatonStatus")
+    protected String thirdPartyApplicationStatus;
+    
+    @XmlSchemaType(name = "ThirdPartyApplicationType")
+    protected String thirdPartyApplicationType;
+    
+    @XmlSchemaType(name = "ThirdPartyApplicationUse")
+    protected String thirdPartyApplicationUse;
+    
+    protected String thirdPartyPhone;
+    
+    @XmlSchemaType(name = "anyURI")
+    protected String authorizationServerUri;
+    
+    @XmlSchemaType(name = "anyURI")
+    protected String thirdPartyNotifyUri;
+    
+    @XmlElement(name = "authorizationServerAuthorizationEndpoint")
+    @XmlSchemaType(name = "anyURI")
+    protected String authorizationServerAuthorizationEndpoint;
+    
+    @XmlElement(name = "authorizationServerRegistrationEndpoint")
+    @XmlSchemaType(name = "anyURI")
+    protected String authorizationServerRegistrationEndpoint;
+    
+    @XmlElement(name = "authorizationServerTokenEndpoint")
+    @XmlSchemaType(name = "anyURI")
+    protected String authorizationServerTokenEndpoint;
+    
+    @XmlElement(name = "dataCustodianBulkRequestURI")
+    @XmlSchemaType(name = "anyURI")
+    protected String dataCustodianBulkRequestURI;
+    
+    @XmlElement(name = "dataCustodianThirdPartySelectionScreenURI")
+    @XmlSchemaType(name = "anyURI")
+    protected String dataCustodianThirdPartySelectionScreenURI;
+    
+    @XmlElement(name = "dataCustodianResourceEndpoint")
+    @XmlSchemaType(name = "anyURI")
+    protected String dataCustodianResourceEndpoint;
+    
+    @XmlElement(name = "thirdPartyDataCustodianSelectionScreenURI")
+    @XmlSchemaType(name = "anyURI")
+    protected String thirdPartyDataCustodianSelectionScreenURI;
+    
+    @XmlElement(name = "thirdPartyLoginScreenURI")
+    @XmlSchemaType(name = "anyURI")
+    protected String thirdPartyLoginScreenURI;
+    
+    @XmlElement(name = "thirdPartyScopeSelectionScreenURI")
+    @XmlSchemaType(name = "anyURI")
+    protected String thirdPartyScopeSelectionScreenURI;
+    
+    @XmlElement(name = "thirdPartyUserPortalScreenURI")
+    @XmlSchemaType(name = "anyURI")
+    protected String thirdPartyUserPortalScreenURI;
+    
+    @XmlElement(name = "client_secret")
+    protected String clientSecret;
+    
+    @XmlElement(name = "logo_uri")
+    @XmlSchemaType(name = "anyURI")
+    protected String logoUri;
+    
+    @XmlElement(name = "client_name")
+    protected String clientName;
+    
+    @XmlElement(name = "client_uri")
+    @XmlSchemaType(name = "anyURI")
+    protected String clientUri;
+    
+    @XmlElement(name = "redirect_uri")
+    @XmlSchemaType(name = "anyURI")
+    protected String redirectUri;
+    
+    @NotEmpty
+    @Size(min = 2, max = 64)
+    @XmlElement(name = "client_id")
+    protected String clientId;
+    
+    @XmlElement(name = "tos_uri")
+    @XmlSchemaType(name = "anyURI")
+    protected String tosUri;
+    
+    @XmlElement(name = "policy_uri")
+    @XmlSchemaType(name = "anyURI")
+    protected String policyUri;
+    
+    @XmlElement(name = "software_id")
+    protected String softwareId;
+    
+    @XmlElement(name = "software_version")
+    protected String softwareVersion;
+    
+    @XmlElement(name = "client_id_issued_at")
+    @XmlSchemaType(name = "TimeType")
+    protected Long clientIdIssuedAt;
+    
+    @XmlElement(name = "client_secret_expires_at")
+    @XmlSchemaType(name = "TimeType")    
+    protected Long clientSecretExpiresAt;
+    
+    protected String contacts;
+    
+    @XmlElement(name = "token_endpoint_auth_method")
+    @XmlSchemaType(name = "TokenEndPointMethod")
+    protected String tokenEndpointAuthMethod;
+    
+    @XmlElement(name = "dataCustodianScopeSelectionScreenURI")
+    @XmlSchemaType(name = "anyURI")
+    protected String dataCustodianScopeSelectionScreenURI;
+    
+    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @CollectionTable(name="application_information_scopes", joinColumns=@JoinColumn(name="application_information_id"))
+    private Set<String> scope = new HashSet<>();   
+    
+    @XmlElement(name = "grant_types")
+    @XmlSchemaType(name = "GrantType")
+    protected String grantTypes;
 
 	@XmlElement(name = "response_types")
+    @XmlSchemaType(name = "ResponseType")
 	protected ResponseType responseTypes;
 
 	@XmlElement(name = "registration_client_uri")
@@ -275,1124 +340,1062 @@ public class ApplicationInformation extends IdentifiedObject {
 	@Size(min = 2, max = 64)
 	@XmlElement(name = "dataCustodianId")
 	protected String dataCustodianId;
-
-	@NotEmpty
-	@Size(min = 2, max = 64)
-	@XmlElement(name = "thirdPartyApplicationName")
-	protected String thirdPartyApplicationName;
-
-	// private Integer accessTokenValiditySeconds;
-	// TODO implement ApplicationInformation.authorities
-	// private Collection<GrantedAuthority> authorities;
-	public String getKind() {
-		return kind;
-	}
+    
+    @NotEmpty
+    @Size(min = 2, max = 64)
+    @XmlElement(name = "thirdPartyApplicationName")
+    protected String thirdPartyApplicationName;
+   
+    public String getKind() {
+        return kind;
+    }
 
 	public void setKind(String kind) {
 		this.kind = kind;
 	}
 
-	// @Override
-	public String getClientId() {
-		return clientId;
-	}
-
-	// @Override
-	// public Set<String> getResourceIds() {
-	// return null;
-	// }
-
-	// public void setResourceIds(Set<String> ids) {
-	// // TODO seems not to be implemented??
-	// //this.resourceIds = ids;
-	// }
-
-	// @Override
-	// public boolean isSecretRequired() {
-	// return true;
-	// }
-
-	// @Override
-	// public Set<String> getAuthorizedGrantTypes() {
-	// Set<String> grantTypes = new HashSet<>();
-	// grantTypes.add("authorization_code");
-	// return grantTypes;
-	// }
-
-	// public void setAuthorizedGrantTypes (Set<String> authorizedGrantTypes) {
-	// // TODO seems not to be implemented ??
-	// // this.grantTypes = authorizedGrantTypes;
-	// }
-
-	// @Override
-	public String getClientSecret() {
-		return clientSecret;
-	}
-
-	// @Override
-	// public boolean isScoped() {
-	// return true;
-	// }
-
-	// @Override
-	public Set<ApplicationInformationScope> getScope() {
-		return scope;
-	}
-
-	public void setScope(Set<ApplicationInformationScope> scope) {
-		this.scope = scope;
-	}
-
-	public String[] getScopeArray() {
-		if (scope == null) return new String[] {};
-		// return scope.toArray(new String[scope.size()]);
-
-		String[] sb = new String[scope.size()];
-		int i = 0;
-		for (ApplicationInformationScope sc : scope) {
-			sb[i++] = sc.getScope();
-		}
-		return sb;
-	}
-
-	// @Override
-	// public Set<String> getAuthorizedGrantTypes() {
-	// Set<String> grantTypes = new HashSet<>();
-	// grantTypes.add("authorization_code");
-	// return grantTypes;
-	// }
-
-	// public void setAuthorizedGrantTypes (Set<String> authorizedGrantTypes) {
-	// // TODO seems not to be implemented ??
-	// // this.grantTypes = authorizedGrantTypes;
-	// }
-
-	// @Override
-	// public Set<String> getRegisteredRedirectUri() {
-	// Set<String> uris = new HashSet<>();
-	// uris.add(getRedirectUri());
-	// return uris;
-	// }
-
-	// public void setRegisteredRedirectUri(Set<String> registeredRediredUri) {
-	// this.redirectUri = registeredRediredUri.toString();
-	// }
-
-	// @Override
-	// public Collection<GrantedAuthority> getAuthorities() {
-	// Collection<GrantedAuthority> authorities = new ArrayList<>();
-	// authorities.add(new SimpleGrantedAuthority("ROLE_CLIENT"));
-	// return authorities;
-	// }
-
-	// public void setAuthorities (Collection<GrantedAuthority> authorities) {
-	// // TODO this seems not to be implemented ??
-	// // this.authorities = authorities;
-	// }
-
-	// @Override
-	// public Integer getAccessTokenValiditySeconds() {
-	// return Integer.valueOf(60*60*24*60);
-	// }
-
-	// public void setAccessTokenValiditySeconds(Integer s) {
-	// // TODO This seems not to be implemented ??
-	// // this.accessTokenValiditySeconds = s
-	// }
-
-	// @Override
-	// public Integer getRefreshTokenValiditySeconds() {
-	// return Integer.valueOf(60*60*24);
-	// }
-
-	// public void setRefreshTokenValiditySeconds(Integer s) {
-	// // TODO This seems not to be implemented ??
-	// // this.accessTokenValiditySeconds = s
-	// }
-
-	// @Override
-	// public Map<String, java.lang.Object> getAdditionalInformation() {
-	// return null;
-	// }
-
-	// public void setAdditionalInformation(Map<String, java.lang.Object> map) {
-	// // TODO This seems not to be implemented ??
-	// // this.additionalInformation = additionalInformation;
-	// }
-
-	// public void setAuthorities (Collection<GrantedAuthority> authorities) {
-
-	// TODO this seems not to be implemented ??
-	// this.authorities = authorities;
-	// }
-
-	// @Override
-	// public Integer getAccessTokenValiditySeconds() {
-	// return Integer.valueOf(60*60*24*60);
-	// }
-
-	// public void setAccessTokenValiditySeconds(Integer s) {
-	// // TODO This seems not to be implemented ??
-	// // this.accessTokenValiditySeconds = s
-	// }
-
-	// @Override
-	// public Integer getRefreshTokenValiditySeconds() {
-	// return Integer.valueOf(60*60*24);
-	// }
-
-	// public void setRefreshTokenValiditySeconds(Integer s) {
-	// // TODO This seems not to be implemented ??
-	// // this.accessTokenValiditySeconds = s
-	// }
-
-	// @Override
-	// public Map<String, java.lang.Object> getAdditionalInformation() {
-	// // TODO Implement ApplicationInformaion.additionalInformation
-	// // return this.additionalInformation;
-	// return null;
-	// }
-
-	// public void setAdditionalInformation(Map<String, java.lang.Object>
-	// additionalInformation) {
-	// // TODO This seems not to be implemented ??
-	// // this.additionalInformation = additionalInformation;
-	// }
-
-	/**
-	 * Gets the value of the dataCustodianApplicationStatus property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getDataCustodianApplicationStatus() {
-		return dataCustodianApplicationStatus;
-	}
-
-	/**
-	 * Sets the value of the dataCustodianApplicationStatus property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setDataCustodianApplicationStatus(String value) {
-		this.dataCustodianApplicationStatus = value;
-	}
-
-	/**
-	 * Gets the value of the dataCustodianDefaultBatchResource property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getDataCustodianDefaultBatchResource() {
-		return dataCustodianDefaultBatchResource;
-	}
-
-	/**
-	 * Sets the value of the dataCustodianDefaultBatchResource property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setDataCustodianDefaultBatchResource(String value) {
-		this.dataCustodianDefaultBatchResource = value;
-	}
-
-	/**
-	 * Gets the value of the dataCustodianDefaultSubscriptionResource property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getDataCustodianDefaultSubscriptionResource() {
-		return dataCustodianDefaultSubscriptionResource;
-	}
-
-	/**
-	 * Sets the value of the dataCustodianDefaultSubscriptionResource property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setDataCustodianDefaultSubscriptionResource(String value) {
-		this.dataCustodianDefaultSubscriptionResource = value;
-	}
-
-	/**
-	 * Gets the value of the thirdPartyApplicationDescription property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getThirdPartyApplicationDescription() {
-		return thirdPartyApplicationDescription;
-	}
-
-	/**
-	 * Sets the value of the thirdPartyApplicationDescription property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setThirdPartyApplicationDescription(String value) {
-		this.thirdPartyApplicationDescription = value;
-	}
-
-	/**
-	 * Gets the value of the thirdPartyApplicationStatus property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getThirdPartyApplicationStatus() {
-		return thirdPartyApplicationStatus;
-	}
-
-	/**
-	 * Sets the value of the thirdPartyApplicationStatus property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setThirdPartyApplicationStatus(String value) {
-		this.thirdPartyApplicationStatus = value;
-	}
-
-	/**
-	 * Gets the value of the thirdPartyApplicationType property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getThirdPartyApplicationType() {
-		return thirdPartyApplicationType;
-	}
-
-	/**
-	 * Sets the value of the thirdPartyApplicationType property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setThirdPartyApplicationType(String value) {
-		this.thirdPartyApplicationType = value;
-	}
-
-	/**
-	 * Gets the value of the thirdPartyApplicationUse property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getThirdPartyApplicationUse() {
-		return thirdPartyApplicationUse;
-	}
-
-	/**
-	 * Sets the value of the thirdPartyApplicationUse property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setThirdPartyApplicationUse(String value) {
-		this.thirdPartyApplicationUse = value;
-	}
-
-	/**
-	 * Gets the value of the thirdPartyPhone property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getThirdPartyPhone() {
-		return thirdPartyPhone;
-	}
-
-	/**
-	 * Sets the value of the thirdPartyPhone property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setThirdPartyPhone(String value) {
-		this.thirdPartyPhone = value;
-	}
-
-	/**
-	 * Gets the value of the authorizationServerUri property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getAuthorizationServerUri() {
-		return authorizationServerUri;
-	}
-
-	/**
-	 * Sets the value of the authorizationServerUri property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setAuthorizationServerUri(String value) {
-		this.authorizationServerUri = value;
-	}
-
-	/**
-	 * Gets the value of the thirdPartyNotifyUri property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getThirdPartyNotifyUri() {
-		return thirdPartyNotifyUri;
-	}
-
-	/**
-	 * Sets the value of the thirdPartyNotifyUri property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setThirdPartyNotifyUri(String value) {
-		this.thirdPartyNotifyUri = value;
-	}
-
-	/**
-	 * Gets the value of the authorizationServerAuthorizationEndpoint property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getAuthorizationServerAuthorizationEndpoint() {
-		return authorizationServerAuthorizationEndpoint;
-	}
-
-	/**
-	 * Sets the value of the authorizationServerAuthorizationEndpoint property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setAuthorizationServerAuthorizationEndpoint(String value) {
-		this.authorizationServerAuthorizationEndpoint = value;
-	}
-
-	/**
-	 * Gets the value of the authorizationServerRegistrationEndpoint property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getAuthorizationServerRegistrationEndpoint() {
-		return authorizationServerRegistrationEndpoint;
-	}
-
-	/**
-	 * Sets the value of the authorizationServerRegistrationEndpoint property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setAuthorizationServerRegistrationEndpoint(String value) {
-		this.authorizationServerRegistrationEndpoint = value;
-	}
-
-	/**
-	 * Gets the value of the authorizationServerTokenEndpoint property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getAuthorizationServerTokenEndpoint() {
-		return authorizationServerTokenEndpoint;
-	}
-
-	/**
-	 * Sets the value of the authorizationServerTokenEndpoint property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setAuthorizationServerTokenEndpoint(String value) {
-		this.authorizationServerTokenEndpoint = value;
-	}
-
-	/**
-	 * Gets the value of the dataCustodianBulkRequestURI property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getDataCustodianBulkRequestURI() {
-		return dataCustodianBulkRequestURI;
-	}
-
-	/**
-	 * Sets the value of the dataCustodianBulkRequestURI property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setDataCustodianBulkRequestURI(String value) {
-		this.dataCustodianBulkRequestURI = value;
-	}
-
-	/**
-	 * Gets the value of the dataCustodianThirdPartySelectionScreenURI property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getDataCustodianThirdPartySelectionScreenURI() {
-		return dataCustodianThirdPartySelectionScreenURI;
-	}
-
-	/**
-	 * Sets the value of the dataCustodianThirdPartySelectionScreenURI property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setDataCustodianThirdPartySelectionScreenURI(String value) {
-		this.dataCustodianThirdPartySelectionScreenURI = value;
-	}
-
-	/**
-	 * Gets the value of the dataCustodianResourceEndpoint property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getDataCustodianResourceEndpoint() {
-		return dataCustodianResourceEndpoint;
-	}
-
-	/**
-	 * Sets the value of the dataCustodianResourceEndpoint property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setDataCustodianResourceEndpoint(String value) {
-		this.dataCustodianResourceEndpoint = value;
-	}
-
-	/**
-	 * Gets the value of the thirdPartyDataCustodianSelectionScreenURI property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getThirdPartyDataCustodianSelectionScreenURI() {
-		return thirdPartyDataCustodianSelectionScreenURI;
-	}
-
-	/**
-	 * Sets the value of the thirdPartyDataCustodianSelectionScreenURI property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setThirdPartyDataCustodianSelectionScreenURI(String value) {
-		this.thirdPartyDataCustodianSelectionScreenURI = value;
-	}
-
-	/**
-	 * Gets the value of the thirdPartyLoginScreenURI property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getThirdPartyLoginScreenURI() {
-		return thirdPartyLoginScreenURI;
-	}
-
-	/**
-	 * Sets the value of the thirdPartyLoginScreenURI property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setThirdPartyLoginScreenURI(String value) {
-		this.thirdPartyLoginScreenURI = value;
-	}
-
-	/**
-	 * Gets the value of the thirdPartyScopeSelectionScreenURI property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getThirdPartyScopeSelectionScreenURI() {
-		return thirdPartyScopeSelectionScreenURI;
-	}
-
-	/**
-	 * Sets the value of the thirdPartyScopeSelectionScreenURI property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setThirdPartyScopeSelectionScreenURI(String value) {
-		this.thirdPartyScopeSelectionScreenURI = value;
-	}
-
-	/**
-	 * Gets the value of the thirdPartyUserPortalScreenURI property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getThirdPartyUserPortalScreenURI() {
-		return thirdPartyUserPortalScreenURI;
-	}
-
-	/**
-	 * Sets the value of the thirdPartyUserPortalScreenURI property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setThirdPartyUserPortalScreenURI(String value) {
-		this.thirdPartyUserPortalScreenURI = value;
-	}
-
-	/**
-	 * Sets the value of the clientSecret property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setClientSecret(String value) {
-		this.clientSecret = value;
-	}
-
-	/**
-	 * Gets the value of the logoUri property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getLogoUri() {
-		return logoUri;
-	}
-
-	/**
-	 * Sets the value of the logoUri property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setLogoUri(String value) {
-		this.logoUri = value;
-	}
-
-	/**
-	 * Gets the value of the clientName property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getClientName() {
-		return clientName;
-	}
-
-	/**
-	 * Sets the value of the clientName property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setClientName(String value) {
-		this.clientName = value;
-	}
-
-	/**
-	 * Gets the value of the clientUri property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getClientUri() {
-		return clientUri;
-	}
-
-	/**
-	 * Sets the value of the clientUri property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setClientUri(String value) {
-		this.clientUri = value;
-	}
-
-	/**
-	 * Gets the value of the redirectUri property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getRedirectUri() {
-		return redirectUri;
-	}
-
-	/**
-	 * Sets the value of the redirectUri property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setRedirectUri(String value) {
-		this.redirectUri = value;
-	}
-
-	/**
-	 * Sets the value of the clientId property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setClientId(String value) {
-		this.clientId = value;
-	}
-
-	/**
-	 * Gets the value of the tosUri property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getTosUri() {
-		return tosUri;
-	}
-
-	/**
-	 * Sets the value of the tosUri property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setTosUri(String value) {
-		this.tosUri = value;
-	}
-
-	/**
-	 * Gets the value of the policyUri property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getPolicyUri() {
-		return policyUri;
-	}
-
-	/**
-	 * Sets the value of the policyUri property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setPolicyUri(String value) {
-		this.policyUri = value;
-	}
-
-	/**
-	 * Gets the value of the softwareId property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getSoftwareId() {
-		return softwareId;
-	}
-
-	/**
-	 * Sets the value of the softwareId property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setSoftwareId(String value) {
-		this.softwareId = value;
-	}
-
-	/**
-	 * Gets the value of the softwareVersion property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getSoftwareVersion() {
-		return softwareVersion;
-	}
-
-	/**
-	 * Sets the value of the softwareVersion property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setSoftwareVersion(String value) {
-		this.softwareVersion = value;
-	}
-
-	/**
-	 * Gets the value of the clientIdIssuedAt property.
-	 * 
-	 * @return possible object is {@link Long }
-	 * 
-	 */
-	public Long getClientIdIssuedAt() {
-		return clientIdIssuedAt;
-	}
+    public String getClientId() {
+        return clientId;
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    public Set<String> getScope() {
+        return scope;
+    }
+
+    public void setScope(Set<String> scope) {
+    	this.scope = scope;
+    }
+    
+    public String[] getScopeArray() {
+    	if (scope == null)
+    		return new String[] {};
+        return scope.toArray(new String[scope.size()]);
+	}
+
+    /**
+     * Gets the value of the dataCustodianApplicationStatus property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getDataCustodianApplicationStatus() {
+        return dataCustodianApplicationStatus;
+    }
+
+    /**
+     * Sets the value of the dataCustodianApplicationStatus property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDataCustodianApplicationStatus(String value) {
+        this.dataCustodianApplicationStatus = value;
+    }
+
+    /**
+     * Gets the value of the dataCustodianDefaultBatchResource property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getDataCustodianDefaultBatchResource() {
+        return dataCustodianDefaultBatchResource;
+    }
+
+    /**
+     * Sets the value of the dataCustodianDefaultBatchResource property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDataCustodianDefaultBatchResource(String value) {
+        this.dataCustodianDefaultBatchResource = value;
+    }
+
+    /**
+     * Gets the value of the dataCustodianDefaultSubscriptionResource property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getDataCustodianDefaultSubscriptionResource() {
+        return dataCustodianDefaultSubscriptionResource;
+    }
+
+    /**
+     * Sets the value of the dataCustodianDefaultSubscriptionResource property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDataCustodianDefaultSubscriptionResource(String value) {
+        this.dataCustodianDefaultSubscriptionResource = value;
+    }
+
+    /**
+     * Gets the value of the thirdPartyApplicationDescription property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getThirdPartyApplicationDescription() {
+        return thirdPartyApplicationDescription;
+    }
+
+    /**
+     * Sets the value of the thirdPartyApplicationDescription property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setThirdPartyApplicationDescription(String value) {
+        this.thirdPartyApplicationDescription = value;
+    }
+
+    /**
+     * Gets the value of the thirdPartyApplicationStatus property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getThirdPartyApplicationStatus() {
+        return thirdPartyApplicationStatus;
+    }
+
+    /**
+     * Sets the value of the thirdPartyApplicationStatus property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setThirdPartyApplicationStatus(String value) {
+        this.thirdPartyApplicationStatus = value;
+    }
+
+    /**
+     * Gets the value of the thirdPartyApplicationType property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getThirdPartyApplicationType() {
+        return thirdPartyApplicationType;
+    }
+
+    /**
+     * Sets the value of the thirdPartyApplicationType property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setThirdPartyApplicationType(String value) {
+        this.thirdPartyApplicationType = value;
+    }
+
+    /**
+     * Gets the value of the thirdPartyApplicationUse property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getThirdPartyApplicationUse() {
+        return thirdPartyApplicationUse;
+    }
+
+    /**
+     * Sets the value of the thirdPartyApplicationUse property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setThirdPartyApplicationUse(String value) {
+        this.thirdPartyApplicationUse = value;
+    }
+
+    /**
+     * Gets the value of the thirdPartyPhone property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getThirdPartyPhone() {
+        return thirdPartyPhone;
+    }
+
+    /**
+     * Sets the value of the thirdPartyPhone property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setThirdPartyPhone(String value) {
+        this.thirdPartyPhone = value;
+    }
+
+    /**
+     * Gets the value of the authorizationServerUri property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getAuthorizationServerUri() {
+        return authorizationServerUri;
+    }
+
+    /**
+     * Sets the value of the authorizationServerUri property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setAuthorizationServerUri(String value) {
+        this.authorizationServerUri = value;
+    }
+
+    /**
+     * Gets the value of the thirdPartyNotifyUri property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getThirdPartyNotifyUri() {
+        return thirdPartyNotifyUri;
+    }
+
+    /**
+     * Sets the value of the thirdPartyNotifyUri property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setThirdPartyNotifyUri(String value) {
+        this.thirdPartyNotifyUri = value;
+    }
+
+    /**
+     * Gets the value of the authorizationServerAuthorizationEndpoint property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getAuthorizationServerAuthorizationEndpoint() {
+        return authorizationServerAuthorizationEndpoint;
+    }
+
+    /**
+     * Sets the value of the authorizationServerAuthorizationEndpoint property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setAuthorizationServerAuthorizationEndpoint(String value) {
+        this.authorizationServerAuthorizationEndpoint = value;
+    }
+
+    /**
+     * Gets the value of the authorizationServerRegistrationEndpoint property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getAuthorizationServerRegistrationEndpoint() {
+        return authorizationServerRegistrationEndpoint;
+    }
+
+    /**
+     * Sets the value of the authorizationServerRegistrationEndpoint property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setAuthorizationServerRegistrationEndpoint(String value) {
+        this.authorizationServerRegistrationEndpoint = value;
+    }
+
+    /**
+     * Gets the value of the authorizationServerTokenEndpoint property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getAuthorizationServerTokenEndpoint() {
+        return authorizationServerTokenEndpoint;
+    }
+
+    /**
+     * Sets the value of the authorizationServerTokenEndpoint property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setAuthorizationServerTokenEndpoint(String value) {
+        this.authorizationServerTokenEndpoint = value;
+    }
+
+    /**
+     * Gets the value of the dataCustodianBulkRequestURI property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getDataCustodianBulkRequestURI() {
+        return dataCustodianBulkRequestURI;
+    }
+
+    /**
+     * Sets the value of the dataCustodianBulkRequestURI property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDataCustodianBulkRequestURI(String value) {
+        this.dataCustodianBulkRequestURI = value;
+    }
+
+    /**
+     * Gets the value of the dataCustodianThirdPartySelectionScreenURI property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getDataCustodianThirdPartySelectionScreenURI() {
+        return dataCustodianThirdPartySelectionScreenURI;
+    }
+
+    /**
+     * Sets the value of the dataCustodianThirdPartySelectionScreenURI property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDataCustodianThirdPartySelectionScreenURI(String value) {
+        this.dataCustodianThirdPartySelectionScreenURI = value;
+    }
+
+    /**
+     * Gets the value of the dataCustodianResourceEndpoint property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getDataCustodianResourceEndpoint() {
+        return dataCustodianResourceEndpoint;
+    }
+
+    /**
+     * Sets the value of the dataCustodianResourceEndpoint property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDataCustodianResourceEndpoint(String value) {
+        this.dataCustodianResourceEndpoint = value;
+    }
+
+    /**
+     * Gets the value of the thirdPartyDataCustodianSelectionScreenURI property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getThirdPartyDataCustodianSelectionScreenURI() {
+        return thirdPartyDataCustodianSelectionScreenURI;
+    }
+
+    /**
+     * Sets the value of the thirdPartyDataCustodianSelectionScreenURI property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setThirdPartyDataCustodianSelectionScreenURI(String value) {
+        this.thirdPartyDataCustodianSelectionScreenURI = value;
+    }
+
+    /**
+     * Gets the value of the thirdPartyLoginScreenURI property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getThirdPartyLoginScreenURI() {
+        return thirdPartyLoginScreenURI;
+    }
+
+    /**
+     * Sets the value of the thirdPartyLoginScreenURI property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setThirdPartyLoginScreenURI(String value) {
+        this.thirdPartyLoginScreenURI = value;
+    }
+
+    /**
+     * Gets the value of the thirdPartyScopeSelectionScreenURI property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getThirdPartyScopeSelectionScreenURI() {
+        return thirdPartyScopeSelectionScreenURI;
+    }
+
+    /**
+     * Sets the value of the thirdPartyScopeSelectionScreenURI property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setThirdPartyScopeSelectionScreenURI(String value) {
+        this.thirdPartyScopeSelectionScreenURI = value;
+    }
+
+    /**
+     * Gets the value of the thirdPartyUserPortalScreenURI property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getThirdPartyUserPortalScreenURI() {
+        return thirdPartyUserPortalScreenURI;
+    }
+
+    /**
+     * Sets the value of the thirdPartyUserPortalScreenURI property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setThirdPartyUserPortalScreenURI(String value) {
+        this.thirdPartyUserPortalScreenURI = value;
+    }
+
+    /**
+     * Sets the value of the clientSecret property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setClientSecret(String value) {
+        this.clientSecret = value;
+    }
+
+    /**
+     * Gets the value of the logoUri property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getLogoUri() {
+        return logoUri;
+    }
+
+    /**
+     * Sets the value of the logoUri property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setLogoUri(String value) {
+        this.logoUri = value;
+    }
+
+    /**
+     * Gets the value of the clientName property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getClientName() {
+        return clientName;
+    }
+
+    /**
+     * Sets the value of the clientName property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setClientName(String value) {
+        this.clientName = value;
+    }
+
+    /**
+     * Gets the value of the clientUri property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getClientUri() {
+        return clientUri;
+    }
+
+    /**
+     * Sets the value of the clientUri property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setClientUri(String value) {
+        this.clientUri = value;
+    }
+
+    /**
+     * Gets the value of the redirectUri property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getRedirectUri() {
+        return redirectUri;
+    }
+
+    /**
+     * Sets the value of the redirectUri property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setRedirectUri(String value) {
+        this.redirectUri = value;
+    }
+
+    /**
+     * Sets the value of the clientId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setClientId(String value) {
+        this.clientId = value;
+    }
+
+    /**
+     * Gets the value of the tosUri property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getTosUri() {
+        return tosUri;
+    }
+
+    /**
+     * Sets the value of the tosUri property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setTosUri(String value) {
+        this.tosUri = value;
+    }
+
+    /**
+     * Gets the value of the policyUri property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getPolicyUri() {
+        return policyUri;
+    }
+
+    /**
+     * Sets the value of the policyUri property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setPolicyUri(String value) {
+        this.policyUri = value;
+    }
+
+    /**
+     * Gets the value of the softwareId property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getSoftwareId() {
+        return softwareId;
+    }
+
+    /**
+     * Sets the value of the softwareId property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setSoftwareId(String value) {
+        this.softwareId = value;
+    }
+
+    /**
+     * Gets the value of the softwareVersion property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getSoftwareVersion() {
+        return softwareVersion;
+    }
+
+    /**
+     * Sets the value of the softwareVersion property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setSoftwareVersion(String value) {
+        this.softwareVersion = value;
+    }
+
+    /**
+     * Gets the value of the clientIdIssuedAt property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Long }
+     *     
+     */
+    public Long getClientIdIssuedAt() {
+        return clientIdIssuedAt;
+    }
 
 	/**
 	 * Sets the value of the clientIdIssuedAt property.
 	 * 
 	 * @param value
 	 *            allowed object is {@link Long }
-	 * 
+     *     {@link Long }
+     *     
 	 */
 	public void setClientIdIssuedAt(Long value) {
 		this.clientIdIssuedAt = value;
 	}
 
-	/**
-	 * Gets the value of the clientSecretExpiresAt property.
-	 * 
-	 * @return possible object is {@link Long }
-	 * 
-	 */
-	public Long getClientSecretExpiresAt() {
-		return clientSecretExpiresAt;
-	}
+    /**
+     * Gets the value of the clientSecretExpiresAt property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Long }
+     *     
+     */
+    public Long getClientSecretExpiresAt() {
+        return clientSecretExpiresAt;
+    }
 
-	/**
-	 * Sets the value of the clientSecretExpiresAt property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link Long }
-	 * 
-	 */
-	public void setClientSecretExpiresAt(Long value) {
-		this.clientSecretExpiresAt = value;
-	}
+    /**
+     * Sets the value of the clientSecretExpiresAt property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Long }
+     *     
+     */
+    public void setClientSecretExpiresAt(Long value) {
+        this.clientSecretExpiresAt = value;
+    }
 
-	/**
-	 * Gets the value of the contacts property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the contacts property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getContacts().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list {@link String }
-	 * 
-	 * 
-	 */
-	public List<String> getContacts() {
-		if (contacts == null) {
-			contacts = new ArrayList<String>();
-		}
+    /**
+     * Gets the value of the contacts property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the contacts property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getContacts().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link String }
+     * 
+     * 
+     */
+    public String getContacts() {
 		return this.contacts;
 	}
 
-	public void setContacts(List<String> contacts) {
-		this.contacts = (ArrayList<String>) contacts;
+    public void setContacts(String contacts) {
+	this.contacts = contacts;
 	}
 
-	/**
-	 * Gets the value of the tokenEndpointAuthMethod property.
-	 * 
-	 * @return possible object is {@link TokenEndPointMethod }
-	 * 
-	 */
-	public String getTokenEndpointAuthMethod() {
-		return tokenEndpointAuthMethod;
-	}
+    /**
+     * Gets the value of the tokenEndpointAuthMethod property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link TokenEndPointMethod }
+     *     
+     */
+    public String getTokenEndpointAuthMethod() {
+        return tokenEndpointAuthMethod;
+    }
 
-	/**
-	 * Sets the value of the tokenEndpointAuthMethod property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link TokenEndPointMethod }
-	 * 
-	 */
-	public void setTokenEndpointAuthMethod(String value) {
-		this.tokenEndpointAuthMethod = value;
-	}
+    /**
+     * Sets the value of the tokenEndpointAuthMethod property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link TokenEndPointMethod }
+     *     
+     */
+    public void setTokenEndpointAuthMethod(String value) {
+        this.tokenEndpointAuthMethod = value;
+    }
 
-	/**
-	 * Gets the value of the grantTypes property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live list, not a
-	 * snapshot. Therefore any modification you make to the returned list will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the grantTypes property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getGrantTypes().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the list
-	 * {@link GrantType }
-	 * 
-	 * 
-	 */
-	public List<GrantType> getGrantTypes() {
-		if (grantTypes == null) {
-			grantTypes = new ArrayList<GrantType>();
-		}
+
+    /**
+     * Gets the value of the grantTypes property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the grantTypes property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getGrantTypes().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link GrantType }
+     * 
+     * 
+     */
+    public String getGrantTypes() {
 		return this.grantTypes;
 	}
 
-	private void setGrantTypes(List<GrantType> grantTypes) {
-		this.grantTypes = (ArrayList<GrantType>) grantTypes;
+        private void setGrantTypes(String grantTypes) {
+                this.grantTypes = grantTypes;
 
-	}
+        }
+	
+    /**
+     * Gets the value of the responseTypes property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link ResponseType }
+     *     
+     */
+    public ResponseType getResponseTypes() {
+        return responseTypes;
+    }
 
-	/**
-	 * Gets the value of the responseTypes property.
-	 * 
-	 * @return possible object is {@link ResponseType }
-	 * 
-	 */
-	public ResponseType getResponseTypes() {
-		return responseTypes;
-	}
+    /**
+     * Sets the value of the responseTypes property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link ResponseType }
+     *     
+     */
+    public void setResponseTypes(ResponseType value) {
+        this.responseTypes = value;
+    }
 
-	/**
-	 * Sets the value of the responseTypes property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link ResponseType }
-	 * 
-	 */
-	public void setResponseTypes(ResponseType value) {
-		this.responseTypes = value;
-	}
+    /**
+     * Gets the value of the registrationClientUri property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getRegistrationClientUri() {
+        return registrationClientUri;
+    }
 
-	/**
-	 * Gets the value of the registrationClientUri property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getRegistrationClientUri() {
-		return registrationClientUri;
-	}
+    /**
+     * Sets the value of the registrationClientUri property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setRegistrationClientUri(String value) {
+        this.registrationClientUri = value;
+    }
 
-	/**
-	 * Sets the value of the registrationClientUri property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setRegistrationClientUri(String value) {
-		this.registrationClientUri = value;
-	}
-
-	/**
-	 * Gets the value of the registrationAccessToken property.
-	 * 
-	 * @return possible object is {@link java.lang.Object }
-	 * 
-	 */
-	public java.lang.Object getRegistrationAccessToken() {
-		return registrationAccessToken;
-	}
+    /**
+     * Gets the value of the registrationAccessToken property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link java.lang.Object }
+     *     
+     */
+    public java.lang.Object getRegistrationAccessToken() {
+        return registrationAccessToken;
+    }
 
 	private void setRegistrationAccessToken(java.lang.Object registrationAccessToken) {
+    	if (registrationAccessToken != null) {
 		this.registrationAccessToken = registrationAccessToken.toString();
+    	} else {
+    		this.registrationAccessToken = null;
 	}
+    }
+   
+    /**
+     * Sets the value of the registrationAccessToken property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link java.lang.Object }
+     *     
+     */
+    public void setRegistrationAccessToken(String value) {
+        this.registrationAccessToken = value;
+    }
+    
+    /**
+     * Gets the value of the thirdPartyApplicationName property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getThirdPartyApplicationName() {
+        return thirdPartyApplicationName;
+    }
 
-	/**
-	 * Sets the value of the registrationAccessToken property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link java.lang.Object }
-	 * 
-	 */
-	public void setRegistrationAccessToken(String value) {
-		this.registrationAccessToken = value;
-	}
+    /**
+     * Sets the value of the thirdPartyApplicationName property.
+     *
+     * @param value allowed object is
+     * {@link String }
+     */
+    public void setThirdPartyApplicationName(String value) {
+        this.thirdPartyApplicationName = value;
+    }
 
-	/**
-	 * Gets the value of the thirdPartyApplicationName property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getThirdPartyApplicationName() {
-		return thirdPartyApplicationName;
-	}
+    /**
+     * Gets the value of the thirdPartyApplicationName property.
+     *
+     * @return possible object is
+     *         {@link String }
+     */
+    public String getDataCustodianId() {
+        return dataCustodianId;
+    }
 
-	/**
-	 * Sets the value of the thirdPartyApplicationName property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 */
-	public void setThirdPartyApplicationName(String value) {
-		this.thirdPartyApplicationName = value;
-	}
+    /**
+     * Sets the value of the thirdPartyApplicationName property.
+     *
+     * @param value allowed object is
+     * {@link String }
+     */
+    public void setDataCustodianId(String value) {
+        this.dataCustodianId = value;
+    }
 
-	/**
-	 * Gets the value of the thirdPartyApplicationName property.
-	 * 
-	 * @return possible object is {@link String }
-	 */
-	public String getDataCustodianId() {
-		return dataCustodianId;
-	}
+    
+    /**
+     * Gets the value of the dataCustodianScopeSelectionScreenURI property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getdataCustodianScopeSelectionScreenURI() {
+        return dataCustodianScopeSelectionScreenURI;
+    }
 
-	/**
-	 * Sets the value of the thirdPartyApplicationName property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 */
-	public void setDataCustodianId(String value) {
-		this.dataCustodianId = value;
-	}
-
+    /**
+     * Sets the value of the dataCustodianScopeSelectionScreenURI property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setdataCustodianScopeSelectionScreenURI(String value) {
+        this.dataCustodianScopeSelectionScreenURI = value;
+    }
+     
 	@Override
-	public void merge(IdentifiedObject resource) {
-		super.merge(resource);
-		this.setDataCustodianId(((ApplicationInformation) resource).getDataCustodianId());
-		this.setClientId(((ApplicationInformation) resource).getClientId());
-		// this.setResourceIds(((ApplicationInformation)resource).getResourceIds());
-		this.setClientSecret(((ApplicationInformation) resource).getClientSecret());
-		this.setScope(((ApplicationInformation) resource).getScope());
-		// this.setAuthorizedGrantTypes(((ApplicationInformation)resource).getAuthorizedGrantTypes());
-		this.setGrantTypes(((ApplicationInformation) resource).getGrantTypes());
-		// this.setRegisteredRedirectUri(((ApplicationInformation)resource).getRegisteredRedirectUri());
-		this.setRedirectUri(((ApplicationInformation) resource).getRedirectUri());
-		// this.setAuthorities(((ApplicationInformation)resource).getAuthorities());
-		// this.setAccessTokenValiditySeconds(((ApplicationInformation)resource).getAccessTokenValiditySeconds());
-		// this.setRefreshTokenValiditySeconds(((ApplicationInformation)resource).getRefreshTokenValiditySeconds());
-		// this.setAdditionalInformation(((ApplicationInformation)resource).getAdditionalInformation());
-		this.setDataCustodianApplicationStatus(((ApplicationInformation) resource).getDataCustodianApplicationStatus());
-		this.setDataCustodianDefaultBatchResource(((ApplicationInformation) resource)
-				.getDataCustodianDefaultBatchResource());
-		this.setDataCustodianDefaultSubscriptionResource(((ApplicationInformation) resource)
-				.getDataCustodianDefaultSubscriptionResource());
-		this.setThirdPartyApplicationDescription(((ApplicationInformation) resource)
-				.getThirdPartyApplicationDescription());
+    public void merge(IdentifiedObject resource) {
+    	super.merge(resource);
+    	this.setDataCustodianId(((ApplicationInformation)resource).getDataCustodianId());
+    	this.setClientId(((ApplicationInformation)resource).getClientId());
+    	this.setClientSecret(((ApplicationInformation)resource).getClientSecret());
+    	this.setScope(((ApplicationInformation)resource).getScope());
+    	this.setGrantTypes(((ApplicationInformation)resource).getGrantTypes());
+    	this.setRedirectUri(((ApplicationInformation)resource).getRedirectUri());
+    	this.setDataCustodianApplicationStatus(((ApplicationInformation)resource).getDataCustodianApplicationStatus());
+    	this.setDataCustodianDefaultBatchResource(((ApplicationInformation)resource).getDataCustodianDefaultBatchResource());
+    	this.setDataCustodianDefaultSubscriptionResource(((ApplicationInformation)resource).getDataCustodianDefaultSubscriptionResource());
+    	this.setThirdPartyApplicationDescription(((ApplicationInformation)resource).getThirdPartyApplicationDescription());
 		this.setThirdPartyApplicationStatus(((ApplicationInformation) resource).getThirdPartyApplicationStatus());
 		this.setThirdPartyApplicationType(((ApplicationInformation) resource).getThirdPartyApplicationType());
 		this.setThirdPartyApplicationUse(((ApplicationInformation) resource).getThirdPartyApplicationUse());
 		this.setThirdPartyPhone(((ApplicationInformation) resource).getThirdPartyPhone());
 		this.setAuthorizationServerUri(((ApplicationInformation) resource).getAuthorizationServerUri());
 		this.setThirdPartyNotifyUri(((ApplicationInformation) resource).getThirdPartyNotifyUri());
-		this.setAuthorizationServerAuthorizationEndpoint(((ApplicationInformation) resource)
-				.getAuthorizationServerAuthorizationEndpoint());
-		this.setAuthorizationServerRegistrationEndpoint(((ApplicationInformation) resource)
-				.getAuthorizationServerRegistrationEndpoint());
-		this.setAuthorizationServerTokenEndpoint(((ApplicationInformation) resource)
-				.getAuthorizationServerTokenEndpoint());
+    	this.setAuthorizationServerAuthorizationEndpoint(((ApplicationInformation)resource).getAuthorizationServerAuthorizationEndpoint());
+    	this.setAuthorizationServerRegistrationEndpoint(((ApplicationInformation)resource).getAuthorizationServerRegistrationEndpoint());
+    	this.setAuthorizationServerTokenEndpoint(((ApplicationInformation)resource).getAuthorizationServerTokenEndpoint());
 		this.setDataCustodianBulkRequestURI(((ApplicationInformation) resource).getDataCustodianBulkRequestURI());
-		this.setDataCustodianThirdPartySelectionScreenURI(((ApplicationInformation) resource)
-				.getDataCustodianThirdPartySelectionScreenURI());
+    	this.setDataCustodianThirdPartySelectionScreenURI(((ApplicationInformation)resource).getDataCustodianThirdPartySelectionScreenURI());
 		this.setDataCustodianResourceEndpoint(((ApplicationInformation) resource).getDataCustodianResourceEndpoint());
-		this.setThirdPartyDataCustodianSelectionScreenURI(((ApplicationInformation) resource)
-				.getThirdPartyDataCustodianSelectionScreenURI());
+    	this.setThirdPartyDataCustodianSelectionScreenURI(((ApplicationInformation)resource).getThirdPartyDataCustodianSelectionScreenURI());
 		this.setThirdPartyLoginScreenURI(((ApplicationInformation) resource).getThirdPartyLoginScreenURI());
-		this.setThirdPartyScopeSelectionScreenURI(((ApplicationInformation) resource)
-				.getThirdPartyScopeSelectionScreenURI());
-		this.setThirdPartyUserPortalScreenURI(((ApplicationInformation) resource).getThirdPartyUserPortalScreenURI());
-		this.setLogoUri(((ApplicationInformation) resource).getLogoUri());
-		this.setClientName(((ApplicationInformation) resource).getClientName());
-		this.setClientUri(((ApplicationInformation) resource).getClientUri());
-		this.setRedirectUri(((ApplicationInformation) resource).getRedirectUri());
-		this.setTosUri(((ApplicationInformation) resource).getTosUri());
-		this.setPolicyUri(((ApplicationInformation) resource).getPolicyUri());
-		this.setSoftwareId(((ApplicationInformation) resource).getSoftwareId());
-		this.setSoftwareVersion(((ApplicationInformation) resource).getSoftwareVersion());
-		this.setClientIdIssuedAt(((ApplicationInformation) resource).getClientIdIssuedAt());
-		this.setClientSecretExpiresAt(((ApplicationInformation) resource).getClientSecretExpiresAt());
-		this.setContacts(((ApplicationInformation) resource).getContacts());
-		this.setTokenEndpointAuthMethod(((ApplicationInformation) resource).getTokenEndpointAuthMethod());
-		this.setGrantTypes(((ApplicationInformation) resource).getGrantTypes());
-		this.setResponseTypes(((ApplicationInformation) resource).getResponseTypes());
-		this.setRegistrationClientUri(((ApplicationInformation) resource).getRegistrationClientUri());
-		this.setRegistrationAccessToken(((ApplicationInformation) resource).getRegistrationAccessToken());
-		this.setThirdPartyApplicationName(((ApplicationInformation) resource).getThirdPartyApplicationName());
-	}
-
-	@Column(nullable = false, columnDefinition = "TINYINT(1)")
-	@XmlTransient
-	protected Boolean authorized = false;
-
-	public Boolean getAuthorized() {
-		return authorized;
-	}
-
-	public Boolean isAuthorized() {
-		return authorized;
-	}
-
-	public void setAuthorized(Boolean authorized) {
-		this.authorized = authorized;
-	}
-
-	public String getScopeQueryString() {
-		StringBuilder sb = new StringBuilder();
-		int i = 0;
-		for (ApplicationInformationScope ais : scope) {
-			if (i > 0) sb.append(",");
-			sb.append(ais.getScope());
-			i++;
-		}
-		return sb.toString();
-	}
+    	this.setThirdPartyScopeSelectionScreenURI(((ApplicationInformation)resource).getThirdPartyScopeSelectionScreenURI());
+    	this.setThirdPartyUserPortalScreenURI(((ApplicationInformation)resource).getThirdPartyUserPortalScreenURI());
+    	this.setLogoUri(((ApplicationInformation)resource).getLogoUri());
+    	this.setClientName(((ApplicationInformation)resource).getClientName());
+    	this.setClientUri(((ApplicationInformation)resource).getClientUri());
+    	this.setRedirectUri(((ApplicationInformation)resource).getRedirectUri());
+    	this.setTosUri(((ApplicationInformation)resource).getTosUri());
+    	this.setPolicyUri(((ApplicationInformation)resource).getPolicyUri());
+    	this.setSoftwareId(((ApplicationInformation)resource).getSoftwareId());
+    	this.setSoftwareVersion(((ApplicationInformation)resource).getSoftwareVersion());
+    	this.setClientIdIssuedAt(((ApplicationInformation)resource).getClientIdIssuedAt());
+    	this.setClientSecretExpiresAt(((ApplicationInformation)resource).getClientSecretExpiresAt());
+    	this.setContacts(((ApplicationInformation)resource).getContacts());
+    	this.setTokenEndpointAuthMethod(((ApplicationInformation)resource).getTokenEndpointAuthMethod());
+    	this.setGrantTypes(((ApplicationInformation)resource).getGrantTypes());
+    	this.setResponseTypes(((ApplicationInformation)resource).getResponseTypes());
+    	this.setRegistrationClientUri(((ApplicationInformation)resource).getRegistrationClientUri());
+    	this.setRegistrationAccessToken(((ApplicationInformation)resource).getRegistrationAccessToken());
+    	this.setThirdPartyApplicationName(((ApplicationInformation)resource).getThirdPartyApplicationName());
+    }   
 }

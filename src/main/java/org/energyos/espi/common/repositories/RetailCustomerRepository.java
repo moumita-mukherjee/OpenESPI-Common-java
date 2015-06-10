@@ -31,12 +31,13 @@ public interface RetailCustomerRepository {
     public RetailCustomer findById(Long retailCustomerId);
 
     public RetailCustomer findById(String retailCustomerId);
-    
-    public RetailCustomer findByLink(String link);
-    public RetailCustomer findByUUID(UUID uuid);
 
     public UserDetails findByUsername(String userName);
 
     public void persist(RetailCustomer retailCustomer);
-
+	
+	/* LH customization starts here */
+	
+    public RetailCustomer findByLink(String link);
+    public RetailCustomer findByUUID(UUID uuid);
 }

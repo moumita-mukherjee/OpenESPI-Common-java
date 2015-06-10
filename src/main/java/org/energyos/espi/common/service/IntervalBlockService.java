@@ -20,18 +20,15 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
-import org.energyos.espi.common.domain.AtomPeriod;
-import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.IntervalBlock;
 import org.energyos.espi.common.domain.MeterReading;
 import org.energyos.espi.common.models.atom.EntryType;
 import org.energyos.espi.common.repositories.IntervalBlockRepository;
 import org.energyos.espi.common.utils.EntryTypeIterator;
+import org.energyos.espi.common.utils.ExportFilter;
 
 public interface IntervalBlockService {
 	// TODO: likely deprecated
-	void flush();
-	
 	List<IntervalBlock> findAllByMeterReadingId(Long meterReadingId);
 
 	String feedFor(List<IntervalBlock> intervalBlocks);
@@ -68,12 +65,14 @@ public interface IntervalBlockService {
 	public IntervalBlock importResource(InputStream stream) throws Exception;
 
 	IntervalBlock findById(long intervalBlockId);
-
+	
+	/* LH customization starts here */
 	public List<IntervalBlock> findIntervalBlocksByPeriod(Long meterReadingId,
-			AtomPeriod ap);
+			ExportFilter ap);
 	
 	public IntervalBlock findByUUID(UUID uuid) ;
 	
 	public IntervalBlock merge(IntervalBlock existingResource);
+    void flush();
 
 }
