@@ -699,8 +699,11 @@ public class ExportServiceImpl implements ExportService {
 		List<IdentifiedObject> usagePointIdList = new ArrayList<IdentifiedObject> ();
 		List<IdentifiedObject> temp = subscriptionService
 				.findUsagePointIds(subscriptionId);
-		if (temp.contains(usagePointId)) {
-		     usagePointIdList.add(new IdentifiedObject(usagePointId));
+		//if (temp.contains(usagePointId)) {
+		for(IdentifiedObject ido:temp) {
+			if(ido.getId().equals(usagePointId)) {
+				usagePointIdList.add(new IdentifiedObject(usagePointId));
+			}
 		}
 		exportEntriesFull(subscriptionId, resourceService.findEntryTypeIterator(
 				usagePointIdList, UsagePoint.class), stream, exportFilter,
