@@ -54,6 +54,7 @@ public class ExportFilter {
 		}
 
 		// update the filter period
+		System.err.println("params=="+params);
 		filterPeriod = new AtomPeriod();
 		if (hasParam("published-min")) {
 			filterPeriod.getPublishedMin().setTimeInMillis(toTime("published-min"));
@@ -75,7 +76,13 @@ public class ExportFilter {
 		}
 		if (hasParam("subscription")) {
 			setSubscriptionReq("true".equalsIgnoreCase(params.get("subscription").trim()));
+		}//added for Aggregation green-button data start
+		if (hasParam("aggr-rule")) {
+			filterPeriod.setaggrrule(params.get("aggr-rule").trim());
 		}
+		if (hasParam("aggrn-interval")) {
+			filterPeriod.setaggrninterval(Long.parseLong(params.get("aggrn-interval").trim()));
+		}//added for Aggregation green-button data end
 	}
 
 	public boolean matches(EntryType entry) throws Exception {
