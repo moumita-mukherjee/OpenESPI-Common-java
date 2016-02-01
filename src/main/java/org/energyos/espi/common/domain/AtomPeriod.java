@@ -59,6 +59,8 @@ public class AtomPeriod {
 	private long usageMax=Long.MAX_VALUE;
 	private String aggrrule=null;//added for Aggregation green-button data
 	private long aggrninterval=0;//added for Aggregation green-button data
+	private String intervalblock=null;
+	
 
 	public long getUsageMin() {
 		return usageMin;
@@ -117,6 +119,13 @@ public class AtomPeriod {
 	public long getaggrninterval() {
 		return aggrninterval;
 	}
+	public void setintervalblock(String intervalblock) {
+		this.intervalblock = intervalblock;
+	}
+	public String getintervalblock() {
+		return intervalblock;
+	}
+	
 	public void setaggrninterval(long aggrninterval) {
 		this.aggrninterval = aggrninterval;
 	}//added for Aggregation green-button data end
@@ -133,6 +142,7 @@ public class AtomPeriod {
 		sb.append(" isFilterOnUsage "+isFilterOnUsage());
 		sb.append(" aggr-rule "+aggrrule);//added for Aggregation green-button data
 		sb.append(" aggrn-interval "+aggrninterval);//added for Aggregation green-button data
+		sb.append(" interval-block "+intervalblock);
 		return sb.toString();
 	}
 

@@ -104,6 +104,7 @@ public class Routes {
     public static final String SUBSCRIPTION_MEMBER = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Subscription/{subscriptionHashedId}";
 
     public static final String EXT_METER_READING_MEMBER = "/espi/1_1/resource/MeterReading/uuid/{uuid}";
+    public static final String ROOT_USAGE_POINT_UUID = "/espi/1_1/resource/UsagePoint/uuid/{uuid}";
     
     // patterns for RESTful root access to Resources
     public static final String ROOT_USAGE_POINT_COLLECTION = "/espi/1_1/resource/UsagePoint";

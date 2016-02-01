@@ -83,6 +83,10 @@ public class ExportFilter {
 		if (hasParam("aggrn-interval")) {
 			filterPeriod.setaggrninterval(Long.parseLong(params.get("aggrn-interval").trim()));
 		}//added for Aggregation green-button data end
+		//added for Usagepoint ReadingType API changes
+		if (hasParam("interval-block")) {
+			filterPeriod.setintervalblock(params.get("interval-block").trim());
+		}
 	}
 
 	public boolean matches(EntryType entry) throws Exception {
