@@ -75,7 +75,7 @@ public class EntryTypeIterator {
 				resource = resourceService.findById(pair.getKey(), pair.getValue());				
 			}
 		} else {
-			//System.err.println("Root class " + rootClass);
+			log.warn("Root class " + rootClass);
 			resource = resourceService.findById(resourceIds.next().getId(), rootClass);
 			updateChildIds(resource.getId());
 		}
@@ -124,8 +124,7 @@ public class EntryTypeIterator {
 		if (!("false".equalsIgnoreCase(exportFilter.getFilterPeriod()
 				.getintervalblock()))) {
 		blockcache.clear();
-		try {
-			//System.err.println(usagePointId + " Load  IntervalBlock " + exportFilter);
+		try {			
 			HashMap<Long, MeterReading> lomcalmrmap = new HashMap<Long, MeterReading>();
 
 			List<IntervalBlock> blocks = resourceService.findAllByUsagePointId(usagePointId, exportFilter);
