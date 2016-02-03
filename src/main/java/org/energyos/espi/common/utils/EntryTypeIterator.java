@@ -76,6 +76,7 @@ public class EntryTypeIterator {
 			}
 		} else {
 			log.warn("Root class " + rootClass);
+			
 			resource = resourceService.findById(resourceIds.next().getId(), rootClass);
 			updateChildIds(resource.getId());
 		}
