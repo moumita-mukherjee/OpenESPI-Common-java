@@ -774,12 +774,15 @@ public class ExportServiceImpl implements ExportService {
 		stream.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".getBytes());
 		stream.write("<?xml-stylesheet type=\"text/xsl\" href=\"GreenButtonDataStyleSheet.xslt\"?>\n"
 				.getBytes());
+		 
+
 		stream.write("<feed xmlns=\"http://www.w3.org/2005/Atom\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
 				.getBytes());
 		stream.write("<id>urn:uuid:".getBytes());
 		stream.write(uuid.getBytes());
 		stream.write("</id>\n".getBytes());
 		stream.write("<title>Green Button Usage Feed</title>\n".getBytes());
+		stream.write("<link rel=\"related\" href=\"https://cert.greenbuttonalliance.org/certificate/ba8fc0c8-9e5c-5ddb-bf44-86c50bbf768b\"/>\n".getBytes());
 		stream.write("<updated>".getBytes());
 		stream.write(temp.getBytes());
 		stream.write("</updated>\n".getBytes());
