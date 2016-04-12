@@ -57,6 +57,8 @@ public class AtomPeriod {
 	
 	private long usageMin=0;
 	private long usageMax=Long.MAX_VALUE;
+	private String aggrrule=null;//added for Aggregation green-button data
+	private long aggrninterval=0;//added for Aggregation green-button data
 
 	public long getUsageMin() {
 		return usageMin;
@@ -104,7 +106,20 @@ public class AtomPeriod {
 
 	public void setPublishedMax(GregorianCalendar publishedMax) {
 		this.publishedMax = publishedMax;
+	}//added for Aggregation green-button data start
+	public String getaggrrule() {
+		return aggrrule;
 	}
+	public void setaggrrule(String aggrrule) {
+		this.aggrrule = aggrrule;
+	}
+
+	public long getaggrninterval() {
+		return aggrninterval;
+	}
+	public void setaggrninterval(long aggrninterval) {
+		this.aggrninterval = aggrninterval;
+	}//added for Aggregation green-button data end
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append(" updated-min "+updatedMin.getTime() );
@@ -116,6 +131,8 @@ public class AtomPeriod {
 		sb.append(" isFilterOnPublished "+isFilterOnPublished());
 		sb.append(" isFilterOnUpdated "+isFilterOnUpdated());
 		sb.append(" isFilterOnUsage "+isFilterOnUsage());
+		sb.append(" aggr-rule "+aggrrule);//added for Aggregation green-button data
+		sb.append(" aggrn-interval "+aggrninterval);//added for Aggregation green-button data
 		return sb.toString();
 	}
 
