@@ -80,8 +80,8 @@ public class ExportFilter {
 		if (hasParam("aggr-rule")) {
 			filterPeriod.setaggrrule(params.get("aggr-rule").trim());
 		}
-		if (hasParam("aggrn-interval")) {
-			filterPeriod.setaggrninterval(Long.parseLong(params.get("aggrn-interval").trim()));
+		if (hasParam("aggr-interval")) {
+			filterPeriod.setaggrninterval(Long.parseLong(params.get("aggr-interval").trim()));
 		}//added for Aggregation green-button data end
 	}
 
