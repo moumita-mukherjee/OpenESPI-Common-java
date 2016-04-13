@@ -51,7 +51,7 @@
 				<profile>googlecloud</profile>
 				<database>googlecloud</database>
 				<hbm2ddl_auto>none</hbm2ddl_auto>
-				<appengine.target.version>1.9.5</appengine.target.version>
+				<appengine.target.version>1.9.34</appengine.target.version>
 			</properties>
 
 		</profile>
