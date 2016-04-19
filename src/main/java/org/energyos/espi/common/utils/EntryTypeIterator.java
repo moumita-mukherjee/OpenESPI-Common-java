@@ -61,19 +61,18 @@ public class EntryTypeIterator {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	// TODO: fix the EntryTypeIterator Typing System
 	public EntryType next() {
-		IdentifiedObject resource = null;
+		IdentifiedObject resource = null;		
 		if (childIds.hasNext()) {
-			Pair<Long, Class> pair = childIds.next();
-			log.debug(pair.getValue().getName() + " resource pair 11111 " + pair.getKey());
+			Pair<Long, Class> pair = childIds.next();			
 			// interval blocks are pre-loaded and keep in map,to work with
 			// EntryTypeIterator all ids are added in childIds
 			if (pair.getValue().getName().contains("IntervalBlock")) {
 				if (blockcache.containsKey(pair.getKey())) {
 					resource = blockcache.get(pair.getKey());
 					blockcache.remove(pair.getKey());
-				}
+				}						
 			} else {
-				resource = resourceService.findById(pair.getKey(), pair.getValue());
+				resource = resourceService.findById(pair.getKey(), pair.getValue());				
 			}
 		} else {
 			log.warn("Root class " + rootClass);
@@ -123,9 +122,10 @@ public class EntryTypeIterator {
 		} catch (EmptyResultDataAccessException ignore) {
 
 		}
+		if (!("false".equalsIgnoreCase(exportFilter.getFilterPeriod()
+				.getintervalblock()))) {
 		blockcache.clear();
-		try {
-			log.debug(usagePointId + " Load  IntervalBlock " + exportFilter);
+		try {			
 			HashMap<Long, MeterReading> lomcalmrmap = new HashMap<Long, MeterReading>();
 
 			List<IntervalBlock> blocks = resourceService.findAllByUsagePointId(usagePointId, exportFilter);
@@ -160,6 +160,7 @@ public class EntryTypeIterator {
 			log.warn("Exception ", ignore);
 			ignore.printStackTrace(System.err);
 
+		}
 		}
 
 		try {
