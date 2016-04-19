@@ -28,19 +28,36 @@ public class ContractRate
             "ELRG_DIST",
             "ESTL_DIST",
             "ESEN_DIST",
-            "EUSL_DIST"
+            "EUSL_DIST",
+            "RES_DIST",
+            "G<50_DIST",
+            "G>50_DISN",
+            "G>50_DISI",
+            "LRG_DIST",
+            "STL_DIST",
+            "SEN_DIST",
+            "USL_DIST"
     }));
     public static final Set<String> RATES_FOR_DEMAND =  new HashSet<String>(Arrays.asList(new String [] { 
     		"EG>50_DISN",
             "EG>50_DISI",
-            "ELRG_DIST"
+            "ELRG_DIST",
+            "G>50_DISN",
+            "G>50_DISI",
+            "LRG_DIST"
     }));
     public static final Set<String> RATES_FOR_HDWM =  new HashSet<String>(Arrays.asList(new String [] { 
             "ERES_DIST",
             "EG<50_DIST",
             "EG>50_DISN",
             "EG>50_DISI",
-            "ELRG_DIST"
+            "ELRG_DIST",
+            "RES_DIST",
+            "G<50_DIST",
+            "G>50_DISN",
+            "G>50_DISI",
+            "LRG_DIST"
+
     }));
 
 
