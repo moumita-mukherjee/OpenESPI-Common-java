@@ -62,4 +62,6 @@ public interface AuthorizationRepository {
     void delete(Authorization authorization);    
 	
 	Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope );
+	
+	public List<Authorization> findByStatus(Long retailCustomerId,String applicationInformationId,String status);
 }

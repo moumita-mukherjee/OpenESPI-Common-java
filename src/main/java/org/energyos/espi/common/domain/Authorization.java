@@ -150,8 +150,10 @@ import org.energyos.espi.common.models.atom.adapters.AuthorizationAdapter;
         @NamedQuery(name = Authorization.QUERY_FIND_ALL_IDS_BY_APPLICATION_INFORMATION_ID,
                 query = "SELECT authorization.id FROM Authorization authorization where authorization.applicationInformation.id = :applicationInformationId"),
         @NamedQuery(name = Authorization.QUERY_FIND_BY_APPLICATION_INFORMATION_ID,
-        		query = "SELECT authorization FROM Authorization authorization where authorization.applicationInformation.id = :applicationInformationId and authorization.scope =:scope and authorization.status= '1'")
-        
+        		query = "SELECT authorization FROM Authorization authorization where authorization.applicationInformation.id = :applicationInformationId and authorization.scope =:scope and authorization.status= '1'"),
+        @NamedQuery(name = Authorization.QUERY_FIND_BY_STATUS,
+      		query = "SELECT authorization FROM Authorization authorization WHERE authorization.status = :status AND authorization.retailCustomer.id = :retailCustomerId and authorization.thirdParty = :thirdParty")        		
+
                  
 })
 public class Authorization
@@ -172,6 +174,7 @@ public class Authorization
 	public static final String QUERY_FIND_ALL_IDS_BY_BULK_ID = "Authorization.findAllIdsByBulkId";
 	public static final String QUERY_FIND_ALL_IDS_BY_APPLICATION_INFORMATION_ID = "Authorization.findAllIdsByApplicationInformationId";
 	public static final String QUERY_FIND_BY_APPLICATION_INFORMATION_ID = "Authorization.findByApplicationInformationId";
+	public static final String QUERY_FIND_BY_STATUS = "Authorization.findByApplicationInformationStatus";
 
     @Embedded
     @AttributeOverrides({
