@@ -286,5 +286,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	public Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope) {
 		return authorizationRepository.findByScope(retailCustomerId, applicationInformationId,scope);
 	}
+	 @Override
+	    public List<Authorization> findByApplicationInformationStatus(Long retailCustomerId,String applicationInformationId,String status) {
+	        return authorizationRepository.findByStatus(retailCustomerId,applicationInformationId,status);
+	    }
    
 }
