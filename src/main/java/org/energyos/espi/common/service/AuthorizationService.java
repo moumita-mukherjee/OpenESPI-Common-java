@@ -75,4 +75,8 @@ public interface AuthorizationService {
 	List<Authorization> findAllActiveByRetailCustomerId(Long retailCustomerId);
 	
 	Authorization findByScope(Long retailCustomerId,Long applicationInformationId, String scope );
+	
+	public List<Authorization> findByApplicationInformationStatus(Long retailCustomerId,String applicationInformationId,String status);
+	
+	
 }
