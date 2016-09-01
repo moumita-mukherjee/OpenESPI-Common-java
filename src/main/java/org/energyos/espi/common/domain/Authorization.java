@@ -98,26 +98,12 @@ import org.energyos.espi.common.models.atom.adapters.AuthorizationAdapter;
 
 @SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Authorization", propOrder = {
-	    "authorizedPeriod",
-	    "publishedPeriod",
-	    "accessToken",
-	    "status",
-	    "expiresIn",
-	    "grantType",
-	    "refreshToken",
-	    "scope",
-	    "state",
-	    "responseType",
-	    "tokenType",
-	    "code",
-	    "error",
-	    "errorDescription",
-	    "errorUri",
-	    "resourceURI",
-	    "authorizationURI",
-	    "thirdParty"
-	})@Entity
+@XmlType(name = "Authorization", propOrder = { "authorizedPeriod",
+		"publishedPeriod", "status", "expiresIn", "grantType",
+		"scope", "responseType", "tokenType", "code", "error",
+		"errorDescription", "errorUri", "resourceURI", "authorizationURI"
+		}) 
+@Entity
 @Table(name = "authorizations")
 @XmlJavaTypeAdapter(AuthorizationAdapter.class)
 @NamedQueries(value = {
@@ -150,8 +136,10 @@ import org.energyos.espi.common.models.atom.adapters.AuthorizationAdapter;
         @NamedQuery(name = Authorization.QUERY_FIND_ALL_IDS_BY_APPLICATION_INFORMATION_ID,
                 query = "SELECT authorization.id FROM Authorization authorization where authorization.applicationInformation.id = :applicationInformationId"),
         @NamedQuery(name = Authorization.QUERY_FIND_BY_APPLICATION_INFORMATION_ID,
-        		query = "SELECT authorization FROM Authorization authorization where authorization.applicationInformation.id = :applicationInformationId and authorization.scope =:scope and authorization.status= '1'")
-        
+        		query = "SELECT authorization FROM Authorization authorization where authorization.applicationInformation.id = :applicationInformationId and authorization.scope =:scope and authorization.status= '1'"),
+        @NamedQuery(name = Authorization.QUERY_FIND_BY_STATUS,
+      		query = "SELECT authorization FROM Authorization authorization WHERE authorization.status = :status AND authorization.retailCustomer.id = :retailCustomerId and authorization.thirdParty = :thirdParty")        		
+
                  
 })
 public class Authorization
@@ -172,6 +160,7 @@ public class Authorization
 	public static final String QUERY_FIND_ALL_IDS_BY_BULK_ID = "Authorization.findAllIdsByBulkId";
 	public static final String QUERY_FIND_ALL_IDS_BY_APPLICATION_INFORMATION_ID = "Authorization.findAllIdsByApplicationInformationId";
 	public static final String QUERY_FIND_BY_APPLICATION_INFORMATION_ID = "Authorization.findByApplicationInformationId";
+	public static final String QUERY_FIND_BY_STATUS = "Authorization.findByApplicationInformationStatus";
 
     @Embedded
     @AttributeOverrides({
@@ -188,6 +177,7 @@ public class Authorization
 	protected DateTimeInterval publishedPeriod;
     
     @Column(name = "access_token")
+    @XmlTransient
     protected String accessToken;
     
     @Column(name = "authorization_uri")
@@ -202,6 +192,7 @@ public class Authorization
     protected String status;
     
     @Column(name = "third_party")
+    @XmlTransient
     protected String thirdParty;
     
     @ManyToOne (cascade = CascadeType.DETACH) @JoinColumn(name = "retail_customer_id")
@@ -213,19 +204,20 @@ public class Authorization
     @XmlTransient
     protected Subscription subscription;
     
-    @XmlElement(name = "expires_in")
+    @XmlElement(name = "expires_at")
     protected Long expiresIn;
     
     @XmlElement(name = "grant_type")
     protected GrantType grantType;
-    
-    @XmlElement(name = "refresh_token")
+        
+    @XmlTransient
     protected String refreshToken;
     
     @Column(name = "scope")
     private String scope;
     
     @Column(name = "state")
+    @XmlTransient
     private String state;
     
     @XmlElement(name = "response_type")
