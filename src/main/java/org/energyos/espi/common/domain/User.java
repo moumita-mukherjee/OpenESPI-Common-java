@@ -17,6 +17,7 @@ package org.energyos.espi.common.domain;
  */
 
 import java.security.Principal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -41,12 +42,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NamedQueries(value = {
 		@NamedQuery(name = User.QUERY_FIND_BY_ID, query = "SELECT user FROM User user WHERE user.id = :id"),
 		@NamedQuery(name = User.QUERY_FIND_ALL, query = "SELECT user FROM User user"),
-		@NamedQuery(name = User.QUERY_FIND_BY_USERNAME, query = "SELECT user FROM User user WHERE user.username = :username") })
+		@NamedQuery(name = User.QUERY_FIND_BY_USERNAME, query = "SELECT user FROM User user WHERE user.username = :username"),
+		@NamedQuery(name = User.QUERY_FIND_BY_OAUTHTOKEN, query = "SELECT user FROM User user WHERE user.tokenKey = :tokenKey")})
 public class User implements UserDetails, Principal {
 	private static final long serialVersionUID = -754707762659297980L;
 	public final static String QUERY_FIND_BY_ID = "Login.findById";
 	public final static String QUERY_FIND_ALL = "Login.findAll";
 	public final static String QUERY_FIND_BY_USERNAME = "Login.findByUsername";
+	public final static String QUERY_FIND_BY_OAUTHTOKEN= "Login.findByOauthToken";
 
 	public final static String ROLE_USER = "ROLE_USER";
 	public final static String ROLE_CUSTODIAN = "ROLE_CUSTODIAN";
@@ -96,6 +99,12 @@ public class User implements UserDetails, Principal {
 	
 	@Column(name = "salt")	
 	protected String salt;
+	
+	@Column(name = "tokenkey")	
+	protected String tokenKey;
+	
+	@Column(name = "tokendate")	
+	protected Timestamp tokendate;
 
 
 	@Column(name = "customer_id")
@@ -189,6 +198,20 @@ public class User implements UserDetails, Principal {
 	public void setSalt(String salt) {
 		this.salt = salt;
 	}
+	public String getTokenKey() {
+		return this.tokenKey;
+	}
+	public void setTokenKey(String tokenKey) {
+		this.tokenKey = tokenKey;
+	}
+	
+	public Timestamp getTokenDate() {
+		return this.tokendate;
+	}
+	public void setTokenDate(Timestamp tokendate) {
+		this.tokendate = tokendate;
+	}
+	
 
 	public String getFirstName() {
 		return firstName;
@@ -264,5 +287,8 @@ public class User implements UserDetails, Principal {
 		this.role = resource.role;
 		this.username = resource.username;
 		this.rawusername = resource.rawusername;
+		this.tokenKey=resource.tokenKey;
+		this.tokendate=resource.tokendate;
+		
 	}
 }
