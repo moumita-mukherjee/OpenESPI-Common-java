@@ -144,7 +144,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 		@NamedQuery(name = ApplicationInformation.QUERY_FIND_BY_DATA_CUSTODIAN_CLIENT_ID, query = "SELECT info FROM ApplicationInformation info WHERE info.dataCustodianId = :dataCustodianId"),
 		@NamedQuery(name = ApplicationInformation.QUERY_FIND_ALL, query = "SELECT info FROM ApplicationInformation info"),
 		@NamedQuery(name = ApplicationInformation.QUERY_FIND_ALL_TP, query = "SELECT info FROM ApplicationInformation info where info.id > 1 and info.clientId  is not null "),
-		@NamedQuery(name = ApplicationInformation.QUERY_FIND_ALL_IDS, query = "SELECT applicationInformation.id FROM ApplicationInformation applicationInformation"),
+		@NamedQuery(name = ApplicationInformation.QUERY_FIND_ALL_IDS, query = "SELECT info.id FROM ApplicationInformation info"),
 		@NamedQuery(name = ApplicationInformation.QUERY_FIND_BY_KIND, query = "SELECT info FROM ApplicationInformation info WHERE info.kind = :kind")
 
 })
