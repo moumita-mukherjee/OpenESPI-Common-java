@@ -58,7 +58,7 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
     private ResourceService resourceService;
     
  public EntryType process(EntryType entry) {
-		log.debug("process ***************************************** entry " + entry);
+		log.info("process ***************************************** entry " + entry);
 		convert(entry);
 		for (IdentifiedObject resource : entry.getContent().getResources()) {
 
@@ -68,40 +68,22 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 
 				if (resource instanceof IntervalBlock) {
 
-					System.err.println(resource.getSelfLink().getHref()+ " interval block uuid  ..." + resource.getUUID());
+					log.info(resource.getSelfLink().getHref()+ " interval block uuid  ..." + resource.getUUID());
 
 					existingResource = intervalBlockService.findByUUID(resource.getUUID());
-
 					IntervalBlock ib = (IntervalBlock) existingResource;
-
-					System.err.println("block existingResource.getId() ..." + existingResource.getId());
-					System.err.println("block existingResource.meter reading id ..." + ib.getMeterReadingId());					
-										
 					ib.setMeterReading(meterReadingService.findById(ib.getMeterReadingId()));
-
-
-					// merge the new into the old and throw the new away
-					//
 					existingResource.merge(resource);
-
 					existingResource = intervalBlockService.merge((IntervalBlock) existingResource);
-
 					if (ib.getMeterReading() != null) {
 						meterReadingService.persist(ib.getMeterReading());
 					}					
-
 				} else {
 					existingResource = resourceService.findByUUID(resource.getUUID(), resource.getClass());
 					existingResource = resourceService.merge(existingResource);
 
-					// merge the new into the old and throw the new away
-					//
 					existingResource.merge(resource);
 				}
-
-				// now put the existing resource back into the structure so it
-				// will
-				// be available for later processing
 
 				if (existingResource instanceof UsagePoint) {
 					entry.getContent().setUsagePoint((UsagePoint) existingResource);
@@ -112,18 +94,10 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 				}
 
 				if (existingResource instanceof IntervalBlock) {
-					// System.out.printf("*****We have an existing IntervalBlock??: %s\n",
-					// existingResource.toString());
+					
 					List<IntervalBlock> intervalBlocks = entry.getContent().getIntervalBlocks();
 					List<IntervalBlock> newList = new ArrayList<IntervalBlock>();
 					Iterator<IntervalBlock> blocks = intervalBlocks.iterator();
-					/*
-					 * DJ while (blocks.hasNext()) { IntervalBlock bl =
-					 * blocks.next(); if
-					 * (bl.getUUID().equals(existingResource.getUUID())) {
-					 * existingResource.merge(bl); newList.add((IntervalBlock)
-					 * existingResource); } else { newList.add(bl); } }
-					 */
 				}
 
 				if (existingResource instanceof ReadingType) {
@@ -164,7 +138,6 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 					String link = tokens[0];
 					try {
 						UUID uuid = UUIDUtil.uuid(link);
-						System.err.println(link+ " meter reading uuid ->" + uuid);
 						MeterReading meterReading = meterReadingService.findByUUID(uuid);
 
 						if (meterReading != null) {
@@ -248,15 +221,19 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 	// Copy the entry attributes into the resource attributes
 	//
 	public void convert(EntryType entry) {
+		log.info("Entering convert method ----> ");
 		for (IdentifiedObject resource : entry.getContent().getResources()) {
 			resource.setMRID(entry.getId());
 			for (LinkType link : entry.getLinks()) {
                 if (link.getRel().equals(LinkType.SELF))
                     resource.setSelfLink(link);
+                
                 if (link.getRel().equals(LinkType.UP))
                     resource.setUpLink(link);
+               
                 if (link.getRel().equals(LinkType.RELATED))
                     resource.getRelatedLinks().add(link);
+                
 			}
 			resource.setDescription(entry.getTitle());
 			resource.setPublished(entry.getPublished().getValue().toGregorianCalendar());
@@ -265,8 +242,7 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 
 	}
 
-	// Establish the rel="up" links into the parent collections
-	//
+
 	private void linkUp(IdentifiedObject resource) {
 		if (resource.getUpLink() != null) {
 			List<IdentifiedObject> parents = resourceService
@@ -287,22 +263,14 @@ public class EntryProcessorServiceImpl implements EntryProcessorService {
 		if (resource.getSelfLink() != null) {
             List<IdentifiedObject> parents = resourceService.findByAllParentsHref(resource.getSelfLink().getHref(), resource);
 			for (IdentifiedObject parent : parents) {
-				// put the existing resource in the transaction
 				resourceService.merge(parent);
-
-				// Based on the kind of resource, do the appropriate fixup
 				if (resource instanceof TimeConfiguration) {
 					UsagePoint usagePoint = (UsagePoint) parent;
-
 					if (usagePoint.getLocalTimeParameters() == null) {
-
 						usagePoint.setLocalTimeParameters((TimeConfiguration) resource);
-
 					}
 				}
-
                     if (resource instanceof ReadingType) {
-                    	
                         MeterReading meterReading = (MeterReading) parent;
                         if (meterReading.getReadingType() == null) {
                           meterReading.setReadingType((ReadingType) resource);

@@ -82,4 +82,7 @@ public interface ResourceRepository {
 	
 	/* LH customization starts here */
     <T extends IdentifiedObject> List<IdentifiedObject> findAllIdsByUsagePointId(Long usagePointId,AtomPeriod ap, Class<T> clazz);
+    
+    void remove( IdentifiedObject  entity);
+
 }

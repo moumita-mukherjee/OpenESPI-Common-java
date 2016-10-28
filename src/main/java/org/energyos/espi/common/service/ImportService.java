@@ -29,6 +29,8 @@ import org.xml.sax.SAXException;
 public interface ImportService {
 	void importData(InputStream stream, Long retailCustomerId) throws IOException, SAXException,
 			ParserConfigurationException;
+			
+	
 
 	List<EntryType> getEntries();
 	

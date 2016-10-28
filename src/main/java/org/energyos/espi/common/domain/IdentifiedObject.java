@@ -38,7 +38,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
+
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -46,8 +46,10 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.energyos.espi.common.domain.Linkable; //added after merge with RetailCommon
+import org.energyos.espi.common.domain.Resource; //added after merge with RetailCommon
 import org.energyos.espi.common.models.atom.LinkType;
-import org.hibernate.annotations.GenericGenerator;
+
 
 /**
  * This is a root class to provide common naming attributes for all classes needing naming attributes
@@ -72,6 +74,12 @@ import org.hibernate.annotations.GenericGenerator;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "IdentifiedObject")
 @XmlSeeAlso({
+        Customer.class,  //added after merge with RetailCommon
+        CustomerAccount.class, 
+        CustomerAgreement.class,
+        ServiceLocation.class,
+        ServiceSupplier.class,
+        EndDevice.class,
         MeterReading.class,
         UsagePoint.class,
         ElectricPowerUsageSummary.class,
@@ -271,10 +279,12 @@ public class IdentifiedObject extends Resource implements Linkable, Serializable
 	}
 
 	public LinkType getUpLink() {
+		
     	if (upLink == null) {
     		setUpLink(new LinkType());
     		upLink.setRel("up");
     	}
+    	
 		return upLink;
 	}
 
@@ -289,9 +299,11 @@ public class IdentifiedObject extends Resource implements Linkable, Serializable
 			this.setDescription(resource.getDescription());
 			this.setUpdated(resource.getUpdated());
 			this.setPublished(resource.getPublished());
+			
 			if (getId() == null) {
 				this.setId(resource.getId());
 			}
+			
 		}
 	}
 

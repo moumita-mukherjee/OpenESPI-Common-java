@@ -225,8 +225,6 @@ public class IntervalBlock
 				+ intervalReadings.get(intervalReadings.size() - 1).getTimePeriod().getDuration();
 		this.interval = new DateTimeInterval(duration, intervalReadings.get(0).getTimePeriod().getStart());
 		
-		System.err.println("block duration "+duration);
-
 		Iterator<IntervalReading> readings = this.intervalReadings.iterator();
 
 		while (readings.hasNext()) {
@@ -265,8 +263,6 @@ public class IntervalBlock
 				this.meterReading
 						.setIntervalReadingTill(new Date((interval.getStart() + interval.getDuration()) * 1000));
 			}
-			System.err.println(" New meter reading period: from: "+this.meterReading.getIntervalReadingFrom() + " to: "
-					+ this.meterReading.getIntervalReadingTill());
 		}
 	}
 

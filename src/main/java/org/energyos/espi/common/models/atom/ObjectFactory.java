@@ -70,7 +70,8 @@ public class ObjectFactory {
     public final static QName PersonTypeEmail_QNAME = new QName("http://www.w3.org/2005/Atom", "email");
     public final static QName PersonTypeUri_QNAME = new QName("http://www.w3.org/2005/Atom", "uri");
 
-    /**
+	
+	/**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: org.w3._2005.atom
      */
     public ObjectFactory() {
@@ -333,7 +334,8 @@ public class ObjectFactory {
     public JAXBElement<ContentType> createEntryTypeContent(ContentType value) {
         return new JAXBElement<ContentType>(EntryTypeContent_QNAME, ContentType.class, EntryType.class, value);
     }
-
+    
+    
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link LinkType }{@code >}}
      */
@@ -357,7 +359,8 @@ public class ObjectFactory {
     public JAXBElement<DateTimeType> createEntryTypeUpdated(DateTimeType value) {
         return new JAXBElement<DateTimeType>(SourceTypeUpdated_QNAME, DateTimeType.class, EntryType.class, value);
     }
-
+    
+    
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link TextType }{@code >}}
      */
@@ -510,4 +513,10 @@ public class ObjectFactory {
     public JAXBElement<UriType> createPersonTypeUri(UriType value) {
         return new JAXBElement<UriType>(PersonTypeUri_QNAME, UriType.class, PersonType.class, value);
     }
+    
+   
+
+
+
+
 }

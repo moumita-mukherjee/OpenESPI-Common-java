@@ -48,16 +48,23 @@ import javax.xml.namespace.QName;
 
 import org.energyos.espi.common.domain.ApplicationInformation;
 import org.energyos.espi.common.domain.Authorization;
+import org.energyos.espi.common.domain.Customer;
+import org.energyos.espi.common.domain.CustomerAccount;
+import org.energyos.espi.common.domain.CustomerAgreement;
 import org.energyos.espi.common.domain.ElectricPowerQualitySummary;
 import org.energyos.espi.common.domain.ElectricPowerUsageSummary;
+import org.energyos.espi.common.domain.EndDevice;
 import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.IntervalBlock;
 import org.energyos.espi.common.domain.MeterReading;
 import org.energyos.espi.common.domain.ReadingType;
 import org.energyos.espi.common.domain.RetailCustomer;
+import org.energyos.espi.common.domain.ServiceLocation;
+import org.energyos.espi.common.domain.ServiceSupplier;
 import org.energyos.espi.common.domain.Subscription;
 import org.energyos.espi.common.domain.TimeConfiguration;
 import org.energyos.espi.common.domain.UsagePoint;
+import org.energyos.espi.common.domain.UsagePoints;
 
 import com.google.common.collect.Lists;
 
@@ -100,6 +107,12 @@ import com.google.common.collect.Lists;
         "authorization",
         "subscription",
         "retailCustomer",
+		"customer",
+		"customerAccount",
+		"customerAgreement",
+		"serviceLocation",
+		"serviceSupplier",
+		"endDevice",
         "content"
 })
 @XmlSeeAlso({
@@ -116,7 +129,8 @@ import com.google.common.collect.Lists;
         ApplicationInformation.class,
         Authorization.class,
         Subscription.class,
-        RetailCustomer.class
+        RetailCustomer.class,
+		Customer.class
 })
 
 public class ContentType {
@@ -188,6 +202,45 @@ public class ContentType {
      })
 	@XmlAnyElement(lax = true)
 	protected RetailCustomer retailCustomer;
+	
+	@XmlElementRefs({
+        @XmlElementRef(name = "Customer", namespace = "http://naesb.org/espi/cust", type = Customer.class, required = false),
+     })
+	@XmlAnyElement(lax = true)
+	protected Customer customer;
+	
+	@XmlElementRefs({
+        @XmlElementRef(name = "CustomerAccount", namespace = "http://naesb.org/espi/cust", type = CustomerAccount.class, required = false),
+     })
+	@XmlAnyElement(lax = true)
+	protected CustomerAccount customerAccount;
+	
+	@XmlElementRefs({
+        @XmlElementRef(name = "CustomerAgreement", namespace = "http://naesb.org/espi/cust", type = CustomerAgreement.class, required = false),
+     })
+	@XmlAnyElement(lax = true)
+	protected CustomerAgreement customerAgreement ;
+	
+	@XmlElementRefs({
+        @XmlElementRef(name = "ServiceLocation", namespace = "http://naesb.org/espi/cust", type = ServiceLocation.class, required = false),
+     })
+	@XmlAnyElement(lax = true)
+   	protected ServiceLocation serviceLocation ;
+    
+	@XmlElementRefs({
+        @XmlElementRef(name = "EndDevice", namespace = "http://naesb.org/espi/cust", type = EndDevice.class, required = false),
+     })
+    @XmlAnyElement(lax = true)
+   	protected EndDevice endDevice ;
+
+	@XmlElementRefs({
+        @XmlElementRef(name = "ServiceSupplier", namespace = "http://naesb.org/espi/cust", type = ServiceSupplier.class, required = false),
+     })
+    @XmlAnyElement(lax = true)
+   	protected ServiceSupplier serviceSupplier ;
+	
+	
+	
 
 	@XmlMixed
 	@XmlAnyElement(lax = true)
@@ -283,6 +336,14 @@ public class ContentType {
         return type;
     }
 
+	public ServiceLocation getServiceLocation() {
+		return serviceLocation;
+	}
+
+	public void setServiceLocation(ServiceLocation serviceLocation) {
+		this.serviceLocation = serviceLocation;
+	}
+
 	/**
 	 * Sets the value of the type property.
 	 * 
@@ -368,6 +429,13 @@ public class ContentType {
     public Map<QName, String> getOtherAttributes() {
         return otherAttributes;
     }
+	
+	 public Customer getCustomer() {
+    	return this.customer;
+    }
+    public void setCustomer(Customer customer){
+    	this.customer = customer;
+    }
 
     public RetailCustomer getRetailCustomer() {
     	return this.retailCustomer;
@@ -375,6 +443,22 @@ public class ContentType {
     public void setRetailCustomer(RetailCustomer retailCustomer){
     	this.retailCustomer = retailCustomer;
     }
+	
+	public CustomerAccount getCustomerAccount() {
+		return customerAccount;
+	}
+
+	public void setCustomerAccount(CustomerAccount customerAccount) {
+		this.customerAccount = customerAccount;
+	}
+	
+	public CustomerAgreement getCustomerAgreement() {
+		return customerAgreement;
+	}
+
+	public void setCustomerAgreement(CustomerAgreement customerAgreement) {
+		this.customerAgreement = customerAgreement;
+	}
 
 	public void setReadingType(ReadingType readingType) {
 		this.readingType = readingType;
@@ -437,7 +521,19 @@ public class ContentType {
 			return getSubscription();
 		} else if (getRetailCustomer() != null) {
 			return getRetailCustomer();
-		}
+		} else if (getCustomer() != null) {
+			return getCustomer();
+		} else if(getCustomerAccount()!=null){
+			return getCustomerAccount();
+		}else if(getCustomerAgreement()!=null){
+			return getCustomerAgreement();
+		}else if(getServiceLocation()!=null){
+			return getServiceLocation();
+		}else if(getServiceSupplier()!=null){
+			return getServiceSupplier();
+		}else if(getEndDevice()!=null){
+			return getEndDevice();
+		}else
 		return null;
 	}
 
@@ -446,8 +542,10 @@ public class ContentType {
 		if (getResource() != null) {
 			resources.add(getResource());
 		} else {
+			if(getIntervalBlocks()!=null &&  getIntervalBlocks().size()>0){
 			for (IntervalBlock intervalBlock : getIntervalBlocks())
 				resources.add(intervalBlock);
+			}
 		}
 		return resources;
 	}
@@ -476,19 +574,38 @@ public class ContentType {
         } else if (resource instanceof RetailCustomer) {
         	setRetailCustomer((RetailCustomer) resource);
         }
+		if (resource instanceof Customer) {
+    		
+    		Customer customer =(Customer) resource;
+    		setCustomer(customer);
+        } 
+    	if(resource instanceof CustomerAccount ){
+    		setCustomerAccount((CustomerAccount)resource);
+    	}
+    	if(resource instanceof CustomerAgreement ){
+    		setCustomerAgreement((CustomerAgreement)resource);
+    	}
+    	if(resource instanceof ServiceLocation ){
+    		setServiceLocation((ServiceLocation)resource);
+    	}
+    	
+    	if(resource instanceof EndDevice ){
+    		setEndDevice((EndDevice)resource);
+		}
+    	if(resource instanceof ServiceSupplier ){
+    		setServiceSupplier((ServiceSupplier)resource);
+		}
     }
 
-	@SuppressWarnings("unchecked")
 	public void setResources(List<IdentifiedObject> identifiedObjects) {
         if (identifiedObjects == null)
             return;
 
-		if (identifiedObjects.get(0) instanceof IntervalBlock) {
-			List<IntervalBlock> intervalBlocks = (List<IntervalBlock>) (List<?>) identifiedObjects;
-			setIntervalBlocks(intervalBlocks);
-		} else {
-			setResource(identifiedObjects.get(0));
-		}
+			
+		for( IdentifiedObject identifiedObject : identifiedObjects)
+        	{
+				setResource(identifiedObject);
+        	}
 	}
 
 	public TimeConfiguration getTimeConfiguration() {
@@ -496,7 +613,6 @@ public class ContentType {
 	}
 
 	public Long getContentId(Class<IdentifiedObject> resourceClass) {
-		// TODO its ugly right now, clean it up when templates are done
 		Long result = 1L;
 		if (this.getApplicationInformation() != null) {
 			if (ApplicationInformation.class.equals(resourceClass)) {
@@ -519,7 +635,6 @@ public class ContentType {
 			}
 		}
 		if (this.getIntervalBlocks() != null) {
-			// TODO this one is not right, but may not be needed??
 			if (IntervalBlock.class.equals(resourceClass)) {
 				return this.getIntervalBlocks().get(0).getId();
 			}
@@ -544,6 +659,12 @@ public class ContentType {
 				return this.getRetailCustomer().getId();
 			}
 		}
+		
+		if (this.getCustomer() != null) {
+			if (Customer.class.equals(resourceClass)) {
+				return this.getCustomer().getId();
+			}
+		}
 		if (this.getSubscription() != null) {
 			if (Subscription.class.equals(resourceClass)) {
 				return this.getSubscription().getId();
@@ -558,9 +679,15 @@ public class ContentType {
 	}
 
 	public String buildSelfHref(Long subscriptionId, String hrefFragment) {
-		// strip the result down to the "..../resource"
-		String result = hrefFragment.substring(0, hrefFragment.lastIndexOf("/resource") + "/resource".length());
-
+		
+		String finalHref = hrefFragment;
+		String result = hrefFragment.substring(0, hrefFragment.lastIndexOf("/resource") + "/resource".length()); 
+        
+		
+		 //added after merge with RetailCommon
+		//String result = hrefFragment;//.substring(0, hrefFragment.lastIndexOf("/resource") + "/resource".length());   //present in merge with RetailCommon //not sure whether to include or not
+		
+		
 		// now do the right thing for each resource (there will be only one
 		// non-null resource in the ContentType
 		//
@@ -690,13 +817,41 @@ public class ContentType {
 			}
 			result = result + "/UsagePoint/" + this.getUsagePoint().getId();
 		}
-
+		
+		try{
+			if(getResource() instanceof ServiceLocation){
+				result = finalHref  + this.serviceLocation.getLink()+"/ServiceLocation/" + serviceLocation.getId();
+				}
+			
+			if(getResource() instanceof EndDevice){
+				result = finalHref + this.endDevice.getLink()+"/EndDevice/" + endDevice.getId();
+				}
+			
+			if(getResource() instanceof ServiceSupplier){
+				result = finalHref + this.serviceSupplier.getLink()+"/ServiceSupplier/" + serviceSupplier.getId();
+				}
+			if(getResource() instanceof CustomerAgreement){
+				
+				result = finalHref + this.customerAgreement.getLink()+"/CustomerAgreement/" + customerAgreement.getId();
+				}
+			if(getResource() instanceof CustomerAccount){
+				result = finalHref + this.customerAccount.getLink() + "/CustomerAccount/" + customerAccount.getId();
+				}
+			if(getResource() instanceof Customer){
+				result =finalHref  + "/Customer/" + customer.getId();
+			} 
+			
+		}catch (Exception e) {
+			e.printStackTrace(System.err);
+		}
+		
 		return result;
 
 	}
 
 	public List<String> buildRelHref(Long subscriptionId, String hrefFragment) {
 		// only MeterReading and UsagePoint have "related" references
+		String finalHref = hrefFragment;
 
 		List<String> result = new ArrayList<String>();
 		RetailCustomer retailCustomer = null;
@@ -792,6 +947,27 @@ public class ContentType {
 					result.add(baseup + "/MeterReading/" + mr.getId());
 				}
 			}
+			
+			
+		}
+		
+
+		
+		String temp = finalHref;
+		
+		if(getResource() instanceof Customer){
+			result.add(temp + "/Customer/" + customer.getId()+"/CustomerAccount");
+		}
+		if(getResource() instanceof CustomerAccount){
+				result.add(temp + this.customerAccount.getLink()+"/CustomerAccount/"+this.customerAccount.getId()+"/CustomerAgreement");
+			}
+		if(getResource() instanceof CustomerAgreement){
+				result.add(temp + this.customerAgreement.getLink()+"/CustomerAgreement/"+ this.customerAgreement.getId()+"/ServiceLocation");
+				result.add(temp + this.customerAgreement.getLink()+"/CustomerAgreement/"+ this.customerAgreement.getId()+"/ServiceSupplier");
+		}
+		
+		if(getResource() instanceof ServiceLocation){
+				result.add(temp + this.serviceLocation.getLink()+"/ServiceLocation/"+this.serviceLocation.getId()+"/EndDevice");
 		}
 
 		return result;
@@ -822,5 +998,35 @@ public class ContentType {
 		return result;
 	}
 
+	public EndDevice getEndDevice() {
+		return endDevice;
+	}
 
+	public void setEndDevice(EndDevice endDevice) {
+		this.endDevice = endDevice;
+	}
+
+	public ServiceSupplier getServiceSupplier() {
+		return serviceSupplier;
+	}
+
+	public void setServiceSupplier(ServiceSupplier serviceSupplier) {
+		this.serviceSupplier = serviceSupplier;
+	}
+
+	//added now
+	public void buildUsagePointRef(String hrefFragment){
+		if(getResource() instanceof ServiceLocation){
+			if(((ServiceLocation)getResource()).getUsagePointRef()!=null){
+				String usagePointRef = hrefFragment+"/UsagePoint/"+ ((ServiceLocation)getResource()).getUsagePointRef();
+				List<String> up = new ArrayList<String>();
+				up.add(usagePointRef);
+				
+				UsagePoints usage = new UsagePoints();
+				usage.getUsagePoint().add(usagePointRef);
+				this.getServiceLocation().setUsagePoints(usage);
+			}
+		}
+		
+	}
 }

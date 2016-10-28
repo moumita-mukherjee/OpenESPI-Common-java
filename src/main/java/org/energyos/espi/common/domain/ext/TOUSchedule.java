@@ -146,51 +146,34 @@ public class TOUSchedule {
 
 		Date utcstartCalendar = DateTimeUtils.toUtc(getEffDate());
 		Date utcendCalendar = DateTimeUtils.toUtcDayEnd(getEndDate());
-		
-		//System.err.println(" cal.getTime()"+cal.getTime() + "utcendCalendar "+ utcendCalendar +" utcstartCalendar "+utcstartCalendar);
 		if (cal.getTime().after(utcendCalendar) || cal.getTime().before(utcstartCalendar)) return false;
 
-		// Let's treat weekend and holiday as one case
 		if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
 			return "weekend".equalsIgnoreCase(season) || "holiday".equalsIgnoreCase(season);
 		} else if ("weekend".equalsIgnoreCase(season) || "holiday".equalsIgnoreCase(season)) return false;
-
 		cal.clear();
 		cal.setTime(date);
-		
-
 		boolean match;
 		int h = cal.get(Calendar.HOUR_OF_DAY);		
-		
-		
-		// Hours are relative to the epoch
 		cal.clear();
 		cal.setTime(effHour);
 		int effh = cal.get(Calendar.HOUR_OF_DAY);
 		cal.setTime(endHour);
 		cal.add(Calendar.MINUTE, 1); // A workaround for up-to-a-minute schedule
 		int endh = cal.get(Calendar.HOUR_OF_DAY);
-		
 		effh=effHour.getHours();
 		endh=endHour.getHours();
-		
-		// If this is the night schedule, time must be shifted 12 hours
 		if (effh > endh) {
 			match = (h >= effh && h <= 23) || (h >= 0 && h < endh); // Looking
-																	// backwards
 		} else {
 			match = h >= effh && h < endh;
 		}
-		//System.err.println(match +" "+ effHour + "--"+endHour +" effh " + effh+ " endh "+endh + " H " + h+" date "+date);		
-
-
 		return match;
 	}
 	public long getTOUCode() {
 		if (TOU_OP.equals(peak)) return TOU_OP_GB;
 		if (TOU_MP.equals(peak)) return TOU_MP_GB;
 		if (TOU_PK.equals(peak)) return TOU_PK_GB;;
-		
 		return 0L;
 		
 	}

@@ -133,6 +133,8 @@ public interface ResourceService {
 	 * @return a List of Long's == resourceIds of the resultant search
 	 */
 	<T extends IdentifiedObject> IdentifiedObject findIdByXPath(Long id1, Class<T> clazz);
+	// <T extends IdentifiedObject> T findIdByXPath(Long id1, Class<T> clazz);  //added after merge with RetailCustomer
+
 	
 	/**
 	 * @param id1
@@ -241,4 +243,6 @@ public interface ResourceService {
 	
 
 	List<IntervalBlock> findAllByUsagePointId(Long id,ExportFilter ap);
+	
+	void remove( IdentifiedObject  entity); //added after merge with RetailCustomer
 }

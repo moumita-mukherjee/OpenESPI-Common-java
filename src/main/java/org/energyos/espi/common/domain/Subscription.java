@@ -197,7 +197,6 @@ public class Subscription
     
     @PreRemove
     public void preRemove() {
-    	System.err.println("preRemove preRemove preRemove Subscription");
     	//setRetailCustomer(null);
     	//setApplicationInformation(null);
     }

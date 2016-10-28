@@ -76,8 +76,8 @@ public class EntryTypeIterator {
 			}
 		} else {
 			log.warn("Root class " + rootClass);
-			
 			resource = resourceService.findById(resourceIds.next().getId(), rootClass);
+
 			updateChildIds(resource.getId());
 		}
 		return builder.buildEntry(resource);
@@ -90,12 +90,15 @@ public class EntryTypeIterator {
     // TODO: fix the EntryTypeIterator Typing System
 	public EntryType nextEntry(Class resourceClass)  {
     	
+    	System.err.println( " :::: EntryTypeIterator :::: ");   
         IdentifiedObject resource=resourceIds.next();
         //if uuid is not null then object already been loaded in current request...so do not need reloading
         if(resource.getUUID() ==null) {
         	resource = resourceService.findById(resource.getId(), resourceClass);
         }
-        return builder.buildEntry(resource);
+		System.err.println( " :::: resource is :::: "+resource);
+        
+		return builder.buildEntry(resource);
     }
 
     @SuppressWarnings("rawtypes")

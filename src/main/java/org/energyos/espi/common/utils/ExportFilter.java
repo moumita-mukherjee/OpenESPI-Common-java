@@ -80,9 +80,13 @@ public class ExportFilter {
 		if (hasParam("aggr-rule")) {
 			filterPeriod.setaggrrule(params.get("aggr-rule").trim());
 		}
+		if (hasParam("aggr-interval")) {
+			filterPeriod.setaggrninterval(Long.parseLong(params.get("aggr-interval").trim()));
+		}  //added for Aggregation green-button data end
 		if (hasParam("aggrn-interval")) {
 			filterPeriod.setaggrninterval(Long.parseLong(params.get("aggrn-interval").trim()));
-		}//added for Aggregation green-button data end
+		} //added after merge with RetailCustomer
+		
 		//added for Usagepoint ReadingType API changes
 		if (hasParam("interval-block")) {
 			filterPeriod.setintervalblock(params.get("interval-block").trim());

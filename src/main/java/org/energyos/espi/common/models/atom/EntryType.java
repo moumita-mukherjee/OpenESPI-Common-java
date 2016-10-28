@@ -46,6 +46,8 @@ import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
 
+import org.energyos.espi.common.models.atom.DateTimeType;
+import org.energyos.espi.common.models.atom.LinkType;
 import org.energyos.espi.common.models.atom.adapters.ContentAdapter;
 import org.energyos.espi.common.models.atom.adapters.LinkAdapter;
 import org.energyos.espi.common.models.atom.adapters.PublishedAdapter;
@@ -323,6 +325,10 @@ public class EntryType {
 
     public void addUpLink(String href) {
         getLinks().add(new LinkType(LinkType.UP, href));
+    }
+    
+    public void addSelfLink(String href) {
+        getLinks().add(new LinkType(LinkType.SELF, href));
     }
 
     public String getUpHref() {

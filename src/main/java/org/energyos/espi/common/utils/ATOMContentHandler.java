@@ -68,7 +68,7 @@ public class ATOMContentHandler extends XMLFilterImpl {
      
     public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
             throws SAXException {
-
+    	System.err.println(" :::: namespace :::: "+namespaceURI+" :::: localname :::: "+localName+" :::: qName :::: "+qName+" :::: Attributes :::: "+atts);
         if (depth != 0) {
             depth++;
             super.startElement(namespaceURI, localName, qName, atts);
@@ -111,7 +111,7 @@ public class ATOMContentHandler extends XMLFilterImpl {
 	@SuppressWarnings("unchecked")
 	public void endElement(String namespaceURI, String localName, String qName) throws SAXException {
         super.endElement(namespaceURI, localName, qName);
-
+        System.err.println(" :::: namespace :::: "+namespaceURI+" :::: localname :::: "+localName+" :::: qName :::: "+qName);
         if (depth != 0) {
             depth--;
             if (depth == 0) {
@@ -122,7 +122,7 @@ public class ATOMContentHandler extends XMLFilterImpl {
                 }
                 String defaultURI = namespaces.getURI("");
                 if (defaultURI != null)
-                    unmarshallerHandler.endPrefixMapping("");
+                unmarshallerHandler.endPrefixMapping("");
                 unmarshallerHandler.endDocument();
 
                 setContentHandler(new DefaultHandler());
@@ -134,8 +134,13 @@ public class ATOMContentHandler extends XMLFilterImpl {
                     } catch (JAXBException x) {
                         throw new SAXException("Unable to unmarshall <entry>", x);
                     }
-                    procssor.process(result.getValue());
-
+                    try {
+						procssor.process(result.getValue());
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						System.err.println(" ::: parsing ::: ");
+					}
+                    
                     entries.add(result.getValue());
                     
                     // and update the min/max import range for later subscription publication

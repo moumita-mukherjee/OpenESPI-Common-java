@@ -21,8 +21,15 @@ import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.models.atom.ContentType;
 import org.energyos.espi.common.models.atom.EntryType;
 import org.energyos.espi.common.models.atom.LinkType;
+import org.energyos.espi.common.utils.DateConverter;
+//import org.energyos.espi.retailcommon.domain.IdentifiedObject;
+import org.energyos.espi.common.domain.IdentifiedObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EntryBuilder {
+	
+	private Logger log = LoggerFactory.getLogger(EntryBuilder.class);
 
     private EntryType entry;
 
@@ -36,6 +43,7 @@ public class EntryBuilder {
     }
 
     public EntryType buildEntry(IdentifiedObject resource) {
+    	log.info( " :::: Entering buildEntry :::: ");
     	if(map.containsKey(resource)) {
     		return map.get(resource);
     	}
@@ -43,7 +51,6 @@ public class EntryBuilder {
         map.put(resource, entry);
         buildMetadata(resource);
         buildContent(resource);
-
         return entry;
     }
 
@@ -54,26 +61,25 @@ public class EntryBuilder {
     }
 
     private void buildMetadata(IdentifiedObject resource) {
+    	log.info(" entering buildMetadata ");
         entry.setId("urn:uuid:" + resource.getUUID().toString());
         entry.setTitle(resource.getDescription());
         entry.setPublished(DateConverter.toDateTimeType(resource.getPublished()));
         entry.setUpdated(DateConverter.toDateTimeType(resource.getUpdated()));
-
         buildLinks(resource);
     }
 
-    private void buildLinks(IdentifiedObject resource) {    	
+    private void buildLinks(IdentifiedObject resource) { 
+    	log.info(" entering buildLinks ");
     	if(resource.getUpLink()!=null) {
         entry.getLinks().add(new LinkType(resource.getUpLink().getRel(),resource.getUpLink().getHref()));
     	}
     	if(resource.getSelfLink()!=null) {
         entry.getLinks().add(new LinkType(resource.getSelfLink().getRel(),resource.getSelfLink().getHref()));
     	}
-
         for (LinkType link : resource.getRelatedLinks()) {
             entry.getLinks().add(new LinkType(link.getRel(),link.getHref()));
         }
     }
-	/* LH customization starts here */
 	private Hashtable<IdentifiedObject,EntryType> map= new Hashtable<IdentifiedObject,EntryType>();	
 }

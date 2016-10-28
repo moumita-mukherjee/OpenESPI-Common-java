@@ -117,46 +117,30 @@ public class ImportServiceImpl implements ImportService {
 	@Override
 	public void importData(InputStream stream, Long retailCustomerId) throws IOException, SAXException,
 			ParserConfigurationException {
-		log.debug("************importData************************************** retailCustomerId "
-				+ retailCustomerId);
-		// setup the parser
+		log.debug("************importData************************************** retailCustomerId "+ retailCustomerId);
 		try {
 			JAXBContext context = marshaller.getJaxbContext();
-
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			factory.setNamespaceAware(true);
 			XMLReader reader = factory.newSAXParser().getXMLReader();
-
-			// EntryProcessor processor = new EntryProcessor(resourceLinker, new
-			// ResourceConverter(), resourceService);
+			
 			ATOMContentHandler atomContentHandler = new ATOMContentHandler(context, entryProcessorService);
 			reader.setContentHandler(atomContentHandler);
 
-			// do the parse/import
-
-			reader.parse(new InputSource(stream));
-
-			// context of the import used for linking things up
-			// and establishing notifications
-			//
-
+			try {
+				reader.parse(new InputSource(stream));
+			} catch (Exception e1) {
+				log.warn("Exception in import data :"+e1.getMessage());
+				log.debug("Exception in import data :",e1);	
+				
+			}
 			entries = atomContentHandler.getEntries();
 			minUpdated = atomContentHandler.getMinUpdated();
 			maxUpdated = atomContentHandler.getMaxUpdated();
-
-			// cleanup/end processing
-			// 1 - associate to usage points to the right retail customer
-			// 2 - make sure authorization/subscriptions have the right URIs
-			// 3 - place the imported usagePoints in to the subscriptions
-			//
+			
 			List<UsagePoint> usagePointList = new ArrayList<UsagePoint>();
-
-			// now perform any associations (to RetailCustomer) and stage the
-			// Notifications (if any)
-
 			Iterator<EntryType> its = entries.iterator();
 			while (its.hasNext()) {
-
 				EntryType entry = its.next();
 				if (entry.getContent() != null && entry.getContent().getResource() instanceof RetailCustomer) {
 					return;
@@ -167,19 +151,13 @@ public class ImportServiceImpl implements ImportService {
 			if (retailCustomerId != null) {
 				retailCustomer = retailCustomerService.findById(retailCustomerId);
 			}
-
-			// create new iterator again
 			its = entries.iterator();
 			while (its.hasNext()) {
 				EntryType entry = its.next();
-
 				UsagePoint usagePoint = entry.getContent().getUsagePoint();
 				if (usagePoint != null) {
-					// see if we already have a retail customer association
-
 					RetailCustomer tempRc = usagePoint.getRetailCustomer();					
 					if (tempRc != null) {
-						// hook it to the retailCustomer
 						if (!(tempRc.equals(retailCustomer))) {
 							// we have a conflict in association meaning to
 							// Retail Customers
@@ -198,10 +176,6 @@ public class ImportServiceImpl implements ImportService {
 				}
 			}
 
-			// now if we have a retail customer, check for any subscriptions
-			// that
-			// need associated
-			// in LH implementation not required
 			if (retailCustomer != null && false) {
 
 				Subscription subscription = null;
@@ -252,7 +226,6 @@ public class ImportServiceImpl implements ImportService {
 			}
 
 		} catch (Exception ex) {
-			ex.printStackTrace(System.err);
 			log.warn("Exception in import data :"+ex.getMessage());
 			log.debug("Exception in import data :",ex);			
 		}

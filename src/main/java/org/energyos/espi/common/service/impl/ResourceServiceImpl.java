@@ -375,4 +375,9 @@ public class ResourceServiceImpl implements ResourceService {
 
 	}
 
+	@Override
+	public void remove(IdentifiedObject entity) {
+		this.repository.remove(entity);
+	}
+
 }

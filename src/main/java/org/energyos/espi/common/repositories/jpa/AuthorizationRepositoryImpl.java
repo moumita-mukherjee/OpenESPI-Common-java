@@ -155,5 +155,13 @@ public class AuthorizationRepositoryImpl implements AuthorizationRepository {
 			return (Authorization) em.createNamedQuery(Authorization.QUERY_FIND_BY_SCOPE3).setParameter("scope", scope)
 					.setParameter("retailCustomerId", retailCustomerId).setParameter("applicationInformationId", applicationInformationId).getSingleResult();		
 	}
+	@Override
+	public List<Authorization> findByStatus(Long retailCustomerId,String thirdparty,String status) {
+		return em.createNamedQuery(Authorization.QUERY_FIND_BY_STATUS)
+				.setParameter("retailCustomerId", retailCustomerId)
+				.setParameter("status", status)
+				.setParameter("thirdParty", thirdparty)
+				.getResultList();
+	}
 
 }

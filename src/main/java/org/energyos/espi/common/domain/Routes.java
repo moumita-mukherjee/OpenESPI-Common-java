@@ -166,4 +166,58 @@ public class Routes {
     public static String getDataCustodianRESTSubscriptionGetURL(String subscriptionHashedId) {
         return DATA_CUSTODIAN_REST_SUBSCRIPTION_GET.replace("{subscriptionHashedId}", subscriptionHashedId);
     }
+    
+    
+//RetailCustomer Implementation
+    
+    public static final String RETAIL_CUSTOMER_INFORMATION = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}";
+    
+    public static final String RETAIL_CUSTOMER_ACCOUNT_INFORMATION = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount";
+    public static final String RETAIL_CUSTOMER_SPECIFIC_ACCOUNT_INFORMATION = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{accountId}";
+    
+    
+    public static final String RETAIL_CUSTOMER_ACCOUNT_AGREEMENT_INFORMATION = 			"/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{accountId}/CustomerAgreement";
+    public static final String RETAIL_CUSTOMER_ACCOUNT_SPECIFIC_AGREEMENT_INFORMATION = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{accountId}/CustomerAgreement/{customerAgreementId}";
+    
+    
+    public static final String RETAIL_CUSTOMER_ACCOUNT_AGREEMENT_SERVICE_LOCATION_INFORMATION = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceLocation";
+    public static final String RETAIL_CUSTOMER_ACCOUNT_AGREEMENT_SPECIFIC_SERVICE_LOCATION_INFORMATION = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceLocation/{serviceLocationId}";
+    
+    
+    public static final String RETAIL_CUSTOMER_ACCOUNT_AGREEMENT_SERVICE_SUPPLIER_INFORMATION = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceSupplier";
+    public static final String RETAIL_CUSTOMER_ACCOUNT_AGREEMENT_SPECIFIC_SERVICE_SUPPLIER_INFORMATION = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceSupplier/{serviceSupplierId}";
+    
+    
+    
+    
+    public static final String RETAIL_CUSTOMER_ACCOUNT_ENDDEVICE_INFORMATION = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{accountId}/CustomerAgreement/{customerAgreementId}/ServiceLocation/{serviceLocationId}/EndDevice";
+    public static final String RETAIL_CUSTOMER_ACCOUNT_SPECIFIC_ENDDEVICE_INFORMATION = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceLocation/{serviceLocationId}/EndDevice/{endDeviceId}";
+    
+    
+    public static final String GET_RETAIL_CUSTOMER_INFORMATION = "/espi/1_1/resource/Batch/Subscription/{subscriptionId}/Customer";
+    public static final String DELETE_SPECIFIC_CUSTOMER = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}";
+    public static final String DELETE_SPECIFIC_CUSTOMER_ACCOUNT = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}";
+    public static final String DELETE_SPECIFIC_CUSTOMER_AGREEMENT = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}";
+    public static final String DELETE_SPECIFIC_SERVICE_LOCATION = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceLocation/{serviceLocationId}";
+    //public static final String DELETE_SPECIFIC_ENDDEVICE_INFORMATION = "espi2/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceLocation/{serviceLocationId}/EndDevice/{endDeviceId}";
+    public static final String DELETE_SPECIFIC_SERVICE_SUPPLIER = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceSupplier/{serviceSupplierId}";
+    
+    public static final String DELETE_SPECIFIC_ENDDEVICE_INFORMATION = "espi/1_1/resource/RetailCustomerDelete/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceLocation/{serviceLocationId}/EndDevice/{endDeviceId}";
+    
+    
+    
+    public static final String POST_CUSTOMER = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer";
+    public static final String POST_CUSTOMER_ACCOUNT = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerID}/CustomerAccount";
+    public static final String POST_CUSTOMER_AGREEMENT = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerID}/CustomerAccount/{customerAccountID}/CustomerAgreement";
+    public static final String POST_SERVICE_LOCATION = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerID}/CustomerAccount/{customerAccountID}/CustomerAgreement/{customerAgreementID}/ServiceLocation";
+    public static final String POST_SERVICE_SUPPLIER = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerID}/CustomerAccount/{customerAccountID}/CustomerAgreement/{customerAgreementID}/ServiceSupplier";
+    public static final String POST_ENDDEVICE_INFORMATION = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerID}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceLocation/{serviceLocationId}/EndDevice";
+     
+    public static final String PUT_CUSTOMER = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerID}";
+    public static final String PUT_CUSTOMER_ACCOUNT = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerID}/CustomerAccount/{customerAccountID}";
+    public static final String PUT_CUSTOMER_AGREEMENT = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerID}/CustomerAccount/{customerAccountID}/CustomerAgreement/{customerAggreementID}";
+    public static final String PUT_SERVICE_LOCATION = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerID}/CustomerAccount/{customerAccountID}/CustomerAgreement/{customerAgreementID}/ServiceLocation/{serviceLocationID}";
+    public static final String PUT_SERVICE_SUPPLIER = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerID}/CustomerAccount/{customerAccountID}/CustomerAgreement/{customerAgreementID}/ServiceSupplier/{serviceSupplierID}";
+    public static final String PUT_ENDDEVICE_INFORMATION = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceLocation/{serviceLocationId}/EndDevice/{endDeviceId}";
+     
 }

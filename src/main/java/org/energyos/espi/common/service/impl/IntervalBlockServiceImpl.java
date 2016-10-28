@@ -24,6 +24,7 @@ import java.util.UUID;
 import org.energyos.espi.common.domain.IdentifiedObject;
 import org.energyos.espi.common.domain.IntervalBlock;
 import org.energyos.espi.common.domain.MeterReading;
+import org.energyos.espi.common.models.atom.ContentType;
 import org.energyos.espi.common.models.atom.EntryType;
 import org.energyos.espi.common.repositories.IntervalBlockRepository;
 import org.energyos.espi.common.service.ImportService;
@@ -31,11 +32,15 @@ import org.energyos.espi.common.service.IntervalBlockService;
 import org.energyos.espi.common.service.ResourceService;
 import org.energyos.espi.common.utils.EntryTypeIterator;
 import org.energyos.espi.common.utils.ExportFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class IntervalBlockServiceImpl implements IntervalBlockService {
+	
+	private Logger log = LoggerFactory.getLogger(IntervalBlockServiceImpl.class);
 
 	@Autowired
 	protected IntervalBlockRepository intervalBlockRepository;
@@ -148,7 +153,7 @@ public class IntervalBlockServiceImpl implements IntervalBlockService {
 				EntryType entry = entries.get(0);
 				List<IntervalBlock> intervalBlocks = entry.getContent().getIntervalBlocks();
 				if(intervalBlocks==null ||intervalBlocks.isEmpty()) {
-					System.err.println("IntervalBlocks is empty");
+					log.info("IntervalBlocks is empty");
 				}else {
 					return intervalBlocks.get(0);
 				}

@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlRegistry;
 import javax.xml.namespace.QName;
 
 
+
 /**
  * This object contains factory methods for each
  * Java content interface and Java element interface
@@ -59,14 +60,16 @@ public class ObjectFactory {
     public final static QName ApplicationInformation_QNAME = new QName("http://naesb.org/espi", "ApplicationInformation");
     public final static QName DateTimeInterval_QNAME = new QName("http://naesb.org/espi", "DateTimeInterval");
     public final static QName ServiceStatus_QNAME = new QName("http://naesb.org/espi", "ServiceStatus");
-    public final static QName IdentifiedObject_QNAME = new QName("http://naesb.org/espi", "IdentifiedObject");
-    public final static QName MeterReading_QNAME = new QName("http://naesb.org/espi", "MeterReading");
+    //public final static QName IdentifiedObject_QNAME = new QName("http://naesb.org/espi", "IdentifiedObject");
+    public final static QName IdentifiedObject_QNAME = new QName("http://naesb.org/espi/cust1", "IdentifiedObject");
+	public final static QName MeterReading_QNAME = new QName("http://naesb.org/espi", "MeterReading");
     public final static QName UsagePoint_QNAME = new QName("http://naesb.org/espi", "UsagePoint");
     public final static QName BatchItemInfo_QNAME = new QName("http://naesb.org/espi", "BatchItemInfo");
     public final static QName ElectricPowerUsageSummary_QNAME = new QName("http://naesb.org/espi", "ElectricPowerUsageSummary");
     public final static QName LineItem_QNAME = new QName("http://naesb.org/espi", "LineItem");
     public final static QName RetailCustomer_QNAME = new QName("http://naesb.org/espi", "RetailCustomer");
-    /**
+    public final static QName Customer_QNAME = new QName("http://naesb.org/espi", "Customer");
+	/**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: org.naesb.espi
      */
     public ObjectFactory() {
@@ -204,6 +207,10 @@ public class ObjectFactory {
     public RetailCustomer createRetailCustomer() {
         return new RetailCustomer();
     }
+	
+	public Customer createCustomer() {
+        return new Customer();
+    }
     
     /**
      * Create an instance of {@link RationalNumber }
@@ -272,6 +279,15 @@ public class ObjectFactory {
     public JAXBElement<RetailCustomer> createRetailCustomer(RetailCustomer value) {
         return new JAXBElement<RetailCustomer>(RetailCustomer_QNAME, RetailCustomer.class, null, value);
     }
+	
+	/** 
+	 * Create an instance of {@link JAXBElement }{@code <}{@link Customer }{@code >}}
+     */
+    @XmlElementDecl(namespace = "http://naesb.org/espi", name = "Customer")
+    public JAXBElement<Customer> createRetailCustomer(Customer value) {
+        return new JAXBElement<Customer>(Customer_QNAME, Customer.class, null, value);
+    }
+	/**
     
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link SummaryMeasurement }{@code >}}
@@ -348,10 +364,18 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link IdentifiedObject }{@code >}}
      */
-    @XmlElementDecl(namespace = "http://naesb.org/espi", name = "IdentifiedObject")
+    /*@XmlElementDecl(namespace = "http://naesb.org/espi", name = "IdentifiedObject")
+    public JAXBElement<IdentifiedObject> createIdentifiedObject(IdentifiedObject value) {
+        return new JAXBElement<IdentifiedObject>(IdentifiedObject_QNAME, IdentifiedObject.class, null, value);
+    }*/
+	
+	/** Create an instance of {@link JAXBElement }{@code <}{@link IdentifiedObject }{@code >}}
+     */
+    @XmlElementDecl(namespace = "http://naesb.org/espi/cust", name = "IdentifiedObject")
     public JAXBElement<IdentifiedObject> createIdentifiedObject(IdentifiedObject value) {
         return new JAXBElement<IdentifiedObject>(IdentifiedObject_QNAME, IdentifiedObject.class, null, value);
     }
+	
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link MeterReading }{@code >}}

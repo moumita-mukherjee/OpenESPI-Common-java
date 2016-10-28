@@ -23,11 +23,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
+import org.eclipse.jetty.util.log.Log;
 import org.energyos.espi.common.domain.AtomPeriod;
 import org.energyos.espi.common.domain.IntervalBlock;
 import org.energyos.espi.common.domain.MeterReading;
 import org.energyos.espi.common.repositories.IntervalBlockRepository;
+import org.energyos.espi.common.utils.AtomMarshallerListener;
 import org.energyos.espi.common.utils.ExportFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +39,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional (rollbackFor= {javax.xml.bind.JAXBException.class}, 
                 noRollbackFor = {javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
 public class IntervalBlockRepositoryImpl implements IntervalBlockRepository {
+	
+	private Logger log = LoggerFactory.getLogger(IntervalBlockRepositoryImpl.class);
 
 	@PersistenceContext(unitName = "pu-usage")
 	protected EntityManager em;
@@ -101,6 +107,7 @@ public class IntervalBlockRepositoryImpl implements IntervalBlockRepository {
 	@Transactional(rollbackFor = { javax.xml.bind.JAXBException.class }, noRollbackFor = {
 			javax.persistence.NoResultException.class, org.springframework.dao.EmptyResultDataAccessException.class })
 	public void associateByUUID(MeterReading meterReading, UUID uuid) {
+		Log.info("Entering associateByUUID method>>");
 		try {
 			IntervalBlock existingIntervalBlock = findByUUID(uuid);
 			existingIntervalBlock.setMeterReading(meterReading);
@@ -108,16 +115,10 @@ public class IntervalBlockRepositoryImpl implements IntervalBlockRepository {
 			if (meterReading != null) {
 				existingIntervalBlock.setMeterReadingId(meterReading.getId());
 			}
-			System.err.println(" update emter read id " + existingIntervalBlock.getMeterReadingId());
 			persist(existingIntervalBlock);
 		} catch (NoResultException e) {
 			e.printStackTrace();
-			// UsagePoint usagePoint = new UsagePoint();
-			// usagePoint.setUUID(uuid);
-			// usagePoint.setServiceCategory(new
-			// ServiceCategory(ServiceCategory.ELECTRICITY_SERVICE));
-			// usagePoint.setRetailCustomer(retailCustomer);
-			// persist(usagePoint);
+			
 		}
 	}
 

@@ -435,4 +435,31 @@ public interface ExportService {
 	void exportMeterReadingFull(Long subscriptionId,Long meterReadingId, Long usagePointId, Long RetailCustomerId,
 			ServletOutputStream outputStream, ExportFilter exportFilter)  throws Exception;
 
+	
+	
+	/*------------------------------------RetailCommon code merged below----------------*/
+	
+	
+	
+	public void exportCustomerDetails(Long retailCustomerId, Long customerId, OutputStream stream, ExportFilter exportFilter) throws Exception;
+	public void exportCustomerDetailsForBatch(Long retailCustomerId,OutputStream stream, ExportFilter exportFilter) throws Exception;
+	
+	public void exportCustomerAccountDetails(Long retailCustomerId, Long customerId, OutputStream stream, ExportFilter exportFilter) throws Exception;
+	public void exportCustomerSpecificAccountDetails(Long retailCustomerId, Long customerId, Long accountId, OutputStream stream, ExportFilter exportFilter) throws Exception;
+	public void exportCustomerAccountAgreementDetails(Long retailCustomerId, Long customerId, Long accountId, OutputStream stream, ExportFilter exportFilter) throws Exception;
+	public void exportCustomerAccountSpecificAgreementDetails(Long retailCustomerId, Long customerId, Long accountId, Long agreementId, OutputStream stream, ExportFilter exportFilter) throws Exception;
+	public void exportCustomerAccountAgreementServiceLocationDetails(Long retailCustomerId, Long customerId, Long accountId, Long agreementId, OutputStream stream, ExportFilter exportFilter) throws Exception;
+	public void exportCustomerAccountAgreementSpecificServiceLocationDetails(Long retailCustomerId, Long customerId, Long accountId, Long agreementId, Long serviceLocationId, OutputStream stream, ExportFilter exportFilter) throws Exception;
+	public void exportCustomerAccountAgreementServiceLocationEndDeviceDetails(Long retailCustomerId, Long customerId, Long accountId, Long agreementId, Long serviceLocationId, OutputStream stream, ExportFilter exportFilter) throws Exception;
+	public void exportCustomerAccountAgreementServiceLocationSpecificEndDeviceDetails(Long retailCustomerId, Long customerId, Long accountId, Long agreementId, Long serviceLocationId, Long endDeviceId, OutputStream stream, ExportFilter exportFilter) throws Exception;
+    //public void exportCustomerAccountAgreementServiceLocationServiceSupplierDetails(Long retailCustomerId, Long customerId, Long accountId, Long agreementId,OutputStream stream, ExportFilter exportFilter) throws Exception;
+    
+
+
+
+
+    public void exportCustomerAccountAgreementServiceSupplierDetails(Long retailCustomerId, Long customerId, Long accountId, Long agreementId,OutputStream stream, ExportFilter exportFilter) throws Exception;
+    public void exportCustomerAccountAgreementSpecificServiceSupplierDetails(Long retailCustomerId, Long customerId, Long accountId, Long agreementId, Long serviceSupplierId, OutputStream stream, ExportFilter exportFilter) throws Exception;
+    
+
 }

@@ -32,7 +32,10 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -115,48 +118,20 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ApplicationInformation", propOrder = {
-	    "dataCustodianApplicationStatus",
-	    "dataCustodianDefaultBatchResource",
-	    "dataCustodianDefaultSubscriptionResource",
-	    "thirdPartyApplicationDescription",
-	    "thirdPartyApplicationStatus",
-	    "thirdPartyApplicationType",
-	    "thirdPartyApplicationUse",
-	    "thirdPartyPhone",
-	    "authorizationServerUri",
-	    "thirdPartyNotifyUri",
-	    "authorizationServerAuthorizationEndpoint",
-	    "authorizationServerRegistrationEndpoint",
-	    "authorizationServerTokenEndpoint",
-	    "dataCustodianBulkRequestURI",
-	    "dataCustodianThirdPartySelectionScreenURI",
-	    "dataCustodianResourceEndpoint",
-	    "thirdPartyDataCustodianSelectionScreenURI",
-	    "thirdPartyLoginScreenURI",
-	    "thirdPartyScopeSelectionScreenURI",
-	    "thirdPartyUserPortalScreenURI",
-	    "clientSecret",
-	    "logoUri",
-	    "clientName",
-	    "clientUri",
-	    "redirectUri",
-	    "clientId",
-	    "tosUri",
-	    "policyUri",
-	    "softwareId",
-	    "softwareVersion",
-	    "clientIdIssuedAt",
-	    "clientSecretExpiresAt",
-	    "contacts",
-	    "tokenEndpointAuthMethod",
-	    "scope",
-	    "grantTypes",
-	    "responseTypes",
-	    "registrationClientUri",
-	    "registrationAccessToken",
-	    "dataCustodianId",
-	    "thirdPartyApplicationName",
-	    "dataCustodianScopeSelectionScreenURI"
+		"dataCustodianId", "dataCustodianApplicationStatus",
+		"thirdPartyApplicationDescription", "thirdPartyApplicationStatus",
+		"thirdPartyApplicationType", "thirdPartyApplicationUse",
+		"thirdPartyPhone", "authorizationServerUri", "thirdPartyNotifyUri",
+		"authorizationServerAuthorizationEndpoint",
+		"authorizationServerRegistrationEndpoint",
+		"authorizationServerTokenEndpoint", "dataCustodianBulkRequestURI",
+		"dataCustodianResourceEndpoint", "thirdPartyScopeSelectionScreenURI",
+		"thirdPartyUserPortalScreenURI", "clientSecret", "logoUri",
+		"clientName", "clientUri", "redirectUri", "clientId", "tosUri",
+		"policyUri", "softwareId", "softwareVersion", "clientIdIssuedAt",
+		"clientSecretExpiresAt", "contacts", "tokenEndpointAuthMethod",
+		"scope", "grantTypes", "responseTypes", "registrationClientUri",
+		"registrationAccessToken", "dataCustodianScopeSelectionScreenURI",
 	})
 @Entity
 @Cacheable(true)
@@ -197,10 +172,12 @@ public class ApplicationInformation
     @XmlSchemaType(name = "DataCustodianApplicationStatus")
     protected String dataCustodianApplicationStatus;
     
-    @XmlSchemaType(name = "anyURI")
+    @XmlTransient
+    //@XmlSchemaType(name = "anyURI")
     protected String dataCustodianDefaultBatchResource;
     
-    @XmlSchemaType(name = "anyURI")
+    @XmlTransient
+    //@XmlSchemaType(name = "anyURI")
     protected String dataCustodianDefaultSubscriptionResource;
     
     protected String thirdPartyApplicationDescription;
@@ -238,20 +215,23 @@ public class ApplicationInformation
     @XmlSchemaType(name = "anyURI")
     protected String dataCustodianBulkRequestURI;
     
-    @XmlElement(name = "dataCustodianThirdPartySelectionScreenURI")
-    @XmlSchemaType(name = "anyURI")
+    @XmlTransient
+    //@XmlElement(name = "dataCustodianThirdPartySelectionScreenURI")
+    //@XmlSchemaType(name = "anyURI")
     protected String dataCustodianThirdPartySelectionScreenURI;
     
     @XmlElement(name = "dataCustodianResourceEndpoint")
     @XmlSchemaType(name = "anyURI")
     protected String dataCustodianResourceEndpoint;
     
-    @XmlElement(name = "thirdPartyDataCustodianSelectionScreenURI")
-    @XmlSchemaType(name = "anyURI")
+    @XmlTransient
+    //@XmlElement(name = "thirdPartyDataCustodianSelectionScreenURI")
+    //@XmlSchemaType(name = "anyURI")
     protected String thirdPartyDataCustodianSelectionScreenURI;
     
-    @XmlElement(name = "thirdPartyLoginScreenURI")
-    @XmlSchemaType(name = "anyURI")
+    @XmlTransient
+    //@XmlElement(name = "thirdPartyLoginScreenURI")
+    //@XmlSchemaType(name = "anyURI")
     protected String thirdPartyLoginScreenURI;
     
     @XmlElement(name = "thirdPartyScopeSelectionScreenURI")
@@ -322,9 +302,13 @@ public class ApplicationInformation
     @CollectionTable(name="application_information_scopes", joinColumns=@JoinColumn(name="application_information_id"))
     private Set<String> scope = new HashSet<>();   
     
+    
     @XmlElement(name = "grant_types")
-    @XmlSchemaType(name = "GrantType")
-    protected String grantTypes;
+	@ElementCollection(targetClass = GrantType.class)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@JoinTable(name = "application_information_grant_types", joinColumns = @JoinColumn(name = "application_information_id"))
+	@Enumerated(EnumType.STRING)
+	protected Set<GrantType> grantTypes = new HashSet<GrantType>();
 
 	@XmlElement(name = "response_types")
     @XmlSchemaType(name = "ResponseType")
@@ -343,8 +327,8 @@ public class ApplicationInformation
     
     @NotEmpty
     @Size(min = 2, max = 64)
-    @XmlElement(name = "thirdPartyApplicationName")
-    protected String thirdPartyApplicationName;
+    @XmlTransient
+	protected String thirdPartyApplicationName = "Default Third Party Application Name";
    
     public String getKind() {
         return kind;
@@ -1175,36 +1159,37 @@ public class ApplicationInformation
     }
 
 
-    /**
-     * Gets the value of the grantTypes property.
-     * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the grantTypes property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getGrantTypes().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link GrantType }
-     * 
-     * 
-     */
-    public String getGrantTypes() {
+	/**
+	 * Gets the value of the grantTypes property.
+	 * 
+	 * <p>
+	 * This accessor method returns a reference to the live list, not a
+	 * snapshot. Therefore any modification you make to the returned list will
+	 * be present inside the JAXB object. This is why there is not a
+	 * <CODE>set</CODE> method for the grantTypes property.
+	 * 
+	 * <p>
+	 * For example, to add a new item, do as follows:
+	 * 
+	 * <pre>
+	 * getGrantTypes().add(newItem);
+	 * </pre>
+	 * 
+	 * 
+	 * <p>
+	 * Objects of the following type(s) are allowed in the list
+	 * {@link GrantType }
+	 * 
+	 * 
+	 */
+	public Set<GrantType> getGrantTypes() {
 		return this.grantTypes;
 	}
 
-        private void setGrantTypes(String grantTypes) {
-                this.grantTypes = grantTypes;
+	public void setGrantTypes(Set<GrantType> grantTypes) {
+		this.grantTypes = grantTypes;
 
-        }
+	}
 	
     /**
      * Gets the value of the responseTypes property.

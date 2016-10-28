@@ -41,6 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 class ResourceRepositoryImpl implements ResourceRepository {
 	@PersistenceContext(unitName = "pu-energy")
+	//@PersistenceContext(unitName = "pu-retailCustomer")	//added after merge with RetailCustomer
     protected EntityManager em;
 
     @Override
@@ -63,14 +64,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
 				.setParameter("href", href).getResultList();
 		if (result.isEmpty()) {
 			try {
-				// we did not find one, so now try to parse the URL and find the
-				// parent that way
-				// this needed only b/c we are not storing the up and self hrefs
-				// in
-				// the underlying db but rather
-				// relying upon a structured URL for resources that we have
-				// exported.
-				//
+				
 				Boolean usagePointFlag = false;
 				Boolean meterReadingFlag = false;
 
@@ -125,9 +119,7 @@ class ResourceRepositoryImpl implements ResourceRepository {
 				.createNamedQuery(linkable.getAllRelatedQuery())
 				.setParameter("relatedLinkHrefs",
 						linkable.getRelatedLinkHrefs()).getResultList();
-		// now check for specific related that do not have their href's stored
-		// in the DB
-		// or imported objects that have the external href's stored
+		
 		if (temp.isEmpty()) {
 			try {
 				Boolean localTimeParameterFlag = false;
@@ -222,7 +214,6 @@ class ResourceRepositoryImpl implements ResourceRepository {
 		} catch (IllegalAccessException | NoSuchFieldException e) {
 			throw new RuntimeException(e);
 		}
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -264,7 +255,6 @@ class ResourceRepositoryImpl implements ResourceRepository {
 			String queryFindById = (String) clazz.getDeclaredField(
 					"QUERY_FIND_ALL_IDS_FILTER").get(String.class);
 			
-			System.err.print("exportFilter.getFilterPeriod()="+exportFilter.getStartIndex() + " "+exportFilter.getMaxResults()+ " "+exportFilter.getFilterPeriod());
 			return em.createNamedQuery(queryFindById).setParameter("publishedMin", exportFilter.getFilterPeriod().getPublishedMin())
 					.setParameter("publishedMax", exportFilter.getFilterPeriod().getPublishedMax()).setParameter("updatedMin", exportFilter.getFilterPeriod().getUpdatedMin())
 					.setParameter("updatedMax", exportFilter.getFilterPeriod().getUpdatedMax()).setFirstResult(exportFilter.getStartIndex()).setMaxResults(exportFilter.getMaxResults()).getResultList();
@@ -519,5 +509,16 @@ class ResourceRepositoryImpl implements ResourceRepository {
             throw new RuntimeException(e);
         }
     }
+
+
+	public void remove(IdentifiedObject entity) {
+		try{
+		em.remove(entity);
+		em.flush();
+		}catch(Exception ex){
+			System.err.println( " ::: delete error is :::: "+ex.getCause());
+			System.err.println( " ::: delete error msg is :::: "+ex.getMessage());
+		}
+	}
 
 }

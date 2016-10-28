@@ -476,9 +476,6 @@ public class UsagePoint
 							+ getMeterReadings().get(0).getReadingType().getIntervalLength())) {
 				intervalDurationFlag = true;
 			}
-			
-			System.err.println(scopes[i] + "  " + seviceCategortFlag + "  " + intervalDurationFlag);
-			
 			if (seviceCategortFlag && intervalDurationFlag) {
 				compatibleScope.add(scopes[i]);
 			}
@@ -508,9 +505,6 @@ public class UsagePoint
 							+ getMeterReadings().get(0).getReadingType().getIntervalLength())) {
 				intervalDurationFlag = true;
 			}
-			
-			System.err.println(scopes[i] + "  " + seviceCategortFlag + "  " + intervalDurationFlag);
-			
 			if (seviceCategortFlag && intervalDurationFlag) {
 				return true;
 			}
