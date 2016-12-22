@@ -22,11 +22,11 @@
 //
 
 @javax.xml.bind.annotation.XmlSchema(
-       /* namespace = "http://naesb.org/espi",
+        namespace = "http://naesb.org/espi",
         elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED,
         xmlns = {
                 @XmlNs(prefix = "espi", namespaceURI = "http://naesb.org/espi")
-        }*/
+        }
 ) package org.energyos.espi.common.domain;
 
 import javax.xml.bind.annotation.XmlNs;
