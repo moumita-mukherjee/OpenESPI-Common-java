@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -21,21 +22,31 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 @SuppressWarnings("serial")
-@XmlRootElement(name = "CustomerAccount", namespace = "http://naesb.org/espi/cust")
+@XmlRootElement(name = "CustomerAccount", namespace = "http://naesb.org/espi")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "CustomerAccount")
 @Entity
 @Table(name = "customer_account")
 @NamedQueries(value = {
+		
 		@NamedQuery(name = CustomerAccount.QUERY_FIND_ALL_IDS, query = "SELECT customeraccount.id FROM CustomerAccount customeraccount"),
+		
 		@NamedQuery(name = CustomerAccount.QUERY_FIND_BY_ID, query = "SELECT customeraccount FROM CustomerAccount customeraccount WHERE customeraccount.id = :id"),
-		@NamedQuery(name = CustomerAccount.QUERY_FIND_BY_CUSTOMER_ID, query = "SELECT customeraccount FROM CustomerAccount customerAccount where  customerAccount.customer.id= :customerId"),
-
+		
+		@NamedQuery(name = CustomerAccount.QUERY_FIND_BY_CUSTOMER_ID_ACCOUNT_ID, query = "SELECT customeraccount FROM CustomerAccount customerAccount where  customeraccount.id = :id and customerAccount.customer.id = :customerId"),
+		
+		@NamedQuery(name = CustomerAccount.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID, query = "SELECT customeraccount FROM CustomerAccount customeraccount where customerAccount.customer.retailCustomerId = :retailCustomerId and customerAccount.customer.id= :customerId and customerAccount.id= :accountId "),
+		
+		@NamedQuery(name = CustomerAccount.QUERY_FIND_BY_CUSTOMER_ID, query = "SELECT customeraccount FROM CustomerAccount customerAccount where  customerAccount.customer.id= :customerId and customerAccount.customer.retailCustomerId = :retailCustomerId")
+		
+		
 })
 public class CustomerAccount extends IdentifiedObject {
 
 	public static final String QUERY_FIND_ALL_IDS = "CustomerAccount.findAllIds";
 	public static final String QUERY_FIND_BY_ID = "CustomerAccount.findById";
+	public static final String QUERY_FIND_BY_CUSTOMER_ID_ACCOUNT_ID = "CustomerAccount.findByCustomerIdCustomerAccountId";
+	public static final String QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID = "CustomerAccount.findByRetailCustomerIdCustomerIdCustomerAccountId";
 	public static final String QUERY_FIND_BY_CUSTOMER_ID = "CustomerAccount.findByCustomerId";
 
 	@Column(name = "name")
@@ -51,6 +62,10 @@ public class CustomerAccount extends IdentifiedObject {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+	
+	@Embedded
+	protected Status status;
+	
 
 	@Column(name = "createdDateTime")
 	protected Date createdDateTime;
@@ -70,14 +85,27 @@ public class CustomerAccount extends IdentifiedObject {
 	@XmlTransient
 	@Transient
 	private String link;
+	
+
 
 	@XmlTransient
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 	public String getLink() {
-		return "/Customer/" + this.customer.id;
+		if(customer!=null)
+			return "/Customer/" + this.customer.id;
+		else 
+			return null;
 	}
 
 	public void setLink(Long customerId) {
@@ -240,5 +268,8 @@ public class CustomerAccount extends IdentifiedObject {
 	public String toString() {
 		return "CustomerAccount [name=" + name + "]";
 	}
+
+	
+	
 
 }

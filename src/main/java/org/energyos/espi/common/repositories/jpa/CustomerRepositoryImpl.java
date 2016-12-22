@@ -15,14 +15,24 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 	protected EntityManager em;
 
 	@Override
-	public Customer findById(Long id) {
+	public Customer findById(Long id) throws Exception {
 		return (Customer) em.createNamedQuery(Customer.QUERY_FIND_BY_ID)
 				.setParameter("id", id).getSingleResult();
 	}
 
+	
+	@Override
+	public Customer findByRetailCustomerIdCustomerId(Long retailCustomerId, Long id) throws Exception{
+		return (Customer) em.createNamedQuery(Customer.QUERY_FIND_BY_RETAIL_CUSTOMER_ID_CUSTOMER_ID)
+				.setParameter("retailCustomerId", retailCustomerId)
+				.setParameter("id", id)
+				.getSingleResult();
+	}
+	
+	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Customer> findByRetailCustomerId(Long retailCustomerId) {
+	public List<Customer> findByRetailCustomerId(Long retailCustomerId) throws Exception {
 
 		return (List<Customer>) em
 				.createNamedQuery(Customer.QUERY_FIND_ALL_BY_RETAIL_CUSTOMER_ID)
@@ -33,7 +43,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
 	@Transactional
 	@Override
-	public void deleteById(Long id) {
+	public void deleteById(Long id) throws Exception {
 		em.joinTransaction();
 		Customer customer = findById(id);
 		em.remove(customer);
@@ -43,7 +53,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
 	@Transactional
 	@Override
-	public void createCustomer(Customer customer) {
+	public void createCustomer(Customer customer) throws Exception {
 		em.joinTransaction();
 		em.persist(customer);
 		em.flush();
@@ -52,11 +62,9 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
 	@Transactional
 	@Override
-	public void mergeCustomer(Customer customer) {
-		Customer existingCustomer = null;
-		if (customer != null)
-			existingCustomer = findById(customer.getId());
-		if (existingCustomer != null)
+	public void mergeCustomer(Customer customer, Customer existingCustomer) throws Exception {
+		
+		if (existingCustomer != null && customer!=null )
 			getMergedCustomer(existingCustomer, customer);
 		em.joinTransaction();
 		em.merge(existingCustomer);
@@ -80,4 +88,16 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 		existingCustomer.setSpecialNeed(customer.getSpecialNeed());
 
 	}
+	
+	@Transactional
+	@Override
+	public void delete(Long retailCustomerId, Long customerId) throws Exception {
+		em.joinTransaction();
+		Customer customer = findByRetailCustomerIdCustomerId(retailCustomerId, customerId);
+		em.remove(customer);
+		em.flush();
+
+	}
+
+
 }

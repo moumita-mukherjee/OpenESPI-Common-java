@@ -21,6 +21,17 @@ public class CustomerAgreementRepositoryImpl implements
 				.createNamedQuery(CustomerAgreement.QUERY_FIND_BY_ID)
 				.setParameter("id", customerAgreementId).getSingleResult();
 	}
+	
+	@Override
+	public CustomerAgreement findByRetailCustomerIdCustomerIdAccountIdAgreementId(Long retailCustomerId, Long customerId, Long accountId, Long agreementId) throws Exception{
+		return (CustomerAgreement) em
+				.createNamedQuery(CustomerAgreement.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID)
+				.setParameter("retailCustomerId", retailCustomerId)
+				.setParameter("customerId", customerId)
+				.setParameter("customerAccountId", accountId)
+				.setParameter("agreementId", agreementId)
+				.getSingleResult();
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -33,10 +44,23 @@ public class CustomerAgreementRepositoryImpl implements
 				.setParameter("customerAccountId", customerAccountId)
 				.getResultList();
 	}
+	
+	
+	@Override
+	public List<CustomerAgreement> findByRetailCustomerIdCustomerIdAccountId(Long retailCustomerId, Long customerId,
+			Long accountId) throws Exception{
+		return (List<CustomerAgreement>) em
+				.createNamedQuery(
+						CustomerAgreement.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID)
+				.setParameter("retailCustomerId", retailCustomerId)
+				.setParameter("customerId", customerId)
+				.setParameter("accountId", accountId)
+				.getResultList();
+	}
 
 	@Transactional
 	@Override
-	public void deleteById(Long id) {
+	public void deleteById(Long id) throws Exception{
 		em.joinTransaction();
 		CustomerAgreement customerAgreement = findById(id);
 		em.remove(customerAgreement);
@@ -46,7 +70,7 @@ public class CustomerAgreementRepositoryImpl implements
 
 	@Transactional
 	@Override
-	public void createCustomerAgreement(CustomerAgreement customerAgreement) {
+	public void createCustomerAgreement(CustomerAgreement customerAgreement) throws Exception{
 		em.joinTransaction();
 		em.persist(customerAgreement);
 		em.flush();
@@ -55,16 +79,14 @@ public class CustomerAgreementRepositoryImpl implements
 
 	@Transactional
 	@Override
-	public void mergeCustomerAgreement(CustomerAgreement customerAgreement) {
+	public void mergeCustomerAgreement(CustomerAgreement customerAgreement, CustomerAgreement existingCustAgg) throws Exception{
 		em.joinTransaction();
-		CustomerAgreement existingCustomerAgreement = null;
-		if (customerAgreement != null)
-			existingCustomerAgreement = findById(customerAgreement.getId());
-		if (existingCustomerAgreement != null)
-			getMergedCustomerAgreement(existingCustomerAgreement,
+		
+		if (existingCustAgg != null && customerAgreement!= null)
+			getMergedCustomerAgreement(existingCustAgg,
 					customerAgreement);
 
-		em.merge(existingCustomerAgreement);
+		em.merge(existingCustAgg);
 		em.flush();
 
 	}
@@ -87,6 +109,16 @@ public class CustomerAgreementRepositoryImpl implements
 		existingCustomerAgreement.setDemandResponsePrograms(customerAgreement
 				.getDemandResponsePrograms());
 
+	}
+
+	@Override
+	@Transactional
+	public void delete(Long retailCustomerId, Long customerId, Long customerAccountId, Long customerAgreementId) throws Exception {
+		em.joinTransaction();
+		CustomerAgreement customerAgreement = findByRetailCustomerIdCustomerIdAccountIdAgreementId(retailCustomerId, customerId, customerAccountId, customerAgreementId);
+		em.remove(customerAgreement);
+		em.flush();
+		
 	}
 
 }

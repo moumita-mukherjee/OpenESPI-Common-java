@@ -22,19 +22,43 @@ public class CustomerAgreementServiceImpl implements CustomerAgreementService {
 			Long customerAccountId) {
 		return customerAgreementRepository.findByCustomerIdAccountId(customerId, customerAccountId);
 	}
+	
+	@Override
+	public List<CustomerAgreement> findByRetailCustomerIdCustomerIdAccountId(Long retailCustomerId,
+			Long customerId, Long accountId) throws Exception{
+		return customerAgreementRepository.findByRetailCustomerIdCustomerIdAccountId(retailCustomerId,customerId, accountId);
+	}
+	
+	@Override
+	public CustomerAgreement findByRetailCustomerIdCustomerIdAccountIdAgreementId(Long retailCustomerId, Long customerId, Long accountId, Long agreementId) throws Exception{
+		CustomerAgreement ca = customerAgreementRepository.findByRetailCustomerIdCustomerIdAccountIdAgreementId(retailCustomerId,customerId,accountId,agreementId);
+		//ca.setCustomerAccountId(ca.getCustomerAccount().getId());
+		
+		return ca;
+	}
 
 	@Override
-	public void deleteById(Long id) {
+	public void deleteById(Long id) throws Exception {
 		customerAgreementRepository.deleteById(id);
 	}
 
 	@Override
-	public void createCustomerAgreement(CustomerAgreement customerAgreement) {
+	public void createCustomerAgreement(CustomerAgreement customerAgreement) throws Exception{
 		customerAgreementRepository.createCustomerAgreement(customerAgreement);
 	}
 
+	
+
 	@Override
-	public void mergeCustomerAgreement(CustomerAgreement customerAgreement) {
-		customerAgreementRepository.mergeCustomerAgreement(customerAgreement);
+	public void mergeCustomerAgreement(CustomerAgreement customerAgreement,
+			CustomerAgreement existingCustAgg) throws Exception {
+		customerAgreementRepository.mergeCustomerAgreement(customerAgreement,existingCustAgg);
+		
+	}
+
+	@Override
+	public void delete(Long retailCustomerId, Long customerId, Long customerAccountId, Long customerAgreementId) throws Exception {
+		customerAgreementRepository.delete(retailCustomerId, customerId, customerAccountId, customerAgreementId);
+		
 	}
 }

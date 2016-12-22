@@ -23,6 +23,36 @@ public class ServiceSupplierRepositoryImpl implements ServiceSupplierRepository 
 				.createNamedQuery(ServiceSupplier.QUERY_FIND_BY_ID)
 				.setParameter("id", id).getSingleResult();
 	}
+	
+	@Override
+	public ServiceSupplier findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceSupplierId(Long retailCustomerId,
+			Long customerId, Long accountId, Long agreementId, Long serviceSupplierId) throws Exception{
+		return (ServiceSupplier) em
+				.createNamedQuery(ServiceSupplier.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID_SUPPLIER_ID)
+				.setParameter("retailCustomerId", retailCustomerId)
+				.setParameter("customerId", customerId)
+				.setParameter("accountId", accountId)
+				.setParameter("agreementId", agreementId)
+				.setParameter("serviceSupplierId", serviceSupplierId)
+				.getSingleResult();
+	}
+	
+	
+	
+    @Override
+	
+	public List<ServiceSupplier> findByRetailCustomerIdCustomerIdAccountIdAgreementId(Long retailCustomerId,
+			Long customerId, Long accountId, Long agreementId) throws Exception {
+		return (List<ServiceSupplier>) em
+				.createNamedQuery(
+						ServiceSupplier.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID)
+				.setParameter("retailCustomerId", retailCustomerId)
+				.setParameter("customerId", customerId)
+				.setParameter("accountId", accountId)
+				.setParameter("agreementId", agreementId)
+				.getResultList();
+
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -41,7 +71,7 @@ public class ServiceSupplierRepositoryImpl implements ServiceSupplierRepository 
 
 	@Transactional
 	@Override
-	public void deleteById(Long id) {
+	public void deleteById(Long id) throws Exception {
 		em.joinTransaction();
 		ServiceSupplier serviceSupplier = findById(id);
 		em.remove(serviceSupplier);
@@ -51,7 +81,7 @@ public class ServiceSupplierRepositoryImpl implements ServiceSupplierRepository 
 
 	@Transactional
 	@Override
-	public void createServiceSupplier(ServiceSupplier serviceSupplier) {
+	public void createServiceSupplier(ServiceSupplier serviceSupplier) throws Exception {
 		em.joinTransaction();
 		em.persist(serviceSupplier);
 		em.flush();
@@ -60,12 +90,11 @@ public class ServiceSupplierRepositoryImpl implements ServiceSupplierRepository 
 
 	@Transactional
 	@Override
-	public void mergeServiceSupplier(ServiceSupplier serviceSupplier) {
+	public void mergeServiceSupplier(ServiceSupplier serviceSupplier,ServiceSupplier existingServiceSupplier) throws Exception {
 		em.joinTransaction();
-		ServiceSupplier existingServiceSupplier = null;
-		if (serviceSupplier != null)
-			existingServiceSupplier = findById(serviceSupplier.getId());
-		if (existingServiceSupplier != null)
+		
+		
+		if (existingServiceSupplier != null && serviceSupplier!=null)
 			getMergedServiceSupplier(existingServiceSupplier, serviceSupplier);
 
 		em.merge(existingServiceSupplier);
@@ -87,5 +116,15 @@ public class ServiceSupplierRepositoryImpl implements ServiceSupplierRepository 
 		existingServiceSupplier.setIssuerIdentificationNumber(serviceSupplier
 				.getIssuerIdentificationNumber());
 
+	}
+
+	@Override
+	@Transactional
+	public void delete(Long retailCustomerId, Long customerId, Long customerAccountId, Long customerAgreementId, Long serviceSupplierId) throws Exception {
+		em.joinTransaction();
+		ServiceSupplier sup = findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceSupplierId(retailCustomerId, customerId, customerAccountId, customerAgreementId, serviceSupplierId);
+		em.remove(sup);
+		em.flush();
+		
 	}
 }

@@ -24,6 +24,7 @@
 package org.energyos.espi.common.domain;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -41,7 +42,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.energyos.espi.common.models.atom.adapters.CustomerAdapter;
 
-@XmlRootElement(name = "EndDevice", namespace = "http://naesb.org/espi/cust")
+@XmlRootElement(name = "EndDevice", namespace = "http://naesb.org/espi")
 @XmlJavaTypeAdapter(CustomerAdapter.class)
 @SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -51,6 +52,11 @@ import org.energyos.espi.common.models.atom.adapters.CustomerAdapter;
 @NamedQueries(value = {
 		@NamedQuery(name = EndDevice.QUERY_FIND_ALL_IDS, query = "SELECT endDevice.id FROM EndDevice endDevice "),
 		@NamedQuery(name = EndDevice.QUERY_FIND_BY_ID, query = "SELECT endDevice FROM EndDevice endDevice WHERE endDevice.id = :id"),
+		
+	    @NamedQuery(name = EndDevice.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID_LOCATION_ID_ENDDEVICE_ID, query = "SELECT endDevice FROM EndDevice endDevice WHERE endDevice.serviceLocation.customerAgreement.customerAccount.customer.retailCustomerId = :retailCustomerId and endDevice.serviceLocation.customerAgreement.customerAccount.customer.id = :customerId and endDevice.serviceLocation.customerAgreement.customerAccount.id =:accountId and endDevice.serviceLocation.customerAgreement.id=:agreementId and endDevice.serviceLocation.id =:serviceLocationId and endDevice.id =:endDeviceId"),
+ 		
+	    @NamedQuery(name = EndDevice.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID_LOCATION_ID, query = "SELECT endDevice FROM EndDevice endDevice WHERE endDevice.serviceLocation.customerAgreement.customerAccount.customer.retailCustomerId = :retailCustomerId and endDevice.serviceLocation.customerAgreement.customerAccount.customer.id = :customerId and endDevice.serviceLocation.customerAgreement.customerAccount.id =:accountId and endDevice.serviceLocation.customerAgreement.id=:agreementId and endDevice.serviceLocation.id =:serviceLocationId"),
+	        		
 		@NamedQuery(name = EndDevice.QUERY_FIND_BY_CUSTOMER_CUSTOMERACCOUNT_CUSTOMERAGREEMENT_SERVICELOCATION_IDS, query = "SELECT endDevice FROM EndDevice endDevice WHERE endDevice.serviceLocation.customerAgreement.customerAccount.customer.id = :customerId and endDevice.serviceLocation.customerAgreement.customerAccount.id =:customerAccountId and endDevice.serviceLocation.customerAgreement.id=:customerAgreementId and endDevice.serviceLocation.id =:serviceLocationId"),
 
 })
@@ -59,7 +65,12 @@ public class EndDevice extends IdentifiedObject {
 	public static final String QUERY_FIND_ALL_IDS = "EndDevice.findAllIds";
 	public static final String QUERY_FIND_BY_ID = "EndDevice.findById";
 	public static final String QUERY_FIND_BY_CUSTOMER_CUSTOMERACCOUNT_CUSTOMERAGREEMENT_SERVICELOCATION_IDS = "EndDevice.findByCustomerIdCustomerAccountIdCustomerAgreementIdServiceLocationId";
-
+	 
+    public static final String QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID_LOCATION_ID_ENDDEVICE_ID = "EndDevice.findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceLocationIdEndDeviceId";
+	    
+	public static final String QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID_LOCATION_ID = "EndDevice.findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceLocationId";
+	    
+		
 	@Column(name = "name")
 	protected String name;
 
@@ -71,14 +82,58 @@ public class EndDevice extends IdentifiedObject {
 
 	@Column(name = "enabled")
 	protected Boolean enabled = true;
+	
+	@Column(name = "socialNumber")
+	protected String socialNumber;
+	
+	
+	@Column(name = "lotNumber")
+	protected String lotNumber;
+	
+	@Column(name = "purchasePrice")
+	protected String purchasePrice;
+	
+	@Column(name = "critical")
+	protected String critical;
+	
+	@Embedded
+	protected ElectronicAddress electronicAddress;
+	
+	@Embedded
+	protected LifecycleDate lifecycle;
+	
+	@Column(name = "initialCondition")
+	protected String initialCondition;
+	
+	@Column(name = "initialLossOfLife")
+	protected String initialLossOfLife;
+	
+	@Column(name = "isPan")
+	protected String isPan;
+	
+	@Column(name = "isVirtual")
+	protected String isVirtual;
+	
+	@Column(name = "installCode")
+	protected String installCode;
+	
+	@Column(name = "amrSystem")
+	protected String amrSystem;
+	
+	@Embedded
+	protected Status status;
+	
 
 	@XmlTransient
 	@Transient
 	private String link;
 
 	public String getLink() {
-		return this.serviceLocation.getLink() + "/ServiceLocation/"
+		if(serviceLocation!=null)
+			return this.serviceLocation.getLink() + "/ServiceLocation/"
 				+ this.serviceLocation.getId();
+		else
+			return null;
 	}
 
 	public void setLink(Long customerId, Long accountId, Long agreementId,
@@ -140,6 +195,115 @@ public class EndDevice extends IdentifiedObject {
 
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	
+	public String getSocialNumber() {
+		return socialNumber;
+	}
+
+	public void setSocialNumber(String socialNumber) {
+		this.socialNumber = socialNumber;
+	}
+
+	public String getLotNumber() {
+		return lotNumber;
+	}
+
+	public void setLotNumber(String lotNumber) {
+		this.lotNumber = lotNumber;
+	}
+
+	public String getPurchasePrice() {
+		return purchasePrice;
+	}
+
+	public void setPurchasePrice(String purchasePrice) {
+		this.purchasePrice = purchasePrice;
+	}
+
+	public String getCritical() {
+		return critical;
+	}
+
+	public void setCritical(String critical) {
+		this.critical = critical;
+	}
+
+	public ElectronicAddress getElectronicAddress() {
+		return electronicAddress;
+	}
+
+	public void setElectronicAddress(ElectronicAddress electronicAddress) {
+		this.electronicAddress = electronicAddress;
+	}
+
+	public LifecycleDate getLifecycle() {
+		return lifecycle;
+	}
+
+	public void setLifecycle(LifecycleDate lifecycle) {
+		this.lifecycle = lifecycle;
+	}
+
+	public String getInitialCondition() {
+		return initialCondition;
+	}
+
+	public void setInitialCondition(String initialCondition) {
+		this.initialCondition = initialCondition;
+	}
+
+	public String getInitialLossOfLife() {
+		return initialLossOfLife;
+	}
+
+	public void setInitialLossOfLife(String initialLossOfLife) {
+		this.initialLossOfLife = initialLossOfLife;
+	}
+
+	public String getIsPan() {
+		return isPan;
+	}
+
+	public void setIsPan(String isPan) {
+		this.isPan = isPan;
+	}
+
+	public String getIsVirtual() {
+		return isVirtual;
+	}
+
+	public void setIsVirtual(String isVirtual) {
+		this.isVirtual = isVirtual;
+	}
+
+	public String getInstallCode() {
+		return installCode;
+	}
+
+	public void setInstallCode(String installCode) {
+		this.installCode = installCode;
+	}
+
+	public String getAmrSystem() {
+		return amrSystem;
+	}
+
+	public void setAmrSystem(String amrSystem) {
+		this.amrSystem = amrSystem;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
 	}
 
 }

@@ -20,11 +20,24 @@ public class ServiceLocationRepositoryImpl implements ServiceLocationRepository 
 				.createNamedQuery(ServiceLocation.QUERY_FIND_BY_ID)
 				.setParameter("id", id).getSingleResult();
 	}
+	
+	@Override
+	public ServiceLocation findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceLocationId(Long retailCustomerId,
+			Long customerId, Long accountId, Long agreementId, Long serviceLocationId) throws Exception{
+		return (ServiceLocation) em
+				.createNamedQuery(ServiceLocation.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID_LOCATION_ID)
+				.setParameter("retailCustomerId", retailCustomerId)
+				.setParameter("customerId", customerId)
+				.setParameter("accountId", accountId)
+				.setParameter("agreementId", agreementId)
+				.setParameter("serviceLocationId", serviceLocationId)
+				.getSingleResult();
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ServiceLocation> findByCustomerIdAccountIdAgreementId(
-			Long customerId, Long customerAccountId, Long customerAgreementId) {
+	public List<ServiceLocation> findByCustomerIdAccountIdAgreementId (
+			Long customerId, Long customerAccountId, Long customerAgreementId) throws Exception{
 		return (List<ServiceLocation>) em
 				.createNamedQuery(
 						ServiceLocation.QUERY_FIND_BY_CUSTOMER_ID_CUSTOMER_ACCOUNT_ID_CUSTOMER_AGREEMENT_ID)
@@ -33,10 +46,24 @@ public class ServiceLocationRepositoryImpl implements ServiceLocationRepository 
 				.setParameter("customerAgreementId", customerAgreementId)
 				.getResultList();
 	}
+	
+	
+	@Override
+	public List<ServiceLocation> findByRetailCustomerIdCustomerIdAccountIdAgreementId(Long retailCustomerId,
+			Long customerId, Long accountId, Long agreementId) throws Exception{
+		return (List<ServiceLocation>) em
+				.createNamedQuery(
+						ServiceLocation.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID)
+				.setParameter("retailCustomerId", retailCustomerId)
+				.setParameter("customerId", customerId)
+				.setParameter("accountId", accountId)
+				.setParameter("agreementId", agreementId)
+				.getResultList();
+	}
 
 	@Transactional
 	@Override
-	public void deleteById(Long id) {
+	public void deleteById(Long id) throws Exception{
 		em.joinTransaction();
 		ServiceLocation serviceLocation = findById(id);
 		em.remove(serviceLocation);
@@ -46,21 +73,23 @@ public class ServiceLocationRepositoryImpl implements ServiceLocationRepository 
 
 	@Transactional
 	@Override
-	public void createServiceLocation(ServiceLocation serviceLocation) {
+	public void createServiceLocation(ServiceLocation serviceLocation) throws Exception{
 		em.joinTransaction();
+		try{
 		em.persist(serviceLocation);
+		}catch(Exception e){
+			e.printStackTrace(System.err);
+		}
 		em.flush();
 
 	}
 
 	@Transactional
 	@Override
-	public void mergeServiceLocation(ServiceLocation serviceLocation) {
+	public void mergeServiceLocation(ServiceLocation serviceLocation, ServiceLocation existingServiceLocation) throws Exception{
 		em.joinTransaction();
-		ServiceLocation existingServiceLocation = null;
-		if (serviceLocation != null)
-			existingServiceLocation = findById(serviceLocation.getId());
-		if (existingServiceLocation != null)
+		
+		if (existingServiceLocation != null && serviceLocation!= null)
 			getMergedServiceLocation(existingServiceLocation, serviceLocation);
 		
 		em.merge(existingServiceLocation);
@@ -87,5 +116,16 @@ public class ServiceLocationRepositoryImpl implements ServiceLocationRepository 
 		existingServiceLocation.setEnabled(serviceLocation.isEnabled());
 		existingServiceLocation.setType(serviceLocation.getType());
 
+	}
+
+	@Override
+	@Transactional
+	public void delete(Long retailCustomerId, Long customerId, Long customerAccountId, Long customerAgreementId, Long serviceLocationId) throws Exception {
+		
+		em.joinTransaction();
+		ServiceLocation serviceLocation = findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceLocationId(retailCustomerId, customerId, customerAccountId, customerAgreementId, serviceLocationId);
+		em.remove(serviceLocation);
+		em.flush();
+		
 	}
 }

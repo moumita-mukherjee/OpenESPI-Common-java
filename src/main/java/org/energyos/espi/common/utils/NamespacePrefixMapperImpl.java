@@ -22,7 +22,7 @@ public class NamespacePrefixMapperImpl extends NamespacePrefixMapper {
     private static final String[] EMPTY_STRING = new String[0];
     private static final String ESPI_NAMESPACE_PREFIX= "espi";
     private static final String ATOM_NAMESPACE_PREFIX = "atom";
-    private static final String CUSTOMER_NAMESPACE_PREFIX = "cust";
+    private static final String CUSTOMER_NAMESPACE_PREFIX = "espi";
     private static final String EMPTY_NAMESPACE_PREFIX = "";
     private static final String ESPI_NAMESPACE = "http://naesb.org/espi";
     private static final String ATOM_NAMESPACE = "http://www.w3.org/2005/Atom";

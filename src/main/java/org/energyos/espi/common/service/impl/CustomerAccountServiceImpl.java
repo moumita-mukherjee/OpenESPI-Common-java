@@ -18,25 +18,36 @@ public class CustomerAccountServiceImpl implements CustomerAccountService {
 	}
 
 	@Override
-	public List<CustomerAccount> findByCustomerId(Long customerId) {
-		return customerAccountRepository.findByCustomerId(customerId);
+	public List<CustomerAccount> findByCustomerId(Long customerId, Long retailCustomerId) throws Exception {
+		return customerAccountRepository.findByCustomerId(customerId,retailCustomerId);
+	}
+	
+	@Override
+	public CustomerAccount findByRetailCustomerIdCustomerIdCustomerAccountId(Long retailCustomerId, Long customerId, Long accountId) throws Exception{
+		return customerAccountRepository.findByRetailCustomerIdCustomerIdCustomerAccountId(retailCustomerId, customerId, accountId);
 	}
 
 	@Override
-	public void deleteById(Long id) {
+	public void deleteById(Long id) throws Exception{
 		customerAccountRepository.deleteById(id);
 		
 	}
 
 	@Override
-	public void createCustomerAccount(CustomerAccount customerAccount) {
+	public void createCustomerAccount(CustomerAccount customerAccount) throws Exception{
 		customerAccountRepository.createCustomerAccount(customerAccount);
 		
 	}
 
 	@Override
-	public void mergeCustomerAccount(CustomerAccount customerAccount) {
-		customerAccountRepository.mergeCustomerAccount(customerAccount);
+	public void mergeCustomerAccount(CustomerAccount customerAccount, CustomerAccount existingCustomerAcc) throws Exception{
+		customerAccountRepository.mergeCustomerAccount(customerAccount,existingCustomerAcc);
+		
+	}
+	
+	@Override
+	public void delete(Long retailCustomerId, Long customerId, Long customerAccountId) throws Exception{
+		customerAccountRepository.delete(retailCustomerId, customerId, customerAccountId);
 		
 	}
 }

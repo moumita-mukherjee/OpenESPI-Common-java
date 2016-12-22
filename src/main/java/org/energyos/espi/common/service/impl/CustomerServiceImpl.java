@@ -13,30 +13,45 @@ public class CustomerServiceImpl implements CustomerService {
 	private CustomerRepository customerRepository;
 	
 	@Override
-	public Customer findById(Long customerId) {
+	public Customer findById(Long customerId) throws Exception {
 		return customerRepository.findById(customerId);
 	}
 
 	@Override
-	public List<Customer> findByRetailCustomerId(Long retailCustomerId) {
+	public List<Customer> findByRetailCustomerId(Long retailCustomerId) throws Exception{
 		return customerRepository.findByRetailCustomerId(retailCustomerId);
+	}
+	
+	
+	
+	@Override
+	public Customer findByRetailCustomerIdCustomerId(Long retailCustomerId, Long customerId) throws Exception{
+		return customerRepository.findByRetailCustomerIdCustomerId(retailCustomerId, customerId);
 	}
 
 	@Override
-	public void deleteById(Long id) {
+	public void deleteById(Long id) throws Exception {
 		
 		customerRepository.deleteById(id);
 	}
 
 	@Override
-	public void createCustomer(Customer customer) {
+	public void createCustomer(Customer customer) throws Exception {
 		customerRepository.createCustomer(customer);
 		
 	}
 
 	@Override
-	public void mergeCustomer(Customer customer) {
-		customerRepository.mergeCustomer(customer);
+	public void mergeCustomer(Customer customer, Customer existingCustomer) throws Exception {
+		customerRepository.mergeCustomer(customer, existingCustomer);
 		
 	}
+	
+	@Override
+	public void delete(Long retailCustomerId, Long customerId) throws Exception {
+		
+		customerRepository.delete(retailCustomerId, customerId);
+	}
+
+	
 }

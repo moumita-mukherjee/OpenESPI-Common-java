@@ -187,14 +187,14 @@ public class Routes {
     public static final String RETAIL_CUSTOMER_ACCOUNT_AGREEMENT_SERVICE_SUPPLIER_INFORMATION = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceSupplier";
     public static final String RETAIL_CUSTOMER_ACCOUNT_AGREEMENT_SPECIFIC_SERVICE_SUPPLIER_INFORMATION = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceSupplier/{serviceSupplierId}";
     
-    
+    public static final String RETAIL_ALL_CUSTOMER_INFORMATION = "/espi/1_1/resource/RetailCustomer/{retailCustomerID}/Customer";
     
     
     public static final String RETAIL_CUSTOMER_ACCOUNT_ENDDEVICE_INFORMATION = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{accountId}/CustomerAgreement/{customerAgreementId}/ServiceLocation/{serviceLocationId}/EndDevice";
     public static final String RETAIL_CUSTOMER_ACCOUNT_SPECIFIC_ENDDEVICE_INFORMATION = "/espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceLocation/{serviceLocationId}/EndDevice/{endDeviceId}";
     
     
-    public static final String GET_RETAIL_CUSTOMER_INFORMATION = "/espi/1_1/resource/Batch/Subscription/{subscriptionId}/Customer";
+    public static final String GET_RETAIL_CUSTOMER_INFORMATION = "/espi/1_1/resource/CustomerBatch/Subscription/{subscriptionId}";
     public static final String DELETE_SPECIFIC_CUSTOMER = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}";
     public static final String DELETE_SPECIFIC_CUSTOMER_ACCOUNT = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}";
     public static final String DELETE_SPECIFIC_CUSTOMER_AGREEMENT = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}";
@@ -202,7 +202,7 @@ public class Routes {
     //public static final String DELETE_SPECIFIC_ENDDEVICE_INFORMATION = "espi2/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceLocation/{serviceLocationId}/EndDevice/{endDeviceId}";
     public static final String DELETE_SPECIFIC_SERVICE_SUPPLIER = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceSupplier/{serviceSupplierId}";
     
-    public static final String DELETE_SPECIFIC_ENDDEVICE_INFORMATION = "espi/1_1/resource/RetailCustomerDelete/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceLocation/{serviceLocationId}/EndDevice/{endDeviceId}";
+    public static final String DELETE_SPECIFIC_ENDDEVICE_INFORMATION = "espi/1_1/resource/RetailCustomer/{retailCustomerId}/Customer/{customerId}/CustomerAccount/{customerAccountId}/CustomerAgreement/{customerAgreementId}/ServiceLocation/{serviceLocationId}/EndDevice/{endDeviceId}";
     
     
     

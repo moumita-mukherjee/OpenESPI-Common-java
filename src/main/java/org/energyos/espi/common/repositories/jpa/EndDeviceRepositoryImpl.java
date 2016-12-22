@@ -15,11 +15,43 @@ public class EndDeviceRepositoryImpl implements EndDeviceRepository {
 	protected EntityManager em;
 
 	@Override
-	public EndDevice findById(Long id) {
+	public EndDevice findById(Long id){
 		return (EndDevice) em.createNamedQuery(EndDevice.QUERY_FIND_BY_ID)
 				.setParameter("id", id).getSingleResult();
 	}
+	
+	@Override
+	public EndDevice findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceLocationIdEndDeviceId(Long retailCustomerId,
+			Long customerId, Long accountId, Long agreementId, Long serviceLocationId, Long endDeviceId) throws Exception{
+		return (EndDevice) em.createNamedQuery(EndDevice.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID_LOCATION_ID_ENDDEVICE_ID)
+				.setParameter("retailCustomerId", retailCustomerId)
+				.setParameter("customerId", customerId)
+				.setParameter("accountId", accountId)
+				.setParameter("agreementId", agreementId)
+				.setParameter("serviceLocationId", serviceLocationId)
+				.setParameter("endDeviceId", endDeviceId)
+				.getSingleResult();
+	}
+	
+	
+	
+	@Override
+	public List<EndDevice> findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceLocationId(Long retailCustomerId,
+			Long customerId, Long accountId, Long agreementId, Long serviceLocationId) throws Exception{
 
+		return (List<EndDevice>) em
+				.createNamedQuery(
+						EndDevice.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID_LOCATION_ID)
+				.setParameter("retailCustomerId", retailCustomerId)
+				.setParameter("customerId", customerId)
+				.setParameter("accountId", accountId)
+				.setParameter("agreementId", agreementId)
+				.setParameter("serviceLocationId", serviceLocationId)
+				.getResultList();
+	}
+	
+	
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<EndDevice> findByCustDetails(Long customerId,
@@ -38,7 +70,7 @@ public class EndDeviceRepositoryImpl implements EndDeviceRepository {
 
 	@Transactional
 	@Override
-	public void deleteById(Long id) {
+	public void deleteById(Long id) throws Exception{
 		em.joinTransaction();
 		EndDevice ed = findById(id);
 		em.remove(ed);
@@ -47,7 +79,7 @@ public class EndDeviceRepositoryImpl implements EndDeviceRepository {
 
 	@Transactional
 	@Override
-	public void createEndDevice(EndDevice endDevice) {
+	public void createEndDevice(EndDevice endDevice) throws Exception{
 		em.joinTransaction();
 		em.persist(endDevice);
 		em.flush();
@@ -56,15 +88,11 @@ public class EndDeviceRepositoryImpl implements EndDeviceRepository {
 
 	@Transactional
 	@Override
-	public void mergeEndDevice(EndDevice endDevice) {
+	public void mergeEndDevice(EndDevice endDevice, EndDevice existingEndDevice) throws Exception {
 		em.joinTransaction();
-		EndDevice existingeEndDevice = null;
-		if (endDevice != null)
-			existingeEndDevice = findById(endDevice.getId());
-		if (existingeEndDevice != null)
-			getMergedEndDevice(existingeEndDevice, endDevice);
-
-		em.merge(existingeEndDevice);
+		if (existingEndDevice != null && endDevice != null )
+			getMergedEndDevice(existingEndDevice, endDevice);
+		em.merge(existingEndDevice);
 		em.flush();
 
 	}
@@ -80,5 +108,15 @@ public class EndDeviceRepositoryImpl implements EndDeviceRepository {
 		existingEndDevice.setType(endDevice.getType());
 
 	}
+
+	@Transactional
+	@Override
+	public void delete(Long retailCustomerId, Long customerId, Long accountId, Long agreementId, Long serviceLocationId, Long endDeviceId) throws Exception {
+		
+		em.joinTransaction();
+		EndDevice end = findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceLocationIdEndDeviceId(retailCustomerId, customerId, accountId, agreementId, serviceLocationId, endDeviceId);
+		em.remove(end);
+		em.flush();
+		}
 
 }

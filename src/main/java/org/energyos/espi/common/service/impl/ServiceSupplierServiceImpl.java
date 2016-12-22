@@ -17,6 +17,21 @@ public class ServiceSupplierServiceImpl implements ServiceSupplierService {
 		return serviceSupplierRepository.findById(id);
 
 	}
+	
+	@Override
+	public ServiceSupplier findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceSupplierId(Long retailCustomerId,
+			Long customerId, Long accountId, Long agreementId, Long serviceSupplierId) throws Exception{
+		return serviceSupplierRepository.findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceSupplierId(retailCustomerId,
+				customerId,accountId,agreementId,serviceSupplierId);
+	}
+	
+	
+	@Override
+	public List<ServiceSupplier> findByRetailCustomerIdCustomerIdAccountIdAgreementId(Long retailCustomerId, Long customerId,
+			Long accountId, Long agreementId) throws Exception{
+		return serviceSupplierRepository.findByRetailCustomerIdCustomerIdAccountIdAgreementId(retailCustomerId,
+				customerId,accountId,agreementId);
+	}
 
 	@Override
 	public List<ServiceSupplier> findByCustomerIdAccountIdAgreementId(
@@ -26,21 +41,27 @@ public class ServiceSupplierServiceImpl implements ServiceSupplierService {
 	}
 
 	@Override
-	public void deleteById(Long id) {
+	public void deleteById(Long id) throws Exception {
 		serviceSupplierRepository.deleteById(id);
 
 	}
 
 	@Override
-	public void createServiceSupplier(ServiceSupplier serviceSupplier) {
+	public void createServiceSupplier(ServiceSupplier serviceSupplier) throws Exception {
 		serviceSupplierRepository.createServiceSupplier(serviceSupplier);
 
 	}
 
 	@Override
-	public void mergeServiceSupplier(ServiceSupplier serviceSupplier) {
-		serviceSupplierRepository.mergeServiceSupplier(serviceSupplier);
+	public void mergeServiceSupplier(ServiceSupplier serviceSupplier,ServiceSupplier existingServiceSupplier) throws Exception {
+		serviceSupplierRepository.mergeServiceSupplier(serviceSupplier,existingServiceSupplier);
 
+	}
+
+	@Override
+	public void delete(Long retailCustomerId, Long customerId, Long customerAccountId, Long customerAgreementId, Long serviceSupplierId) throws Exception {
+		serviceSupplierRepository.delete(retailCustomerId, customerId, customerAccountId, customerAgreementId, serviceSupplierId);
+		
 	}
 
 }

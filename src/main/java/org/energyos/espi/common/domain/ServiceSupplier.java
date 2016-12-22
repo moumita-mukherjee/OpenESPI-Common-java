@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.energyos.espi.common.models.atom.adapters.CustomerAdapter;
 
-@XmlRootElement(name = "ServiceSupplier", namespace = "http://naesb.org/espi/cust")
+@XmlRootElement(name = "ServiceSupplier", namespace = "http://naesb.org/espi")
 @XmlJavaTypeAdapter(CustomerAdapter.class)
 @SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -51,6 +51,12 @@ import org.energyos.espi.common.models.atom.adapters.CustomerAdapter;
 @NamedQueries(value = {
 		@NamedQuery(name = ServiceSupplier.QUERY_FIND_ALL_IDS, query = "SELECT serviceSupplier.id FROM ServiceSupplier serviceSupplier"),
 		@NamedQuery(name = ServiceSupplier.QUERY_FIND_BY_ID, query = "SELECT serviceSupplier FROM ServiceSupplier serviceSupplier WHERE serviceSupplier.id = :id"),
+		
+	    @NamedQuery(name = ServiceSupplier.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID_SUPPLIER_ID, query = "SELECT serviceSupplier FROM ServiceSupplier serviceSupplier WHERE serviceSupplier.customerAgreement.customerAccount.customer.retailCustomerId =:retailCustomerId and serviceSupplier.customerAgreement.customerAccount.customer.id = :customerId and serviceSupplier.customerAgreement.customerAccount.id =:accountId and serviceSupplier.customerAgreement.id =:agreementId and serviceSupplier.id = :serviceSupplierId"),
+ 		
+	    @NamedQuery(name = ServiceSupplier.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID, query = "SELECT serviceSupplier FROM ServiceSupplier serviceSupplier WHERE serviceSupplier.customerAgreement.customerAccount.customer.retailCustomerId =:retailCustomerId and serviceSupplier.customerAgreement.customerAccount.customer.id = :customerId and serviceSupplier.customerAgreement.customerAccount.id =:accountId and serviceSupplier.customerAgreement.id =:agreementId"),
+	        		
+	  
 		@NamedQuery(name = ServiceSupplier.QUERY_FIND_BY_CUSTOMER_ID_CUSTOMER_ACCOUNT_ID_CUSTOMER_AGREEMENT_ID, query = "SELECT serviceSupplier FROM ServiceSupplier serviceSupplier WHERE serviceSupplier.customerAgreement.customerAccount.customer.id = :customerId and serviceSupplier.customerAgreement.customerAccount.id =:customerAccountId and serviceSupplier.customerAgreement.id =:customerAgreementId"),
 
 })
@@ -60,14 +66,22 @@ public class ServiceSupplier extends IdentifiedObject {
 	public static final String QUERY_FIND_BY_ID = "ServiceSupplier.findById";
 	public static final String QUERY_FIND_BY_CUSTOMER_ID_CUSTOMER_ACCOUNT_ID_CUSTOMER_AGREEMENT_ID = "ServiceSupplier.findByCustomerIdCustomerAccountIdCustomerAgreementId";
 
+    public static final String QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID_SUPPLIER_ID = "ServiceSupplier.findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceSupplierId";
+    
+    public static final String QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID = "ServiceSupplier.findByRetailCustomerIdCustomerIdAccountIdAgreementId";
+    
+	
+	
 	@Column(name = "name")
 	protected String name;
 
 	@Column(name = "kind")
 	protected String kind;
-
+	
 	@Column(name = "enabled")
 	protected boolean enabled;
+	
+	
 
 	@Column(name = "issuerIdentificationNumber")
 	protected String issuerIdentificationNumber;
@@ -90,8 +104,11 @@ public class ServiceSupplier extends IdentifiedObject {
 	private CustomerAgreement customerAgreement;
 
 	public String getLink() {
-		return this.customerAgreement.getLink() + "/CustomerAgreement/"
+		if(customerAgreement!=null)
+			return this.customerAgreement.getLink() + "/CustomerAgreement/"
 				+ this.customerAgreement.getId();
+		else
+			return null;
 	}
 
 	public void setLink(Long customerId, Long accountId, Long agreementId) {
@@ -139,5 +156,7 @@ public class ServiceSupplier extends IdentifiedObject {
 	public String toString() {
 		return "ServiceSupplier [name=" + name + "]";
 	}
+
+	
 
 }

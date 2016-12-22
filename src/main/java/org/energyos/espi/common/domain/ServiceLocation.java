@@ -26,6 +26,8 @@ package org.energyos.espi.common.domain;
 
 import java.util.Set;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -36,6 +38,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -45,12 +48,11 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.energyos.espi.common.domain.UsagePoint;
 import org.energyos.espi.common.models.atom.adapters.CustomerAdapter;
 
 
 
-@XmlRootElement(name="ServiceLocation", namespace="http://naesb.org/espi/cust")
+@XmlRootElement(name="ServiceLocation", namespace="http://naesb.org/espi")
 @XmlJavaTypeAdapter(CustomerAdapter.class)
 @SuppressWarnings("serial")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -62,6 +64,14 @@ import org.energyos.espi.common.models.atom.adapters.CustomerAdapter;
                 query = "SELECT serviceLocation.id FROM ServiceLocation serviceLocation"),		
         @NamedQuery(name = ServiceLocation.QUERY_FIND_BY_ID, 
         		query = "SELECT serviceLocation FROM ServiceLocation serviceLocation WHERE serviceLocation.id = :id"),
+        		
+        		
+        @NamedQuery(name = ServiceLocation.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID_LOCATION_ID, query = "SELECT serviceLocation FROM ServiceLocation serviceLocation WHERE serviceLocation.customerAgreement.customerAccount.customer.retailCustomerId =:retailCustomerId and serviceLocation.customerAgreement.customerAccount.customer.id = :customerId and serviceLocation.customerAgreement.customerAccount.id =:accountId and serviceLocation.customerAgreement.id =:agreementId and serviceLocation.id = :serviceLocationId"),
+        		
+        @NamedQuery(name = ServiceLocation.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID, query = "SELECT serviceLocation FROM ServiceLocation serviceLocation WHERE serviceLocation.customerAgreement.customerAccount.customer.retailCustomerId =:retailCustomerId and serviceLocation.customerAgreement.customerAccount.customer.id = :customerId and serviceLocation.customerAgreement.customerAccount.id =:accountId and serviceLocation.customerAgreement.id =:agreementId"),
+        		
+        		
+        		
        @NamedQuery(name = ServiceLocation.QUERY_FIND_BY_CUSTOMER_ID_CUSTOMER_ACCOUNT_ID_CUSTOMER_AGREEMENT_ID, 
          		query = "SELECT serviceLocation FROM ServiceLocation serviceLocation WHERE serviceLocation.customerAgreement.customerAccount.customer.id = :customerId and serviceLocation.customerAgreement.customerAccount.id =:customerAccountId and serviceLocation.customerAgreement.id =:customerAgreementId"),
               
@@ -72,6 +82,11 @@ public class ServiceLocation extends IdentifiedObject
     public static final String QUERY_FIND_ALL_IDS = "ServiceLocation.findAllIds";
     public static final String QUERY_FIND_BY_ID = "ServiceLocation.findById";
     public static final String QUERY_FIND_BY_CUSTOMER_ID_CUSTOMER_ACCOUNT_ID_CUSTOMER_AGREEMENT_ID = "ServiceLocation.findByCustomerIdCustomerAccountIdCustomerAgreementId";
+    
+    
+    public static final String QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID_LOCATION_ID = "ServiceLocation.findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceLocationId";
+    
+    public static final String QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID = "ServiceLocation.findByRetailCustomerIdCustomerIdAccountIdAgreementId";
     
     @Column(name = "name")
     protected String name;    
@@ -85,6 +100,67 @@ public class ServiceLocation extends IdentifiedObject
     @XmlTransient
     @Column(name = "usage_point_ref")
     protected Long usagePointRef; 
+    
+	@OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "main_address")
+	protected Address mainAddress;
+    
+	@OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "secondary_address")
+	protected Address secondaryAddress;
+    
+    @Embedded
+    @AttributeOverrides({
+    	@AttributeOverride(name="countryCode", column=@Column(name="phone1_country_code")),
+    	@AttributeOverride(name="areaCode", column=@Column(name="phone1_area_code")),
+    	@AttributeOverride(name="cityCode", column=@Column(name="phone1_city_code")),
+    	@AttributeOverride(name="extension", column=@Column(name="phone1_extension")),
+    	@AttributeOverride(name="localNumber", column=@Column(name="phone1_local_number"))
+    	
+    })
+	protected TelephoneNumber phone1;
+    
+    @Embedded
+    @AttributeOverrides({
+    	@AttributeOverride(name="countryCode", column=@Column(name="phone2_country_code")),
+    	@AttributeOverride(name="areaCode", column=@Column(name="phone2_area_code")),
+    	@AttributeOverride(name="cityCode", column=@Column(name="phone2_city_code")),
+    	@AttributeOverride(name="extension", column=@Column(name="phone2_extension")),
+    	@AttributeOverride(name="localNumber", column=@Column(name="phone2_local_number"))
+    	
+    })
+	protected TelephoneNumber phone2;
+    
+   /* @Column(name = "electronic_address")
+	protected String electronicAddress;*/
+    
+    @Embedded
+    ElectronicAddress electronicAddress;
+    
+    @Column(name = "goInfo_reference")
+	protected String goInfoReference;
+    
+    @Column(name = "direction")
+	protected String direction;
+    
+    
+    @Embedded
+	protected Status status;
+    
+    @Column(name = "access_method")
+	protected String access_method;
+    
+    @Column(name = "siteAccess_mroblem")
+	protected String siteAccessProblem;
+    
+    @Column(name = "needs_inspection")
+	protected String needsInspection;
+    
+    @Embedded
+	protected PositionPoint positionPoint;
+    
+ 
+    
     
     @Embedded
     @Transient
@@ -118,7 +194,10 @@ public class ServiceLocation extends IdentifiedObject
     
     
     public String getLink() {
-		return this.customerAgreement.getLink()+"/CustomerAgreement/"+this.customerAgreement.getId();
+    	if(customerAgreement!=null)
+    		return this.customerAgreement.getLink()+"/CustomerAgreement/"+this.customerAgreement.getId();
+    	else 
+    		return null;
 	}
 
 
@@ -234,6 +313,127 @@ public class ServiceLocation extends IdentifiedObject
 
 	public void setUsagePoints(UsagePoints usagePoints) {
 		this.usagePoints = usagePoints;
+	}
+
+
+
+	public Address getMainAddress() {
+		return mainAddress;
+	}
+
+
+	public void setMainAddress(Address mainAddress) {
+		this.mainAddress = mainAddress;
+	}
+
+
+	public Address getSecondaryAddress() {
+		return secondaryAddress;
+	}
+
+
+	public void setSecondaryAddress(Address secondaryAddress) {
+		this.secondaryAddress = secondaryAddress;
+	}
+
+
+	public TelephoneNumber getPhone1() {
+		return phone1;
+	}
+
+
+	public void setPhone1(TelephoneNumber phone1) {
+		this.phone1 = phone1;
+	}
+
+
+	public TelephoneNumber getPhone2() {
+		return phone2;
+	}
+
+
+	public void setPhone2(TelephoneNumber phone2) {
+		this.phone2 = phone2;
+	}
+
+
+	public ElectronicAddress getElectronicAddress() {
+		return electronicAddress;
+	}
+
+
+	public void setElectronicAddress(ElectronicAddress electronicAddress) {
+		this.electronicAddress = electronicAddress;
+	}
+
+
+	public String getGoInfoReference() {
+		return goInfoReference;
+	}
+
+
+	public void setGoInfoReference(String goInfoReference) {
+		this.goInfoReference = goInfoReference;
+	}
+
+
+	public String getDirection() {
+		return direction;
+	}
+
+
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
+
+
+	public Status getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+
+	public String getAccess_method() {
+		return access_method;
+	}
+
+
+	public void setAccess_method(String access_method) {
+		this.access_method = access_method;
+	}
+
+
+	public String getSiteAccessProblem() {
+		return siteAccessProblem;
+	}
+
+
+	public void setSiteAccessProblem(String siteAccessProblem) {
+		this.siteAccessProblem = siteAccessProblem;
+	}
+
+
+	public String getNeedsInspection() {
+		return needsInspection;
+	}
+
+
+	public void setNeedsInspection(String needsInspection) {
+		this.needsInspection = needsInspection;
+	}
+
+
+	public PositionPoint getPositionPoint() {
+		return positionPoint;
+	}
+
+
+	public void setPositionPoint(PositionPoint positionPoint) {
+		this.positionPoint = positionPoint;
 	}
 
     

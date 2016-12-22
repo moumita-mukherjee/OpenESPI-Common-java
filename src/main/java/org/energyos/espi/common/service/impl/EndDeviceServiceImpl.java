@@ -18,6 +18,20 @@ public class EndDeviceServiceImpl implements EndDeviceService {
 	public EndDevice findById(Long id) {
 		return endDeviceRepository.findById(id);
 	}
+	
+	@Override
+	public EndDevice findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceLocationIdEndDeviceId(Long retailCustomerId,
+			Long customerId, Long accountId, Long agreementId, Long serviceLocationId, Long endDeviceId) throws Exception {
+		return endDeviceRepository.findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceLocationIdEndDeviceId(retailCustomerId,
+				customerId,accountId,agreementId,serviceLocationId,endDeviceId);
+	}
+	
+	@Override
+	public List<EndDevice> findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceLocationId(Long retailCustomerId,
+			Long customerId, Long accountId, Long agreementId, Long serviceLocationId) throws Exception {
+		return endDeviceRepository.findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceLocationId(retailCustomerId,
+				customerId,accountId,agreementId,serviceLocationId);
+	}
 
 	@Override
 	public List<EndDevice> findByCustDetails(Long customerId,
@@ -28,20 +42,26 @@ public class EndDeviceServiceImpl implements EndDeviceService {
 
 	@Override
 	@Transactional
-	public void deleteById(Long id) {
+	public void deleteById(Long id) throws Exception {
 		
 		endDeviceRepository.deleteById(id);
 	}
+	
+	@Override
+	public void delete(Long retailCustomerId, Long customerId, Long accountId, Long agreementId, Long serviceLocationId, Long endDeviceId) throws Exception {
+		
+		endDeviceRepository.delete(retailCustomerId, customerId, accountId, agreementId, serviceLocationId, endDeviceId);
+	}
 
 	@Override
-	public void createEndDevice(EndDevice endDevice) {
+	public void createEndDevice(EndDevice endDevice) throws Exception {
 		endDeviceRepository.createEndDevice(endDevice);
 		
 	}
 
 	@Override
-	public void mergeEndDevice(EndDevice endDevice) {
-		endDeviceRepository.mergeEndDevice(endDevice);
+	public void mergeEndDevice(EndDevice endDevice, EndDevice existingEndDevice) throws Exception {
+		endDeviceRepository.mergeEndDevice(endDevice,existingEndDevice);
 		
 	}
 }

@@ -460,6 +460,9 @@ public interface ExportService {
 
     public void exportCustomerAccountAgreementServiceSupplierDetails(Long retailCustomerId, Long customerId, Long accountId, Long agreementId,OutputStream stream, ExportFilter exportFilter) throws Exception;
     public void exportCustomerAccountAgreementSpecificServiceSupplierDetails(Long retailCustomerId, Long customerId, Long accountId, Long agreementId, Long serviceSupplierId, OutputStream stream, ExportFilter exportFilter) throws Exception;
+
+	void exportAllCustomerDetailsByRetailCustId(Long retailCustomerId,
+			OutputStream stream, ExportFilter exportFilter) throws Exception;
     
 
 }

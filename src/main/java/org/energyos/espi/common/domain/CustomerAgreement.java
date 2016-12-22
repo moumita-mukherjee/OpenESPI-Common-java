@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -24,7 +25,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.energyos.espi.common.models.atom.adapters.CustomerAdapter;
 
 @SuppressWarnings("serial")
-@XmlRootElement(name = "CustomerAgreement", namespace = "http://naesb.org/espi/cust")
+@XmlRootElement(name = "CustomerAgreement", namespace = "http://naesb.org/espi")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "CustomerAgreement")
 @XmlJavaTypeAdapter(CustomerAdapter.class)
@@ -33,13 +34,22 @@ import org.energyos.espi.common.models.atom.adapters.CustomerAdapter;
 @NamedQueries(value = {
 		@NamedQuery(name = CustomerAgreement.QUERY_FIND_ALL_IDS, query = "SELECT customeragreement.id FROM CustomerAgreement customeragreement"),
 		@NamedQuery(name = CustomerAgreement.QUERY_FIND_BY_ID, query = "SELECT customeragreement FROM CustomerAgreement customeragreement WHERE customeragreement.id = :id"),
+		
+		@NamedQuery(name = CustomerAgreement.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID, query = "SELECT customeragreement FROM CustomerAgreement customeragreement WHERE customeragreement.customerAccount.customer.retailCustomerId = :retailCustomerId and customeragreement.customerAccount.customer.id = :customerId and customeragreement.customerAccount.id = :customerAccountId and customeragreement.id = :agreementId"),
+		
+		@NamedQuery(name = CustomerAgreement.QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID, query = "SELECT customeragreement FROM CustomerAgreement customeragreement WHERE customeragreement.customerAccount.customer.retailCustomerId = :retailCustomerId and customeragreement.customerAccount.customer.id = :customerId and customeragreement.customerAccount.id = :accountId"),
+		
 		@NamedQuery(name = CustomerAgreement.QUERY_FIND_BY_CUSTOMER_ID_ACCOUNT_ID, query = "SELECT customeragreement FROM CustomerAgreement customeragreement WHERE customeragreement.customerAccount.customer.id = :customerId and customeragreement.customerAccount.id = :customerAccountId "),
 
+		
 })
 public class CustomerAgreement extends IdentifiedObject {
 
 	public static final String QUERY_FIND_ALL_IDS = "CustomerAgreement.findAllIds";
 	public static final String QUERY_FIND_BY_ID = "CustomerAgreement.findById";
+	public static final String QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID_AGREEMENT_ID = "CustomerAgreement.findByRetailCustomerIdCustomerIdAccountIdAgreementId";
+	public static final String QUERY_FIND_BY_RETAILCUSTOMER_ID_CUSTOMER_ID_ACCOUNT_ID = "CustomerAgreement.findByRetailCustomerIdCustomerIdAccountId";
+	
 	public static final String QUERY_FIND_BY_CUSTOMER_ID_ACCOUNT_ID = "CustomerAgreement.findByCustomerIdAccountId";
 
 	@Column(name = "name")
@@ -55,9 +65,24 @@ public class CustomerAgreement extends IdentifiedObject {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+	
+	@Embedded
+	protected Status status;
 
 	@Column(name = "created")
 	protected Date createdDateTime;
+	
+	@Column(name = "revision_number")
+	protected String revisionNumber;
+
+	
+	
+	@Column(name = "sign_date")
+	protected Date signDate;
+	
+	@Column(name = "validity_interval")
+	protected Date validityInterval;
+
 
 	@Column(name = "load_mgmt")
 	private String loadMgmt;
@@ -67,14 +92,20 @@ public class CustomerAgreement extends IdentifiedObject {
 
 	@Column(name = "demand_response_programs")
 	private String demandResponsePrograms;
+	
+	/*@Transient
+	private Long customerAccountId;*/
 
 	@XmlTransient
 	@Transient
 	private String link;
 
 	public String getLink() {
-		return this.customerAccount.getLink() + "/CustomerAccount/"
+		if(customerAccount!=null)
+			return this.customerAccount.getLink() + "/CustomerAccount/"
 				+ this.customerAccount.getId();
+		else
+			return null;
 	}
 
 	public void setLink(Long customerId, Long accountId) {
@@ -224,5 +255,47 @@ public class CustomerAgreement extends IdentifiedObject {
 	public String toString() {
 		return "CustomerAgreement [name=" + name + "]";
 	}
+
+	public String getRevisionNumber() {
+		return revisionNumber;
+	}
+
+	public void setRevisionNumber(String revisionNumber) {
+		this.revisionNumber = revisionNumber;
+	}
+
+	public Date getSignDate() {
+		return signDate;
+	}
+
+	public void setSignDate(Date signDate) {
+		this.signDate = signDate;
+	}
+
+	public Date getValidityInterval() {
+		return validityInterval;
+	}
+
+	public void setValidityInterval(Date validityInterval) {
+		this.validityInterval = validityInterval;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	/*public Long getCustomerAccountId() {
+		return customerAccountId;
+	}
+
+	public void setCustomerAccountId(Long customerAccountId) {
+		this.customerAccountId = customerAccountId;
+	}*/
+
+	
 
 }

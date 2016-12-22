@@ -65,6 +65,8 @@ public class RetailCustomerATOMContentHandler extends XMLFilterImpl {
      
     public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
             throws SAXException {
+    	 System.err.println("Local Name>>>"+localName);
+    	 System.err.println("qName>>>"+qName);
         if (depth != 0) {
             depth++;
             super.startElement(namespaceURI, localName, qName, atts);
@@ -90,8 +92,10 @@ public class RetailCustomerATOMContentHandler extends XMLFilterImpl {
 			Enumeration<String> e = namespaces.getPrefixes();
             while (e.hasMoreElements()) {
                 String prefix = e.nextElement();
+               
                 String uri = namespaces.getURI(prefix);
-
+                System.err.println("Prefix>>>"+prefix);
+                System.err.println("URI>>>"+uri);
                 unmarshallerHandler.startPrefixMapping(prefix, uri);
             }
             String defaultURI = namespaces.getURI("");

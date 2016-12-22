@@ -848,6 +848,44 @@ public class ContentType {
 		return result;
 
 	}
+	
+	
+	
+	public String showTitle(){
+		String title = null;
+		try{
+		
+		if(getResource() instanceof EndDevice){
+			title = "End Device";
+		}
+		
+		if(getResource() instanceof ServiceSupplier){
+			title = "Service Supplier";
+		}
+		
+		if(getResource() instanceof ServiceLocation){
+			title = "ServiceLocation";
+		}
+		
+		if(getResource() instanceof CustomerAgreement){
+			title = "Customer Agreement";
+		}
+		
+		if(getResource() instanceof CustomerAccount){
+			title = "Customer Account";
+		}
+		
+		if(getResource() instanceof Customer){
+			title = "Customer";
+		}
+		
+		
+		}catch (Exception e) {
+			e.printStackTrace(System.err);
+		}
+		
+		return title;
+	}
 
 	public List<String> buildRelHref(Long subscriptionId, String hrefFragment) {
 		// only MeterReading and UsagePoint have "related" references

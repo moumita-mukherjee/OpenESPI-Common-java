@@ -58,6 +58,10 @@ public class AtomMarshallerListener extends Marshaller.Listener {
 					et.addRelatedLink(link);
 				}
 			}
+			if(et.getTitle()==null || et.getTitle().isEmpty()){
+			String title = content.showTitle();
+			et.setTitle(title);   
+			}
 		}
 		if ((source instanceof LinkType) && (((LinkType) source).getRel().equals("self"))) {
 			log.info("Inside 2nd if of beforeMarshal method >>");

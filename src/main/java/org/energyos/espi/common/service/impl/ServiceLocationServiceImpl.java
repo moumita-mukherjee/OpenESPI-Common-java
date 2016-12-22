@@ -16,29 +16,43 @@ public class ServiceLocationServiceImpl implements ServiceLocationService {
 	public ServiceLocation findById(Long id) {
 		return serviceLocationRepository.findById(id);
 	}
+	
+	
+	@Override
+	public List<ServiceLocation> findByRetailCustomerIdCustomerIdAccountIdAgreementId(Long retailCustomerId,Long customerId, Long accountId, Long agreementId) throws Exception {
+		return serviceLocationRepository.findByRetailCustomerIdCustomerIdAccountIdAgreementId(retailCustomerId,
+				customerId, accountId, agreementId);
+	}
+	
+	@Override
+	public ServiceLocation findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceLocationId(Long retailCustomerId,
+			Long customerId, Long accountId, Long agreementId, Long serviceLocationId) throws Exception{
+		return serviceLocationRepository.findByRetailCustomerIdCustomerIdAccountIdAgreementIdServiceLocationId(retailCustomerId,
+				customerId, accountId, agreementId, serviceLocationId);
+	}
 
 	@Override
-	public List<ServiceLocation> findByCustomerIdAccountIdAgreementId(
-			Long customerId, Long customerAccountId, Long customerAgreementId) {
+	public List<ServiceLocation> findByCustomerIdAccountIdAgreementId (
+			Long customerId, Long customerAccountId, Long customerAgreementId) throws Exception {
 		return serviceLocationRepository.findByCustomerIdAccountIdAgreementId(customerId, customerAccountId, customerAgreementId);
 	}
 
 	@Override
-	public void deleteById(Long id) {
+	public void deleteById(Long id) throws Exception{
 		serviceLocationRepository.deleteById(id);
 		
 	}
 
 	@Override
-	public void createServiceLocation(ServiceLocation serviceLocation) {
+	public void createServiceLocation(ServiceLocation serviceLocation) throws Exception{
 		setUsagePointRef(serviceLocation);
 		serviceLocationRepository.createServiceLocation(serviceLocation);
 		
 	}
 
 	@Override
-	public void mergeServiceLocation(ServiceLocation serviceLocation) {
-		serviceLocationRepository.mergeServiceLocation(serviceLocation);
+	public void mergeServiceLocation(ServiceLocation serviceLocation, ServiceLocation existingServiceLocation) throws Exception{
+		serviceLocationRepository.mergeServiceLocation(serviceLocation, existingServiceLocation);
 		
 	}
 
@@ -51,5 +65,13 @@ public class ServiceLocationServiceImpl implements ServiceLocationService {
 			e.printStackTrace(System.err);
 			sl.setUsagePointRef(null);
 		}
+	}
+
+
+	@Override
+	
+	public void delete(Long retailCustomerId, Long customerId, Long customerAccountId, Long customerAgreementId, Long serviceLocationId) throws Exception {
+		
+		serviceLocationRepository.delete(retailCustomerId, customerId, customerAccountId, customerAgreementId, serviceLocationId);
 	}
 }

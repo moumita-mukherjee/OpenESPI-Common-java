@@ -1,5 +1,6 @@
 package org.energyos.espi.common.domain;
 
+
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,7 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 @SuppressWarnings("serial")
-@XmlRootElement(name = "Customer", namespace = "http://naesb.org/espi/cust")
+@XmlRootElement(name = "Customer", namespace = "http://naesb.org/espi")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Customer")
 @Entity
@@ -27,12 +29,14 @@ import javax.xml.bind.annotation.XmlType;
 		@NamedQuery(name = Customer.QUERY_FIND_ALL_IDS, query = "SELECT customer.id FROM Customer customer"),
 		@NamedQuery(name = Customer.QUERY_FIND_BY_ID, query = "SELECT customer FROM Customer customer where customer.id = :id"),
 		@NamedQuery(name = Customer.QUERY_FIND_ALL_BY_RETAIL_CUSTOMER_ID, query = "SELECT customer FROM Customer customer where customer.retailCustomerId=:retailCustomerId"),
+		@NamedQuery(name = Customer.QUERY_FIND_BY_RETAIL_CUSTOMER_ID_CUSTOMER_ID, query = "SELECT customer FROM Customer customer where customer.retailCustomerId=:retailCustomerId and customer.id=:id"),
 		@NamedQuery(name = Customer.QUERY_FIND_ID_BY_XPATH, query = "SELECT DISTINCT r FROM Customer r WHERE r.id = :o1Id") })
 public class Customer extends IdentifiedObject {
 
 	public static final String QUERY_FIND_ALL_IDS = "Customer.findAllIds";
 	public static final String QUERY_FIND_BY_ID = "Customer.findById";
 	public static final String QUERY_FIND_ALL_BY_RETAIL_CUSTOMER_ID = "Customer.findByRetailCustomerId";
+	public static final String QUERY_FIND_BY_RETAIL_CUSTOMER_ID_CUSTOMER_ID = "Customer.findByRetailCustomerIdCustomerId";
 	public static final String QUERY_FIND_ID_BY_XPATH = "Customer.findIdsByXpath";
 
 	@Column(name = "enabled")
@@ -40,39 +44,42 @@ public class Customer extends IdentifiedObject {
 
 	@Column(name = "name")
 	protected String name;
-
+	
+	
 	@Column(name = "supplierId")
-	protected int supplierId;
+	protected Long supplierId;
 
 	@Column(name = "kind")
 	protected String kind;
 
-	@XmlTransient
+	//@XmlTransient
 	@Column(name = "specialNeed")
 	private String specialNeed;
 
-	@XmlTransient
+	//@XmlTransient
 	@Column(name = "vip")
 	private Boolean vip;
 
-	@XmlTransient
+	//@XmlTransient
 	@Column(name = "pucNumber")
 	private String pucNumber;
 
 	@Embedded
 	protected Status status;
 
-	@XmlTransient
+	//@XmlTransient
 	@Column(name = "priority")
 	private String priority;
 
-	@XmlTransient
+	//@XmlTransient
 	@Column(name = "locale")
 	private String locale;
 
 	@XmlTransient
 	@Column(name = "retail_customer_id")
 	private Long retailCustomerId;
+
+	
 
 	public Long getRetailCustomerId() {
 		return retailCustomerId;
@@ -227,7 +234,7 @@ public class Customer extends IdentifiedObject {
 	 * 
 	 */
 	public String getLocale() {
-		return priority;
+		return locale;
 	}
 
 	/**
@@ -249,11 +256,11 @@ public class Customer extends IdentifiedObject {
 		this.enabled = enabled;
 	}
 
-	public int getSupplierId() {
+	public Long getSupplierId() {
 		return supplierId;
 	}
 
-	public void setSupplierId(int supplierId) {
+	public void setSupplierId(Long supplierId) {
 		this.supplierId = supplierId;
 	}
 
@@ -264,6 +271,15 @@ public class Customer extends IdentifiedObject {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
+	
+	/*public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		title = "Customer";
+		this.title = title;
+	}*/
 
 	public void merge(Customer resource) {
 		this.kind = ((Customer) resource).kind;
